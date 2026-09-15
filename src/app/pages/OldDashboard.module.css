@@ -22,6 +22,18 @@
   color: var(--text-primary);
 }
 
+.homeLink {
+  font-family: var(--font-utility);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-ink);
+  margin-left: auto;
+}
+
+.homeLink:hover {
+  text-decoration: underline;
+}
+
 .layout {
   flex: 1;
   display: grid;

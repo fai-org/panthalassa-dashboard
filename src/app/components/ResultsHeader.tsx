@@ -64,7 +64,7 @@ export function ResultsHeader({ result, isPending }: Props) {
       {tiles.map((tile) => (
         <div key={tile.label} className={`card ${styles.tile} ${tile.primary ? styles.tilePrimary : ""}`}>
           {isPending && <span className={styles.pendingDot} aria-hidden />}
-          <span className={styles.label}>{tile.label}</span>
+          <h4 className={styles.label}>{tile.label}</h4>
           <span className={`${styles.value} num`}>{tile.value}</span>
           <span className={styles.sub}>{tile.sub}</span>
           {tile.secondary && (

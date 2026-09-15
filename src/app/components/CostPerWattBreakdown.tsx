@@ -57,7 +57,7 @@ export function CostPerWattBreakdown({ oceanResult, terrestrialResult }: Props) 
     <div className="card">
       <div className={styles.wrap}>
         <div className={styles.titleRow}>
-          <span className={styles.title}>All-in cost per target watt, by component</span>
+          <h3 className={styles.title}>All-in cost per target watt, by component</h3>
           <span className={styles.subtitle}>Present-value $/W of target capacity (capex + lifetime opex)</span>
         </div>
 
