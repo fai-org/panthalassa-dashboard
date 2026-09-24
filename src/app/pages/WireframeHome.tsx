@@ -10,9 +10,11 @@ import lockupUrl from "../assets/fai-lockup-black.svg";
 /**
  * Home page. The opening is a poster: a flat Celestial Blue sky over a Cod Gray
  * sea, split where the WebGL horizon lands (the background and the hero share
- * HORIZON_FRAC). Two Schmalfette words pivot on that horizon: the name stands
- * upright in the sea along the left gutter, and the headline rests on the
- * horizon from its top corner. The reading voice starts below, on Smoke White.
+ * HORIZON_FRAC). The question is set in Schmalfette and turns a corner at the
+ * horizon: "Can the Ocean" rises upright out of the sea along the left gutter,
+ * "Power AI?" rests on the horizon from its top. The introduction sits in the
+ * sea between the upright words and the node, and the reading voice continues
+ * below on Smoke White.
  */
 
 /** Cod Gray sea; wires and node in Smoke White; the far sea hazes a little toward the sky. */
@@ -35,25 +37,21 @@ export function WireframeHome() {
 
   return (
     <div className={styles.page} style={pageStyle}>
-      <section className={styles.hero} aria-label="Panthalassa wave power">
-        <NodeWaveHero className={styles.canvas} palette={HERO_PALETTE} />
-
-        {/* Two words, one corner at the horizon: the name rises out of the sea,
-            the headline sits on the water line beside it. Nothing overlaps. */}
-        <p className={styles.brandWord}>Panthalassa</p>
-        <div className={styles.title}>
-          <p className={styles.headline}>Wave Power</p>
+      <section className={styles.hero} aria-labelledby="page-title">
+        <div className={styles.poster}>
+          <NodeWaveHero className={styles.canvas} palette={HERO_PALETTE} />
+          {/* One question, one corner at the horizon: the first words rise out of the sea,
+              the rest sits on the water line beside them. Nothing overlaps. */}
+          <h1 id="page-title" className={styles.question}>
+            <span className={styles.questionRise}>Can the Ocean</span>{" "}
+            <span className={styles.questionRest}>Power AI?</span>
+          </h1>
         </div>
-      </section>
 
-      <section className={styles.intro} aria-labelledby="page-title">
-        <div className={styles.introHead}>
-          <h1 id="page-title" className={styles.pageTitle}>Can the Ocean Power AI?</h1>
+        <div className={styles.intro}>
           <p className={styles.heroSubtitle}>
             Modeling the cost and reliability of wave-powered data centers, and how they compare with data centers on land.
           </p>
-        </div>
-        <div className={styles.copy}>
           <p className={styles.lead}><strong>Yes it can and, done right, it would be cheaper than building data centers on land.</strong></p>
           <p>This work models one approach to harnessing wave energy put forward by the startup <strong>Panthalassa</strong>, which would place floating power plants far offshore in the South Pacific, and compares this to a range of land-based behind-the-meter alternatives. While Panthalassa’s approach poses significant operational challenges, <strong>my model finds that these challenges are likely surmountable.</strong></p>
           <p>You can go straight to the dashboard, where you can change my default assumptions, but since few of us have any physical intuition for ocean data centers, <strong>I strongly encourage you to first read my short explanation of how Panthalassa operates and how my model works.</strong></p>
@@ -66,7 +64,6 @@ export function WireframeHome() {
 
       <Methodology />
       <section id="dashboard" className={styles.dashboard} aria-labelledby="model-heading" tabIndex={-1}>
-        <h2 id="model-heading" className={styles.dashHead}>Now, make the model yours</h2>
         <OldDashboard />
       </section>
       <Takeaways />

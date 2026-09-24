@@ -60,12 +60,12 @@
 .tileGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
+  gap: 32px 24px;
 }
 
 .tile {
   min-width: 0;
-  padding: 16px 16px;
+  padding: 16px 0 0;
   display: flex;
   flex-direction: column;
   gap: 8px;

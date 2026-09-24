@@ -37,6 +37,8 @@
 .appendix a { color: var(--text-primary); text-underline-offset: 3px; }
 .appendix ul, .appendix ol { padding-left: 24px; margin: 16px 0 24px; }
 .appendix li { margin: 0 0 8px; }
+/* A bullet's heading in the paper template's style: Plex Sans, bold, all caps, tracked. */
+.appendix li > strong:first-child { font: 600 0.875em/1 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
 .appendix li::marker { color: var(--fai-celestial-blue); }
 .appendix math { color: var(--text-primary); font-size: 1.08em; }
 .appendix :global(span.math.display) { display: block; overflow-x: auto; padding: 12px 4px; margin: 8px 0 16px; }

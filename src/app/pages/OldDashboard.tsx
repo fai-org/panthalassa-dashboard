@@ -58,11 +58,10 @@ export function OldDashboard() {
 
   return (
     <div className={styles.shell} ref={shellRef}>
-      <header className={styles.topbar}>
-        <h2 className={styles.title}>The Interactive Model</h2>
-      </header>
-
+      {/* Three columns: the Panthalassa inputs on a Celestial Blue field, the results on
+          Smoke White, the land-based inputs on Timberwolf. The heading heads the results. */}
       <div className={styles.layout}>
+        <h2 id="model-heading" className={styles.title}>Now, make the model yours</h2>
         <aside className={styles.sidebar}>
           <SliderPanel inputs={inputs} setInput={setInput} resetAll={resetAll} collapsible={compactControls} />
         </aside>

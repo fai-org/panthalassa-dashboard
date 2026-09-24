@@ -144,10 +144,9 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
+/* A results section: no box. One Cod Gray rule over its heading divides it from the next. */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-top: 1px solid var(--fai-cod-gray);
 }
 
 .section-label {

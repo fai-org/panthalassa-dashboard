@@ -2,7 +2,7 @@
    and the stretch the dearer build runs past the cheaper one is International Orange: the one
    place on the dashboard that colour appears. */
 :global(.card).verdictCard {
-  padding: 24px;
+  padding: 16px 0 0;
   display: flex;
   flex-direction: column;
   gap: 24px;

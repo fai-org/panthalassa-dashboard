@@ -1,8 +1,9 @@
 /*
  * The page: a poster, then a book. The opening is a Bauhaus poster in FAI's
- * saturated fills (Celestial Blue sky, Cod Gray sea, International Orange
- * name); the reading runs on Smoke White in IBM Plex Serif; the model sits in
- * a Celestial Blue field; the page ends on an International Orange field.
+ * saturated fills (Celestial Blue sky, Cod Gray sea, the question in
+ * International Orange and Cod Gray) with the introduction in the sea; the
+ * reading runs on Smoke White in IBM Plex Serif; the model's Panthalassa
+ * column is Celestial Blue; the page ends on an International Orange field.
  */
 .page {
   --gutter: max(32px, calc(50vw - 560px));
@@ -12,17 +13,28 @@
   min-height: 100vh;
 }
 
-/* The two display sizes are solved together so both words pivot on the horizon.
-   Schmalfette measured at 0.02em tracking: caps 0.706em tall; "PANTHALASSA" 3.57em long;
-   "WAVE POWER" 3.235em long. The name stands from 48px above the poster's foot up to the
-   horizon; the headline takes the width left beside it, never taller than the sky allows. */
+/* The two display sizes are solved together so the question turns its corner on the horizon.
+   Schmalfette at 0.02em tracking, measured in the browser: caps 0.706em tall; "CAN THE OCEAN" 3.54em long;
+   "POWER AI?" 2.692em long. The first words stand from 48px above the poster's foot up to
+   the horizon; the rest takes the width left beside them, never taller than the sky allows. */
 .hero {
   --hero-h: max(100svh, 640px);
   --sky-h: calc(var(--hero-h) * var(--horizon-frac));
-  --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.57);
-  --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 16px);
-  --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 3.26, (var(--sky-h) - 48px) / 0.706);
+  --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.56);
+  --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 24px);
+  --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 2.72, (var(--sky-h) - 40px) / 0.706);
+  /* The wave band ends about 14% of the poster below the horizon; the introduction starts under it. */
+  --sea-top: calc(var(--sky-h) + 0.14 * var(--hero-h) + 24px);
+  --ink-dark-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--fai-cod-gray));
   position: relative;
+  min-height: var(--hero-h);
+  background: var(--fai-cod-gray);
+  color: var(--fai-smoke-white);
+}
+
+.poster {
+  position: relative;
+  isolation: isolate;
   height: var(--hero-h);
   overflow: hidden;
   background: linear-gradient(
@@ -38,104 +50,80 @@
   z-index: 1;
 }
 
-/* The headline sits behind the sea canvas with its base just below the horizon, so the
-   opaque sea faces clip the bottom sliver of the caps and the wave wires break over it. */
-.title {
+.question {
   position: absolute;
-  top: 0;
-  left: var(--h-left);
-  right: var(--gutter);
-  height: var(--sky-h);
-  display: flex;
-  align-items: flex-end;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.headline {
-  margin: 0 0 -0.06em;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--fs-h);
-  line-height: 0.8;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--fai-cod-gray);
-  white-space: nowrap;
-}
-
-/* The name, upright in International Orange along the left gutter, rising out of the sea to
-   the horizon: a vertical and a horizontal meeting at one corner. In front of the water. */
-.brandWord {
-  position: absolute;
-  left: var(--gutter);
-  bottom: 48px;
-  z-index: 2;
+  inset: 0;
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--fs-v);
   line-height: 0.8;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: var(--fai-international-orange);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
   white-space: nowrap;
   pointer-events: none;
 }
 
-/* The reading voice begins: Smoke White, Plex Serif, on the 16-column grid
-   (question over 7 columns, introduction over 8, one column between). */
+/* Upright in International Orange along the left gutter, rising out of the sea to the
+   horizon, in front of the water. Orange never reaches the sky: it and Celestial Blue share
+   a luminance. */
+.questionRise {
+  position: absolute;
+  left: var(--gutter);
+  top: var(--sky-h);
+  z-index: 2;
+  font-size: var(--fs-v);
+  color: var(--fai-international-orange);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Behind the sea canvas with its base just below the horizon, so the opaque sea faces clip
+   the bottom sliver of the caps and the wave wires break over it. */
+.questionRest {
+  position: absolute;
+  left: var(--h-left);
+  bottom: calc(var(--hero-h) - var(--sky-h) - 0.06em);
+  z-index: 0;
+  font-size: var(--fs-h);
+  color: var(--fai-cod-gray);
+}
+
+/* The introduction, in the sea between the upright words and the node: it hangs from under
+   the wave band on the headline's left edge, and the poster grows if it runs long.
+   The node stands at 75% of the width on wide screens. */
 .intro {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 8fr);
-  column-gap: 96px;
-  row-gap: 32px;
-  padding: 96px var(--gutter);
-}
-
-.pageTitle {
-  margin: 0 0 24px;
-  font-family: var(--font-body);
-  font-size: clamp(40px, 4.4vw, 64px);
-  font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  text-wrap: balance;
-}
-
-.heroSubtitle {
-  font-family: var(--font-body);
-  font-size: 22px;
-  line-height: 1.45;
-  color: var(--text-secondary);
-}
-
-.copy {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 36rem;
+  width: min(34rem, 75vw - var(--h-left) - 112px);
+  margin: calc(var(--sea-top) - var(--hero-h)) 0 0 var(--h-left);
+  padding-bottom: 96px;
 }
 
-.copy p {
+.intro p {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 17px;
   line-height: 1.65;
-  color: var(--text-secondary);
+  color: var(--ink-dark-2);
 }
 
-.copy strong {
-  color: var(--text-primary);
+.intro strong {
+  color: var(--fai-smoke-white);
   font-weight: 600;
 }
 
-.copy .lead {
+.intro .heroSubtitle {
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--ink-dark-2);
+}
+
+.intro .lead {
   font-size: 22px;
   line-height: 1.4;
-  color: var(--text-primary);
+  color: var(--fai-smoke-white);
 }
 
 /* Secondary by intent: the page asks readers to take the explanation first. */
@@ -149,43 +137,27 @@
   font-family: var(--font-utility);
   font-size: 15px;
   font-weight: 500;
-  color: var(--fai-cod-gray);
+  color: var(--fai-smoke-white);
   text-decoration: none;
-  border: 1px solid var(--fai-cod-gray);
+  border: 1px solid var(--fai-smoke-white);
   border-radius: 2px;
 }
 
+/* Black on orange, a permitted pairing. */
 .cta:hover {
-  background: var(--fai-cod-gray);
-  color: var(--fai-smoke-white);
-}
-
-/* The model sits in a full-bleed Celestial Blue field: a light, inverted panel in the ocean.
-   Orange focus is under 3:1 on its light greys, so focus there is Cod Gray. */
-.dashboard {
-  --focus: var(--fai-cod-gray);
-  padding: 0 16px 96px;
-  background: var(--fai-celestial-blue);
-  scroll-margin-top: 0;
-}
-
-/* Cod Gray on Celestial Blue, 5.9:1. Aligned to the page gutter, not the panel's edge. */
-.dashHead {
-  margin: 0;
-  padding: 96px calc(var(--gutter) - 16px) 48px;
-  font-family: var(--font-body);
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  background: var(--fai-international-orange);
+  border-color: var(--fai-international-orange);
   color: var(--fai-cod-gray);
+}
+
+/* The model runs edge to edge; its own columns carry the colour (see OldDashboard). */
+.dashboard {
+  scroll-margin-top: 0;
 }
 
 .dashboard > div {
   container: dashboard / inline-size;
-  background: var(--bg);
   color: var(--text-primary);
-  border-radius: 2px;
 }
 
 .dashboard:focus {
@@ -211,19 +183,19 @@
   height: 48px;
 }
 
-@media (max-width: 1055px) {
+/* Where the node stands in the middle (narrow or tall canvases), the introduction moves
+   below the poster, still in the sea. */
+@media (max-width: 899px), (max-aspect-ratio: 11/10) {
   .intro {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 64px var(--gutter);
-  }
-
-  .copy {
+    width: auto;
     max-width: 40rem;
+    margin: 0;
+    padding: 48px var(--gutter) 80px;
   }
 }
 
-/* Phones keep the corner: the name stays upright in the sea (orange never sits on the sky,
-   where it and Celestial Blue share a luminance), and the headline takes what is left. */
+/* Phones keep the corner: the first words stay upright in the sea and the rest takes what
+   is left of the sky. */
 @media (max-width: 672px) {
   .page {
     --gutter: 16px;
@@ -231,21 +203,18 @@
 
   .hero {
     --hero-h: max(100svh, 600px);
+    --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 16px);
   }
 
   .intro {
-    padding: 48px 16px 64px;
+    padding: 40px 16px 64px;
   }
 
-  .copy p {
+  .intro p {
     font-size: 17px;
   }
 
-  .dashboard {
-    padding: 0 8px 64px;
-  }
-
-  .dashHead {
-    padding: 64px 8px 32px;
+  .intro .lead {
+    font-size: 20px;
   }
 }

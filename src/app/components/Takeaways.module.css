@@ -24,14 +24,16 @@
   border-top: 1px solid var(--border);
 }
 .takeaway:last-child { padding-bottom: 0; }
+/* The claim sets flush right against its argument, so the eye can run down the claims. */
 .takeaway h3 {
   margin: 0;
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  text-align: right;
   text-wrap: pretty;
 }
 .body { min-width: 0; }
@@ -39,6 +41,8 @@
 .takeaway p { margin: 0 0 16px; }
 .takeaway p:last-child { margin-bottom: 0; }
 .takeaway strong { color: var(--text-primary); font-weight: 600; }
+/* A bullet's heading in the paper template's style: Plex Sans, bold, all caps, tracked. */
+.takeaway li > strong:first-child { font: 600 0.875em/1 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
 .takeaway ul { padding-left: 24px; margin: 16px 0; }
 .takeaway li { padding-left: 4px; margin-bottom: 16px; }
 .takeaway li::marker { color: var(--fai-celestial-blue); }
@@ -52,6 +56,6 @@
   .section { padding: 48px 24px; }
   .title { margin-bottom: 24px; }
   .takeaway { grid-template-columns: 1fr; gap: 16px; padding-block: 24px; }
-  .takeaway h3 { font-size: 24px; }
+  .takeaway h3 { font-size: 24px; text-align: left; }
   .figure > a { padding: 4px; }
 }

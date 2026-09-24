@@ -43,7 +43,7 @@ type NodeWaveHeroProps = {
 /** Model z of the mean water line. The float centre sits at z = 63.9. */
 export const WATER_Z = 62;
 /** Fraction of the canvas height, from the top, where the horizon sits. */
-export const HORIZON_FRAC = 0.4;
+export const HORIZON_FRAC = 0.34;
 
 const PIVOT_Z = 46;                          // model z the node pitches about
 const SWAY_GAIN = 0.4;                       // how fully the node follows the surface slope; a spar buoy barely tilts
@@ -54,7 +54,7 @@ const CAM_DISTANCE = 190;                    // m horizontally from the node
 const FOV_Y = (40 * Math.PI) / 180;          // vertical field of view
 const TILT = Math.atan2(CAM_HEIGHT, CAM_DISTANCE);   // optical axis points at the node's water line
 const CAM_DIST = Math.hypot(CAM_HEIGHT, CAM_DISTANCE);
-const NODE_NDC_X_WIDE = 0.45;                // node sits right of centre on wide canvases (lens shift)
+const NODE_NDC_X_WIDE = 0.5;                 // node sits right of centre on wide canvases (lens shift)
 const WIDE_ASPECT = 1.1;
 const MAX_ASPECT = 2.4;                      // widest canvas the grid is sized for
 const SPIN_RAD_PER_S = (2 * Math.PI) / 150;  // slow turntable
