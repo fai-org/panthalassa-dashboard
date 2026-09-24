@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { nodeVertices } from './nodeGeometry.js';
 import { sampleSurface } from '../../lib/gerstner.js';
+import { ORANGE, SEA_800, SMOKE, smoke } from './palette.js';
 
 const vertices = nodeVertices();
 /** Perspective wireframe view of the repository's exact node geometry. */
@@ -21,9 +22,7 @@ export function NodeScene({ waves, still = false }: { waves: boolean; still?: bo
       if (canvas.width !== side) canvas.width = canvas.height = side;
       ctx.setTransform(side / 500, 0, 0, side / 500, 0, 0);
       ctx.clearRect(0, 0, 500, 500);
-      const gradient = ctx.createLinearGradient(0, 0, 0, 500);
-      gradient.addColorStop(0, '#244d69'); gradient.addColorStop(.28, '#163a54'); gradient.addColorStop(1, '#091d30');
-      ctx.fillStyle = gradient; ctx.fillRect(0, 0, 500, 500);
+      ctx.fillStyle = SEA_800; ctx.fillRect(0, 0, 500, 500);
       const t = waves && !still && !media.matches ? time / 1000 : 0;
       const swell = waves ? sampleSurface(0, 0, t).height * 1.6 : 0;
       const project = (x: number, y: number, z: number) => {
@@ -41,7 +40,7 @@ export function NodeScene({ waves, still = false }: { waves: boolean; still?: bo
           const p = project(x, y, z);
           if (x === -110) ctx.moveTo(p[0]!, p[1]!); else ctx.lineTo(p[0]!, p[1]!);
         }
-        ctx.strokeStyle = `rgba(130,195,214,${y < 0 ? .26 : .13})`; ctx.stroke();
+        ctx.strokeStyle = smoke(y < 0 ? .2 : .1); ctx.stroke();
       }
       for (let x = -90; x <= 90; x += 12) {
         ctx.beginPath();
@@ -49,20 +48,20 @@ export function NodeScene({ waves, still = false }: { waves: boolean; still?: bo
           const p = project(x, y, 62 + (waves ? sampleSurface(x,y,t).height * 1.6 : 0));
           if (y === -90) ctx.moveTo(p[0]!,p[1]!); else ctx.lineTo(p[0]!,p[1]!);
         }
-        ctx.strokeStyle = 'rgba(130,195,214,.10)'; ctx.stroke();
+        ctx.strokeStyle = smoke(.08); ctx.stroke();
       }
       ctx.lineWidth = .8;
       for (let i = 0; i < vertices.length; i += 6) {
         const a = project(vertices[i]!, vertices[i+1]!, vertices[i+2]! + swell);
         const b = project(vertices[i+3]!, vertices[i+4]!, vertices[i+5]! + swell);
         const depth = (vertices[i+1]! + vertices[i+4]!) / 2;
-        ctx.strokeStyle = depth > 0 ? 'rgba(179,215,231,.30)' : 'rgba(225,242,251,.72)';
+        ctx.strokeStyle = depth > 0 ? smoke(.3) : smoke(.8);
         ctx.beginPath(); ctx.moveTo(a[0]!,a[1]!); ctx.lineTo(b[0]!,b[1]!); ctx.stroke();
       }
-      ctx.font = `${11 * Math.max(1,500/Math.max(280,canvas.clientWidth))}px ui-monospace, monospace`; ctx.fillStyle = '#aac4d6';
+      ctx.font = `${11 * Math.max(1,500/Math.max(280,canvas.clientWidth))}px 'IBM Plex Sans', system-ui, sans-serif`; ctx.fillStyle = SMOKE;
       if (waves) {
-        ctx.fillText('DIAMETER', 308, 163);
-        ctx.strokeStyle = '#9de4d2'; ctx.beginPath(); ctx.moveTo(222,139);ctx.lineTo(278,139);ctx.moveTo(222,135);ctx.lineTo(222,143);ctx.moveTo(278,135);ctx.lineTo(278,143);ctx.stroke();
+        ctx.fillText('Diameter', 308, 163);
+        ctx.strokeStyle = ORANGE; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(222,139);ctx.lineTo(278,139);ctx.moveTo(222,135);ctx.lineTo(222,143);ctx.moveTo(278,135);ctx.lineTo(278,143);ctx.stroke();
       }
     }
     const loop = (t: number) => { if (visible) draw(t); frame = requestAnimationFrame(loop); };

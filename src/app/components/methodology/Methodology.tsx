@@ -18,7 +18,7 @@ function Visual({ state, active = true, still = false }: {state: VisualState; ac
         </div>
       </div>
       {!node && <div className={styles.visualCaption}>
-        <span>{state === 'geography' ? 'THE WAVE RESOURCE' : state === 'outbound' ? 'OUTBOUND JOURNEY' : 'RETURN & MAINTENANCE'}</span><span>{state === 'geography' ? 'Model reference location · Natural Earth basemap' : 'Illustrative route · model reference location'}</span>
+        <span>{state === 'geography' ? 'The wave resource' : state === 'outbound' ? 'Outbound journey' : 'Return & maintenance'}</span><span>{state === 'geography' ? 'Model reference location · Natural Earth basemap' : 'Illustrative route · model reference location'}</span>
       </div>}
     </>}
   </div>;
@@ -61,7 +61,7 @@ export function Methodology({ preview = false }: {preview?: boolean}) {
   const inline = compact || reduced;
   return <section ref={host} className={styles.methodology} id="methodology" aria-labelledby="methodology-heading">
     <header className={styles.sectionHead}>
-      <div><span className={styles.eyebrow}>THE METHODOLOGY</span><h2 id="methodology-heading">How the model works</h2></div>
+      <h2 id="methodology-heading">How the model works</h2>
     </header>
     <div className={`${styles.story} ${inline ? styles.inlineStory : ''}`}>
       {!inline && <aside className={styles.stickyVisual} aria-label="Illustration accompanying the current explanation"><Visual state={STEPS[active]!.visual}/></aside>}
@@ -76,7 +76,7 @@ export function Methodology({ preview = false }: {preview?: boolean}) {
     </div>
     <FailureSection />
     <CostSection />
-    <footer className={styles.end}><div><span className={styles.eyebrow}>EXPLORE THE ASSUMPTIONS</span><h2>Now, make the model yours</h2></div></footer>
+    <footer className={styles.end}><h2>Now, make the model yours</h2></footer>
     {preview && <p className={styles.previewFoot}>Local design preview · tour and appendix are not included in this prototype.</p>}
   </section>;
 }

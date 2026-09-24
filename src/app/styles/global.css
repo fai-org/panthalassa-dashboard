@@ -1,43 +1,107 @@
+/*
+ * Design tokens. FAI overlay in the Celestial Blue register: the ten permitted
+ * FAI fills, with Celestial Blue carrying the page the way International Orange
+ * carries master-brand work. FAI has no navy, so the sea is built from two of
+ * its fills: Celestial Blue laid over Cod Gray at a fixed share. Every grey is
+ * Cod Gray over Smoke White; every blue is Celestial Blue over Cod Gray or
+ * Smoke White. Nothing here is a new hex.
+ *
+ * Type is IBM Plex: Serif for the reading voice (headings and prose), Sans for
+ * utility labels, Mono for numerals. Schmalfette Grotesk sets the one display
+ * headline. Geometry is rectilinear: 2px radius, no shadows, no blur.
+ */
+@font-face {
+  font-family: "Schmalfette Grotesk";
+  src: url("/fonts/SchmalfetteGrotesk.woff2") format("woff2"); /* licensed; lives in public/fonts, not in git */
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
-  --bg: #f3f5f7;
-  --surface: #ffffff;
-  --surface-alt: #f8f9fb;
-  --border: #e0e4e9;
-  --border-strong: #c9ced6;
+  /* FAI master fills */
+  --fai-international-orange: #ff4f00;
+  --fai-cod-gray: #121212;
+  --fai-smoke-white: #f3f3f3;
+  --fai-timberwolf: #d9d9d6;
 
-  --text-primary: #14181f;
-  --text-secondary: #57626f;
-  --text-tertiary: #8993a1;
+  /* FAI program hues. Celestial Blue carries this page; the others only mark the terrestrial power sources. */
+  --fai-chrome-yellow: #ffa300;
+  --fai-iris-violet: #7150d6;
+  --fai-deep-teal: #0e8c88;
+  --fai-signal-green: #268b41;
+  --fai-celestial-blue: #4997d0;
+  --fai-frontier-crimson: #c8102e;
 
-  --accent: #205572;
-  --accent-strong: #123549;
-  --accent-soft: #e7f0f4;
-  --accent-soft-border: #bdd6e1;
+  /* The sea: Celestial Blue over Cod Gray. 900 is the page ground below the
+     horizon, 700 is ink and strokes on light surfaces (7:1 on Smoke White),
+     500 is the sky and every ocean-side fill. 100 is a soft ocean tint on light. */
+  --sea-900: color-mix(in srgb, var(--fai-celestial-blue) 24%, var(--fai-cod-gray));
+  --sea-800: color-mix(in srgb, var(--fai-celestial-blue) 34%, var(--fai-cod-gray));
+  --sea-700: color-mix(in srgb, var(--fai-celestial-blue) 50%, var(--fai-cod-gray));
+  --sea-500: var(--fai-celestial-blue);
+  --sea-100: color-mix(in srgb, var(--fai-celestial-blue) 16%, var(--fai-smoke-white));
 
-  /* Cost-category colors: reused consistently across breakdown bar, legend, and methodology. */
-  --cat-physical: #4a7188;
-  --cat-compute: #1c4a5e;
-  --cat-planned: #8993a1;
-  --cat-failure: #a8623f;
-  --cat-workload: #5a8a6b;
-  /* Terrestrial-comparator-only categories: power_system reuses the ocean
-     physical-platform hue; compute/workload intentionally reuse the ocean
-     tokens above since both architectures share those cost concepts. */
-  --cat-power: var(--cat-physical);
-  --cat-facility: #8a5f7a;
+  /* Type and rules on the sea: Smoke White by opacity. 2 is 7:1, 3 is 4.8:1 on --sea-900. */
+  --on-sea: var(--fai-smoke-white);
+  --on-sea-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--sea-900));
+  --on-sea-3: color-mix(in srgb, var(--fai-smoke-white) 60%, var(--sea-900));
+  --sea-rule: color-mix(in srgb, var(--fai-smoke-white) 16%, var(--sea-900));
 
-  /* Terrestrial "Power source" selector button colors, per explicit request. */
-  --power-ccgt: #c17a3a;
-  --power-solar: #8fbb8a;
-  --power-wind-onshore: #b7bcc2;
-  --power-wind-offshore: #838a92;
-  --power-geothermal: #c98787;
+  /* Light surfaces (the dashboard). Smoke White is the working white; the ground is a Cod Gray tint of it. */
+  --bg: color-mix(in srgb, var(--fai-cod-gray) 6%, var(--fai-smoke-white));
+  --surface: var(--fai-smoke-white);
+  --surface-alt: color-mix(in srgb, var(--fai-cod-gray) 4%, var(--fai-smoke-white));
+  --border: var(--fai-timberwolf);
+  --border-strong: color-mix(in srgb, var(--fai-cod-gray) 48%, var(--fai-smoke-white));
 
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Ink hierarchy by tint, all >= 4.5:1 on --surface and --bg. */
+  --text-primary: var(--fai-cod-gray);
+  --text-secondary: color-mix(in srgb, var(--fai-cod-gray) 76%, var(--fai-smoke-white));
+  --text-tertiary: color-mix(in srgb, var(--fai-cod-gray) 64%, var(--fai-smoke-white));
+
+  /* The interactive colour on light surfaces: slider thumbs, links, the open group. */
+  --accent: var(--sea-700);
+  --accent-ink: var(--sea-700);
+  --accent-strong: var(--fai-cod-gray);
+  --accent-soft: var(--sea-100);
+  --accent-soft-border: color-mix(in srgb, var(--fai-celestial-blue) 40%, var(--fai-smoke-white));
+
+  /* The side key. Panthalassa is the ocean (Celestial Blue), Terrestrial is land (Cod Gray).
+     The fill carries the side in bars and marks; the ink is for text keyed to a side. */
+  --side-ocean: var(--sea-500);
+  --side-ocean-ink: var(--sea-700);
+  --side-ocean-soft: var(--sea-100);
+  --side-land: color-mix(in srgb, var(--fai-cod-gray) 64%, var(--fai-smoke-white));
+  --side-land-ink: var(--fai-cod-gray);
+  --side-land-soft: color-mix(in srgb, var(--fai-cod-gray) 10%, var(--fai-smoke-white));
+
+  /* International Orange marks the finding (what the dearer build costs beyond the cheaper one),
+     the one call to action, and focus. Never body-size text on light (2.97:1 on Smoke White). */
+  --finding: var(--fai-international-orange);
+  --focus: var(--fai-international-orange);
+
+  /* Status colours for baseline deltas. */
+  --positive: var(--sea-700);
+  --negative: var(--fai-cod-gray);
+
+  /* Terrestrial "Power source" button dots, one per source (distinct by request). FAI hues for the
+     land sources; Celestial Blue stays out because it means the ocean here. */
+  --power-ccgt: var(--side-land);
+  --power-solar: var(--fai-chrome-yellow);
+  --power-wind-onshore: var(--fai-signal-green);
+  --power-wind-offshore: var(--fai-deep-teal);
+  --power-geothermal: var(--fai-frontier-crimson);
+
+  /* Display face: FAI's Schmalfette Grotesk, self-hosted above. ALL CAPS, positive tracking, never below 28px, never running text. */
+  --font-display: "Schmalfette Grotesk", "Arial Narrow", "IBM Plex Sans Condensed", sans-serif;
+  --font-body: "IBM Plex Serif", Georgia, serif;
+  --font-utility: "IBM Plex Sans", system-ui, sans-serif;
+  --font-sans: var(--font-utility);
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  --radius: 6px;
-  --shadow-card: 0 1px 2px rgba(20, 24, 31, 0.04), 0 1px 1px rgba(20, 24, 31, 0.03);
+  --radius: 2px;
+  --shadow-card: none;
 
   color-scheme: light;
 }
@@ -53,9 +117,9 @@ body {
 }
 
 body {
-  background: var(--bg);
+  background: var(--sea-900);
   color: var(--text-primary);
-  font-family: var(--font-sans);
+  font-family: var(--font-utility);
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -76,6 +140,7 @@ h2,
 h3,
 h4 {
   margin: 0;
+  font-family: var(--font-body);
   font-weight: 600;
   letter-spacing: -0.01em;
 }
@@ -97,7 +162,6 @@ button {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
 }
 
 .section-label {
@@ -125,11 +189,33 @@ button {
 }
 .scroll-thin::-webkit-scrollbar-thumb {
   background: var(--border-strong);
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 a {
-  color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Side key squares: the same two fills mark a side wherever it is named. */
+.side-mark {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  vertical-align: 1px;
+}
+
+.side-mark-ocean {
+  background: var(--side-ocean);
+}
+
+.side-mark-land {
+  background: var(--side-land-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .visually-hidden {

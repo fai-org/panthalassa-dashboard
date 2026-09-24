@@ -1,3 +1,4 @@
+import { useId, useState } from "react";
 import { SLIDER_GROUPS } from "../lib/sliderConfig.js";
 import type { ModelInputs } from "../../model/index.js";
 import { SliderControl } from "./SliderControl.js";
@@ -10,22 +11,27 @@ interface Props {
   collapsible?: boolean;
 }
 
+/** The one group open on load. The node itself is what Panthalassa is proposing; everything else is context. */
+const OPEN_GROUP = "Node physical design";
+
 export function SliderPanel({ inputs, setInput, resetAll, collapsible = false }: Props) {
   const [expanded, setExpanded] = useState(false);
   const controlsId = useId();
   return (
     <div className={styles.panel} data-collapsed={collapsible && !expanded}>
-      <div className={styles.header}>
-        {collapsible ? <button type="button" className={styles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
-          Panthalassa Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
-        </button> : <span className={styles.headerTitle}>Panthalassa Inputs</span>}
+      <div className={`${styles.header} ${styles.headerOcean}`}>
+        <h3 className={styles.headerTitle}>
+          {collapsible ? <button type="button" className={styles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
+            Panthalassa Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
+          </button> : "Panthalassa Inputs"}
+        </h3>
         <button type="button" className={styles.resetBtn} onClick={resetAll}>
           Reset to defaults
         </button>
       </div>
       <div id={controlsId} hidden={collapsible && !expanded} className={`${styles.scrollArea} scroll-thin`}>
         {SLIDER_GROUPS.map((group) => (
-          <details key={group.title} className={styles.group} open>
+          <details key={group.title} className={styles.group} open={group.title === OPEN_GROUP}>
             <summary className={styles.groupSummary}>
               <span className={styles.groupTitle}>{group.title}</span>
               <svg
@@ -61,4 +67,3 @@ export function SliderPanel({ inputs, setInput, resetAll, collapsible = false }:
     </div>
   );
 }
-import { useId, useState } from "react";

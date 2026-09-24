@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { nodeVertices } from './nodeGeometry.js';
 import styles from './Methodology.module.css';
+import { SEA_800, smoke } from './palette.js';
 
 const vertices = nodeVertices();
 /** Approved fleet scene: one zoom, with continuing ripples and manual replay. */
@@ -31,8 +32,7 @@ export function FleetScene() {
     const side=Math.min(1100,Math.max(500,(canvas.clientWidth||440)*(typeof devicePixelRatio==='number'?devicePixelRatio:1)));
     if(canvas.width!==side)canvas.width=canvas.height=side;
     ctx.setTransform(side/500,0,0,side/500,0,0);
-    const grad=ctx.createLinearGradient(0,0,500,500);grad.addColorStop(0,'#28536e');grad.addColorStop(.48,'#15394f');grad.addColorStop(1,'#0b2135');
-    ctx.fillStyle=grad;ctx.fillRect(0,0,500,500);
+    ctx.fillStyle=SEA_800;ctx.fillRect(0,0,500,500);
     const span=44*Math.pow(780/44,progress),scale=500/span;
     // The scene is fixed in world space: only the camera magnification changes.
     const cy=229+progress*21;
@@ -48,8 +48,8 @@ export function FleetScene() {
         const point=project(x,y+ripple,62+.75*Math.sin(x*.095-phase+y*.08));
         if(j===0)ctx.moveTo(...point);else ctx.lineTo(...point);
       }
-      ctx.strokeStyle='rgba(108,177,199,.09)';ctx.lineWidth=5/scale;ctx.stroke();
-      ctx.strokeStyle='rgba(158,214,229,.29)';ctx.lineWidth=.9/scale;ctx.stroke();
+      ctx.strokeStyle=smoke(.05);ctx.lineWidth=5/scale;ctx.stroke();
+      ctx.strokeStyle=smoke(.22);ctx.lineWidth=.9/scale;ctx.stroke();
     }
     for(const n of nodes){
       const [x,y]=project(n.x,n.y);
@@ -57,14 +57,13 @@ export function FleetScene() {
       const bob=Math.sin(phase+n.phase)*.75;
       ctx.save();ctx.translate(x,y-bob);
       // Submerged geometry remains faint; the float catches the light.
-      ctx.strokeStyle='rgba(139,187,205,.20)';ctx.lineWidth=.65/scale;ctx.stroke(below);
-      ctx.fillStyle='rgba(194,225,224,.075)';ctx.beginPath();ctx.ellipse(0,-.6,5.5,5.5*.966,0,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle=n.center?'rgba(222,243,236,.88)':'rgba(196,226,231,.79)';ctx.lineWidth=.72/scale;ctx.stroke(above);
+      ctx.strokeStyle=smoke(.18);ctx.lineWidth=.65/scale;ctx.stroke(below);
+      ctx.fillStyle=smoke(.06);ctx.beginPath();ctx.ellipse(0,-.6,5.5,5.5*.966,0,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=n.center?smoke(.9):smoke(.72);ctx.lineWidth=.72/scale;ctx.stroke(above);
       ctx.restore();
     }
     ctx.restore();
-    const vignette=ctx.createRadialGradient(220,185,80,250,250,290);vignette.addColorStop(0,'rgba(5,20,34,0)');vignette.addColorStop(1,'rgba(5,20,34,.43)');ctx.fillStyle=vignette;ctx.fillRect(0,0,500,500);
-    label.textContent=progress<.42?'ONE NODE':'A FLEET OF NODES';
+    label.textContent=progress<.42?'One node':'A fleet of nodes';
   }
   const mq=matchMedia('(prefers-reduced-motion: reduce)');
   let frame=0,elapsed=0,last=0,visible=false;
@@ -99,7 +98,7 @@ export function FleetScene() {
   return <figure ref={ref} className={styles.fleetFigure}>
     <div className={styles.fleetCircle}>
       <canvas width="900" height="900" role="img" aria-label="Bird’s-eye view of the existing node geometry. The camera pulls back from one node to reveal widely spaced nodes across open water. The layout is illustrative, not a modeled deployment arrangement." />
-      <span className={styles.fleetSceneLabel}>ONE NODE</span>
+      <span className={styles.fleetSceneLabel}>One node</span>
     </div>
     <figcaption>Illustrative spacing · not a deployment layout</figcaption>
     <button type="button" className={styles.fleetReplay}>Replay zoom</button>

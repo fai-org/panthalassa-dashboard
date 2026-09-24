@@ -4,61 +4,74 @@
   height: 100%;
 }
 
+/* The reset button drops under the title when the column is too narrow to hold both. */
 .header {
-  padding: 16px 18px 12px;
+  padding: 16px 16px 12px;
   border-bottom: 1px solid var(--border);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 8px 16px;
   flex-shrink: 0;
 }
 
+/* A 4px rule in the side's colour keys the column to its side from the top: Celestial Blue
+   for the ocean, Cod Gray for land. The same fills mark the side in every table and bar. */
+.headerOcean {
+  border-top: 4px solid var(--side-ocean);
+}
+
+.headerLand {
+  border-top: 4px solid var(--side-land-ink);
+}
+
 .headerTitle {
-  font-size: 13px;
+  flex: 1 0 auto;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 16px;
   font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .panelToggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
+  gap: 12px;
+  width: 100%;
   padding: 8px 0;
   border: 0;
   background: none;
-  color: var(--text-primary);
+  color: inherit;
   font: inherit;
-  font-size: 13px;
-  font-weight: 600;
   text-align: left;
   cursor: pointer;
 }
 
-.panelToggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.resetBtn { flex-shrink: 0; }
-
 .resetBtn {
-  font-size: 11px;
+  flex-shrink: 0;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-soft-border);
-  border-radius: 4px;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 2px;
   padding: 4px 8px;
   cursor: pointer;
 }
 
 .resetBtn:hover {
-  background: var(--accent-soft-border);
+  background: var(--fai-cod-gray);
+  color: var(--fai-smoke-white);
+  border-color: var(--fai-cod-gray);
 }
 
 .scrollArea {
   overflow-y: auto;
-  padding: 4px 18px 18px;
+  padding: 4px 16px 16px;
   flex: 1;
   min-height: 0;
 }
@@ -74,7 +87,7 @@
 .groupSummary {
   list-style: none;
   cursor: pointer;
-  padding: 14px 0 10px;
+  padding: 16px 0 12px;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -86,17 +99,16 @@
 }
 
 .groupTitle {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .chevron {
-  color: var(--text-tertiary);
-  font-size: 10px;
-  transition: transform 0.15s ease;
+  color: var(--text-secondary);
   flex-shrink: 0;
-  margin-top: 3px;
+  margin-top: 2px;
+  transition: transform 0.15s ease;
 }
 
 .group[open] > .groupSummary .chevron {
@@ -104,7 +116,7 @@
 }
 
 .groupBody {
-  padding-bottom: 6px;
+  padding-bottom: 8px;
 }
 
 .groupBody > * + * {

@@ -26,10 +26,12 @@ export function TerrestrialControls({ inputs, onChange, onSelectPowerSource, onR
 
   return (
     <div className={panelStyles.panel} data-collapsed={collapsible && !expanded}>
-      <div className={panelStyles.header}>
-        {collapsible ? <button type="button" className={panelStyles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
-          Land-based Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
-        </button> : <span className={panelStyles.headerTitle}>Land-based Inputs</span>}
+      <div className={`${panelStyles.header} ${panelStyles.headerLand}`}>
+        <h3 className={panelStyles.headerTitle}>
+          {collapsible ? <button type="button" className={panelStyles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
+            Land-based Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
+          </button> : "Land-based Inputs"}
+        </h3>
         <button type="button" className={panelStyles.resetBtn} onClick={onReset}>
           Reset to defaults
         </button>
@@ -53,8 +55,9 @@ export function TerrestrialControls({ inputs, onChange, onSelectPowerSource, onR
           </div>
         </div>
 
+        {/* Only the chosen power source's own sliders start open; the rest is context. */}
         {groups.map((group) => (
-          <details key={group.title} className={panelStyles.group} open>
+          <details key={group.title} className={panelStyles.group} open={group === activeGroup}>
             <summary className={panelStyles.groupSummary}>
               <span className={panelStyles.groupTitle}>{group.title}</span>
               <svg

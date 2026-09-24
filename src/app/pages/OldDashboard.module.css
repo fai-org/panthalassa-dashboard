@@ -17,22 +17,11 @@
 
 .title {
   margin: 0;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.homeLink {
-  font-family: var(--font-utility);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent-ink);
-  margin-left: auto;
-}
-
-.homeLink:hover {
-  text-decoration: underline;
-}
 
 .layout {
   flex: 1;
@@ -69,41 +58,42 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   min-width: 0;
 }
 
-.compareRow {
+/* Below the shared comparison, one column per architecture. */
+.sides {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 20px;
+  gap: 24px;
   align-items: start;
 }
 
-.costComparison {
+.side {
   display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  padding: 14px 20px;
-  border: 1px solid #bdd3cc;
-  border-radius: var(--radius);
-  background: #e8f1ed;
-  color: #244b40;
-  font-size: 15px;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
 
-.costComparison strong {
-  font-size: 27px;
+/* The column head: the side's name over a 4px rule in its colour, the same key as the input panels. */
+.sideHead {
+  margin: 0;
+  padding: 8px 0 12px;
+  font-family: var(--font-body);
+  font-size: 20px;
   font-weight: 600;
-  line-height: 1.2;
+  color: var(--text-primary);
+  border-bottom: 4px solid;
 }
 
-.costPremium {
-  background: #f5eeea;
-  border-color: #dfc9bc;
-  color: #74442e;
+.sideOcean {
+  border-bottom-color: var(--side-ocean);
+}
+
+.sideLand {
+  border-bottom-color: var(--side-land-ink);
 }
 
 /* Reflow both controls together; neither remains sticky across grid rows. */
@@ -122,11 +112,11 @@
   }
 
   .main {
-    padding: 18px 16px;
+    padding: 16px;
   }
 
   .topbar {
-    padding: 14px 16px;
+    padding: 16px;
   }
 
 }
@@ -141,5 +131,5 @@
 }
 
 @container results (max-width: 640px) {
-  .compareRow { grid-template-columns: minmax(0, 1fr); }
+  .sides { grid-template-columns: minmax(0, 1fr); }
 }

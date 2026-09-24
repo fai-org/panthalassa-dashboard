@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useModel } from "../hooks/useModel.js";
 import { SliderPanel } from "../components/SliderPanel.js";
 import { SharedInputsPanel } from "../components/SharedInputsPanel.js";
-import { TotalOutputBand } from "../components/TotalOutputBand.js";
+import { ComparisonVerdict } from "../components/ComparisonVerdict.js";
 import { ResultsHeader } from "../components/ResultsHeader.js";
 import { CostBreakdown } from "../components/CostBreakdown.js";
 import { BaselineComparison } from "../components/BaselineComparison.js";
@@ -14,7 +14,6 @@ import {
   TerrestrialBaselineComparison,
   TerrestrialControls,
   TerrestrialDiagnostics,
-  TerrestrialOutputBand,
   TerrestrialResults,
   buildTerrestrialInputs,
   runTerrestrialModel,
@@ -57,10 +56,6 @@ export function OldDashboard() {
     [inputs, terrestrialInputs],
   );
 
-  const costDifferencePercent =
-    100 * (1 - result.costs.total_node_fleet_cost_usd / terrestrialResult.costs.total_lifecycle_cost_usd);
-  const roundedDifference = Math.abs(costDifferencePercent).toFixed(1);
-
   return (
     <div className={styles.shell} ref={shellRef}>
       <header className={styles.topbar}>
@@ -85,33 +80,31 @@ export function OldDashboard() {
         <main className={styles.main}>
           <SharedInputsPanel inputs={inputs} setInput={setInput} />
 
-          <div className={styles.compareRow}>
-            <TotalOutputBand result={result} />
-            <TerrestrialOutputBand result={terrestrialResult} />
-          </div>
-
-          <div
-            className={`${styles.costComparison} ${costDifferencePercent < 0 ? styles.costPremium : ""}`}
-            aria-live="polite"
-          >
-            {roundedDifference === "0.0" ? "Same cost as terrestrial" : <>
-              <strong className="num">{roundedDifference}%</strong>
-              <span>{costDifferencePercent > 0 ? "less" : "more"} than terrestrial</span>
-            </>}
-          </div>
+          <ComparisonVerdict oceanResult={result} terrestrialResult={terrestrialResult} />
 
           <ArchitectureComparison oceanResult={result} terrestrialResult={terrestrialResult} />
           <CostPerWattBreakdown oceanResult={result} terrestrialResult={terrestrialResult} />
 
-          <div className={styles.compareRow}>
-            <CostBreakdown result={result} />
-            <TerrestrialResults result={terrestrialResult} />
-
-            <BaselineComparison result={result} />
-            <TerrestrialBaselineComparison result={terrestrialResult} />
-
-            <ResultsHeader result={result} isPending={isPending} />
-            <TerrestrialDiagnostics result={terrestrialResult} />
+          {/* Below the shared comparison, each architecture gets its own column under a
+              side-keyed head: Celestial Blue for the ocean fleet, Cod Gray for the terrestrial
+              plant. Everything in a column belongs to that side. */}
+          <div className={styles.sides}>
+            <section className={styles.side} aria-labelledby="ocean-side">
+              <h3 id="ocean-side" className={`${styles.sideHead} ${styles.sideOcean}`}>
+                Panthalassa
+              </h3>
+              <CostBreakdown result={result} />
+              <BaselineComparison result={result} />
+              <ResultsHeader result={result} isPending={isPending} />
+            </section>
+            <section className={styles.side} aria-labelledby="land-side">
+              <h3 id="land-side" className={`${styles.sideHead} ${styles.sideLand}`}>
+                Terrestrial
+              </h3>
+              <TerrestrialResults result={terrestrialResult} />
+              <TerrestrialBaselineComparison result={terrestrialResult} />
+              <TerrestrialDiagnostics result={terrestrialResult} />
+            </section>
           </div>
         </main>
 
