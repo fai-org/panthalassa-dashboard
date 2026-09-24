@@ -76,7 +76,6 @@ export function Methodology({ preview = false }: {preview?: boolean}) {
     </div>
     <FailureSection />
     <CostSection />
-    <footer className={styles.end}><h2>Now, make the model yours</h2></footer>
     {preview && <p className={styles.previewFoot}>Local design preview · tour and appendix are not included in this prototype.</p>}
   </section>;
 }

@@ -1,16 +1,17 @@
 /*
- * The methodology story, on the deep sea (--sea-900). IBM Plex Serif carries
- * headings and prose, Plex Sans the captions and labels. Asides are marked by a
- * Celestial Blue rule, not a box. Illustrations sit in flat --sea-800 discs.
+ * The methodology story, on Smoke White. IBM Plex Serif carries headings and
+ * prose, Plex Sans the captions and labels. Asides are marked by a Celestial
+ * Blue rule, not a box. The illustrations are flat discs: Cod Gray for the node
+ * scenes (the poster's sea), Celestial Blue for the globe.
  */
 .methodology {
-  --m-ink: var(--on-sea);
-  --m-muted: var(--on-sea-2);
-  --m-faint: var(--on-sea-3);
-  --m-line: var(--sea-rule);
-  --m-accent: var(--sea-500);
+  --m-ink: var(--text-primary);
+  --m-muted: var(--text-secondary);
+  --m-faint: var(--text-tertiary);
+  --m-line: var(--border);
+  --m-accent: var(--fai-celestial-blue);
   color: var(--m-ink);
-  background: var(--sea-900);
+  background: var(--fai-smoke-white);
   font-family: var(--font-body);
   padding: 0 max(32px, calc((100% - 1120px) / 2));
   overflow: clip;
@@ -41,7 +42,7 @@
 .methodology .note p { font-size: 15px; line-height: 1.7; }
 
 .visual { width: 100%; min-width: 0; }
-.circle { width: 100%; max-width: 488px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; position: relative; background: var(--sea-800); }
+.circle { width: 100%; max-width: 488px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; position: relative; background: var(--fai-cod-gray); }
 .circle svg { display: block; width: 100%; height: 100%; font-family: var(--font-utility); }
 .visualTransition { animation: visual-in 0.6s ease both; }
 .visualCaption { margin: 24px auto 0; display: flex; flex-direction: column; gap: 4px; text-align: center; font-family: var(--font-utility); }
@@ -50,15 +51,15 @@
 .wideVisual { margin: 0 -16px; width: calc(100% + 32px); }
 
 /* Power chart. Series colours follow FAI chart order: the ocean's power in Celestial Blue,
-   what the battery adds in International Orange, context in Timberwolf. */
+   what the battery adds in International Orange, context in grey. */
 .chartHeading { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; border-bottom: 1px solid var(--m-line); padding-bottom: 16px; font: 600 13px/1.4 var(--font-utility); color: var(--m-ink); }
 .chartHeading span:last-child { font-weight: 400; color: var(--m-faint); }
 .chart svg { display: block; overflow: visible; font-family: var(--font-utility); }
 .legend { display: flex; flex-direction: column; gap: 8px; font: 12px/1.4 var(--font-utility); color: var(--m-muted); }
 .legend span { display: flex; align-items: center; gap: 12px; }
 .legend i { display: inline-block; width: 24px; height: 2px; flex-shrink: 0; }
-.resourceKey { background: var(--fai-timberwolf); opacity: 0.6; }
-.computeKey { background: var(--sea-500); height: 3px !important; }
+.resourceKey { background: var(--text-tertiary); opacity: 0.6; }
+.computeKey { background: var(--fai-celestial-blue); height: 3px !important; }
 .batteryKey { background: var(--fai-international-orange); }
 .methodology .chartCaption { font: 12px/1.6 var(--font-utility); color: var(--m-faint); margin-top: 16px; }
 .chartFoot { font: 12px/1.6 var(--font-utility); color: var(--m-muted); padding-top: 16px; }
@@ -67,8 +68,7 @@
 .failureSection { padding: 48px 0; border-top: 1px solid var(--m-line); }
 .failureSection .failureIntro { max-width: 880px; }
 .failureIntro h2,
-.costSection h2,
-.end h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 24px; }
+.costSection h2 { font-size: clamp(28px, 3vw, 40px); line-height: 1.2; letter-spacing: -0.015em; margin-bottom: 24px; }
 .failureIntro p + p { margin-top: 16px; }
 .failureSection .failureIntro p { font-size: 17px; line-height: 1.7; }
 .failureTable { width: 100%; border-collapse: collapse; margin-top: 32px; text-align: left; }
@@ -79,7 +79,7 @@
 .failureTable tbody th { color: var(--m-ink); font-weight: 600; padding-left: 16px; }
 .failureTable tbody td { color: var(--m-muted); padding-right: 16px; }
 /* The four whole-node outcomes share one band; chip degradation above them stands apart. */
-.failureTable .nodeFailureRow { background: var(--sea-800); }
+.failureTable .nodeFailureRow { background: var(--bg); }
 .failureCalculation { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; padding: 16px 0; font-size: 16px; line-height: 1.6; color: var(--m-muted); }
 .failureCalculation strong { font-weight: 600; color: var(--m-ink); }
 .failureAssumptions { border-left: 2px solid var(--m-accent); padding: 4px 0 4px 24px; }
@@ -95,9 +95,9 @@
 .fleetCopy .costIntro p + p { margin-top: 16px; }
 .fleetCopy p { font-size: 17px; line-height: 1.7; }
 .fleetFigure { min-width: 0; margin: 0; }
-.fleetCircle { position: relative; aspect-ratio: 1; width: 100%; max-width: 440px; margin: auto; border-radius: 50%; overflow: hidden; background: var(--sea-800); }
+.fleetCircle { position: relative; aspect-ratio: 1; width: 100%; max-width: 440px; margin: auto; border-radius: 50%; overflow: hidden; background: var(--fai-cod-gray); }
 .fleetCircle canvas { display: block; width: 100%; height: 100%; }
-.fleetSceneLabel { position: absolute; top: 12%; left: 0; right: 0; text-align: center; font: 600 13px var(--font-utility); color: var(--m-ink); pointer-events: none; }
+.fleetSceneLabel { position: absolute; top: 12%; left: 0; right: 0; text-align: center; font: 600 13px var(--font-utility); color: var(--fai-smoke-white); pointer-events: none; }
 .fleetFigure figcaption { margin: 16px auto 0; text-align: center; color: var(--m-faint); font: 12px/1.6 var(--font-utility); }
 .fleetReplay { display: block; margin: 8px auto 0; padding: 4px 8px; background: none; border: 0; color: var(--m-ink); font: 500 13px/1.5 var(--font-utility); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .fleetReplay[hidden] { display: none; }
@@ -120,11 +120,6 @@
 .cardGrid p { font-size: 15px; line-height: 1.7; }
 .methodology .sharedNote { font-size: 13px; margin-top: 32px; color: var(--m-faint); max-width: 810px; }
 
-/* Hand-off to the model */
-.end { padding: 64px 0; border-top: 1px solid var(--m-line); display: flex; justify-content: space-between; align-items: center; gap: 32px; }
-.end h2 { margin: 0; }
-.end a { padding: 12px 16px; text-decoration: none; border: 1px solid var(--on-sea-2); border-radius: 2px; font: 500 14px var(--font-utility); white-space: nowrap; }
-.end a:hover { background: var(--on-sea); color: var(--sea-900); }
 .methodology .previewFoot { font-size: 12px; color: var(--m-faint); padding-bottom: 24px; }
 
 .inlineStory { display: block; }
@@ -154,7 +149,6 @@
   .costIntro { grid-template-columns: 1fr; gap: 24px; }
   .costGrid { gap: 0; }
   .costGrid article { padding: 24px 0 !important; border-right: 0 !important; }
-  .end { flex-direction: column; align-items: flex-start; }
   .note { padding-left: 16px; }
   .failureIntro h2,
   .costSection h2 { font-size: 30px; }

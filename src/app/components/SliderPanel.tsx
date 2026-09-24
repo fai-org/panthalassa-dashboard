@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { SLIDER_GROUPS } from "../lib/sliderConfig.js";
 import type { ModelInputs } from "../../model/index.js";
 import { SliderControl } from "./SliderControl.js";
+import { SideMark } from "./SideMark.js";
 import styles from "./SliderPanel.module.css";
 
 interface Props {
@@ -19,8 +20,9 @@ export function SliderPanel({ inputs, setInput, resetAll, collapsible = false }:
   const controlsId = useId();
   return (
     <div className={styles.panel} data-collapsed={collapsible && !expanded}>
-      <div className={`${styles.header} ${styles.headerOcean}`}>
+      <div className={styles.header}>
         <h3 className={styles.headerTitle}>
+          <SideMark side="ocean" />
           {collapsible ? <button type="button" className={styles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
             Panthalassa Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
           </button> : "Panthalassa Inputs"}

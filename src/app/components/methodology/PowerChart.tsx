@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { SEA, seaBatteryProfile, travelBatteryPower } from './chartData.js';
-import { FAINT, MUTED, ORANGE, SKY, SMOKE, TIMBERWOLF } from './palette.js';
+import { INK, INK_2, INK_3, ORANGE, SKY } from './palette.js';
 import type { VisualState } from './storyData.js';
 import styles from './Methodology.module.css';
 
@@ -67,24 +67,24 @@ export function PowerChart({ state, active = true, still = false }: {state: Visu
   return <div ref={ref} className={styles.chart}>
     <div className={styles.chartHeading}><span>One operating cycle</span></div>
     <svg width="100%" viewBox={`0 0 ${width} 396`} role="img" aria-label={battery ? 'Battery support fills a 60 kilowatt-hour lull and partly fills a 360 kilowatt-hour lull. The shaded area represents energy supplied to computing.' : capped ? 'The 200 kilowatt computing limit is reached before outbound tugging ends, below the 300 kilowatt generator limit.' : 'Illustrative wave-derived power rises during travel, fluctuates at the sea park, and falls to zero in port.'}>
-      <text x={left} y="32" fill={FAINT} fontSize="11">Power (kW)</text>
-      {[0,200,400,600].map(v=><g key={v}><line x1={left} x2={right} y1={y(v)} y2={y(v)} stroke={SMOKE} strokeOpacity=".14"/><text x={left-8} y={y(v)+4} textAnchor="end" fill={FAINT} fontSize="11">{v}</text></g>)}
-      {stages.map((s,i)=><g key={i}><line x1={x(s.a)} x2={x(s.a)} y1={top} y2={bottom} stroke={SMOKE} strokeOpacity=".1"/><text x={x((s.a+s.b)/2)} y="345" textAnchor="middle" fill={MUTED} fontSize="11"><tspan x={x((s.a+s.b)/2)}>{s.lines[0]}</tspan><tspan x={x((s.a+s.b)/2)} dy="14">{s.lines[1]}</tspan></text></g>)}
+      <text x={left} y="32" fill={INK_3} fontSize="11">Power (kW)</text>
+      {[0,200,400,600].map(v=><g key={v}><line x1={left} x2={right} y1={y(v)} y2={y(v)} stroke={INK} strokeOpacity=".14"/><text x={left-8} y={y(v)+4} textAnchor="end" fill={INK_3} fontSize="11">{v}</text></g>)}
+      {stages.map((s,i)=><g key={i}><line x1={x(s.a)} x2={x(s.a)} y1={top} y2={bottom} stroke={INK} strokeOpacity=".1"/><text x={x((s.a+s.b)/2)} y="345" textAnchor="middle" fill={INK_2} fontSize="11"><tspan x={x((s.a+s.b)/2)}>{s.lines[0]}</tspan><tspan x={x((s.a+s.b)/2)} dy="14">{s.lines[1]}</tspan></text></g>)}
       {battery && <path d={fill(supported)} fill={SKY} fillOpacity=".16"/>}
-      <path d={line(resource)} fill="none" stroke={TIMBERWOLF} strokeWidth="1.7" opacity={capped ? .4 : .85} strokeLinejoin="round"/>
+      <path d={line(resource)} fill="none" stroke={INK_3} strokeWidth="1.7" opacity={capped ? .45 : .9} strokeLinejoin="round"/>
       {capped && <>
-        <line x1={left} x2={right} y1={y(300)} y2={y(300)} stroke={TIMBERWOLF} strokeDasharray="2 6" opacity=".5"/>
-        <text x={right} y={y(300)-8} textAnchor="end" fill={FAINT} fontSize="11">300 kW · generating limit</text>
-        <line x1={left} x2={right} y1={y(200)} y2={y(200)} stroke={SMOKE} strokeOpacity=".7" strokeDasharray="3 5"/>
+        <line x1={left} x2={right} y1={y(300)} y2={y(300)} stroke={INK_3} strokeDasharray="2 6" opacity=".7"/>
+        <text x={right} y={y(300)-8} textAnchor="end" fill={INK_3} fontSize="11">300 kW · generating limit</text>
+        <line x1={left} x2={right} y1={y(200)} y2={y(200)} stroke={INK} strokeOpacity=".6" strokeDasharray="3 5"/>
         <path d={line(compute)} fill="none" stroke={SKY} strokeWidth="3" strokeLinejoin="round"/>
-        <text x={right} y={y(200)-9} textAnchor="end" fill={SMOKE} fontSize="11">200 kW · computing capacity</text>
+        <text x={right} y={y(200)-9} textAnchor="end" fill={INK} fontSize="11">200 kW · computing capacity</text>
       </>}
-      {state==='capacity' && <g><circle cx={x(.11*200/215)} cy={y(200)} r="4" fill={SMOKE}/><path d={`M${x(.11*200/215)},${y(200)-9} L${x(.11*200/215)},${y(420)} L${x(.15)},${y(450)}`} fill="none" stroke={SMOKE} strokeOpacity=".5" strokeWidth=".8"/><text x={x(.16)} y={y(450)+3} fill={SMOKE} fontSize="11">Full computing power</text><text x={x(.16)} y={y(450)+18} fill={MUTED} fontSize="11">before the tug handoff</text></g>}
+      {state==='capacity' && <g><circle cx={x(.11*200/215)} cy={y(200)} r="4" fill={INK}/><path d={`M${x(.11*200/215)},${y(200)-9} L${x(.11*200/215)},${y(420)} L${x(.15)},${y(450)}`} fill="none" stroke={INK} strokeOpacity=".5" strokeWidth=".8"/><text x={x(.16)} y={y(450)+3} fill={INK} fontSize="11">Full computing power</text><text x={x(.16)} y={y(450)+18} fill={INK_2} fontSize="11">before the tug handoff</text></g>}
       {battery && <>
         <path d={`${line(supported)} ${line([...compute].reverse()).replace('M','L')} Z`} fill={ORANGE} opacity=".3"/>
         <path d={line(supported)} fill="none" stroke={ORANGE} strokeWidth="2"/>
       </>}
-      <text x={(left+right)/2} y="386" fill={FAINT} fontSize="11" textAnchor="middle">Operating cycle</text>
+      <text x={(left+right)/2} y="386" fill={INK_3} fontSize="11" textAnchor="middle">Operating cycle</text>
     </svg>
     <div className={styles.legend}>
       <span><i className={styles.resourceKey}/>Wave-derived power before equipment limits</span>

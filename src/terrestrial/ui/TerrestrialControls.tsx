@@ -6,6 +6,7 @@ import {
 } from "../integration/sliderConfig.js";
 import type { TerrestrialArchitectureInputs, TerrestrialPowerSource } from "../model/types.js";
 import { SliderControl } from "../../app/components/SliderControl.js";
+import { SideMark } from "../../app/components/SideMark.js";
 import panelStyles from "../../app/components/SliderPanel.module.css";
 import styles from "./TerrestrialPanel.module.css";
 
@@ -26,8 +27,9 @@ export function TerrestrialControls({ inputs, onChange, onSelectPowerSource, onR
 
   return (
     <div className={panelStyles.panel} data-collapsed={collapsible && !expanded}>
-      <div className={`${panelStyles.header} ${panelStyles.headerLand}`}>
+      <div className={panelStyles.header}>
         <h3 className={panelStyles.headerTitle}>
+          <SideMark side="land" />
           {collapsible ? <button type="button" className={panelStyles.panelToggle} aria-expanded={expanded} aria-controls={controlsId} onClick={() => setExpanded(!expanded)}>
             Land-based Inputs <span aria-hidden>{expanded ? '−' : '+'}</span>
           </button> : "Land-based Inputs"}

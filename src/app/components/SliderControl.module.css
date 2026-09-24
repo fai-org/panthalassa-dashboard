@@ -43,7 +43,7 @@
   bottom: calc(100% + 7px);
   width: max-content;
   max-width: 220px;
-  background: var(--sea-900);
+  background: var(--fai-cod-gray);
   color: var(--fai-smoke-white);
   font-size: 12px;
   font-weight: 400;

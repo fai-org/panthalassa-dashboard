@@ -25,8 +25,15 @@ import styles from "./NodeWaveHero.module.css";
  * scripts/export_node_wire.py (metres, +Z up, float at the top).
  */
 
+type RGBA = [number, number, number, number];
+type RGB = [number, number, number];
+
+/** Scene colours as sRGB 0-1. The page passes the ones that match its CSS tokens. */
+export type HeroPalette = { sea: RGBA; haze: RGB; wire: RGBA; node: RGBA };
+
 type NodeWaveHeroProps = {
   className?: string;
+  palette?: HeroPalette;
 };
 
 /* ------------------------------------------------------------------ */
@@ -73,12 +80,17 @@ const NODE_DEPTH_DIM = 0.55;
 const SEA_FACES = true;
 const FACE_HAZE_RANGE: [number, number] = [500, 8000];  // m behind the node over which faces tint toward the haze colour
 
-// FAI fills as sRGB 0-1. The sea mixes Celestial Blue (#4997D0) into Cod Gray (#121212),
-// the same recipe as the --sea-* tokens in global.css.
-const NODE_COLOR: [number, number, number, number] = [0.953, 0.953, 0.953, 0.86];   // Smoke White
-const WAVE_COLOR: [number, number, number, number] = [0.953, 0.953, 0.953, 0.34];   // Smoke White
-const SEA_FACE_COLOR: [number, number, number, number] = [0.144, 0.248, 0.324, 1.0]; // Celestial Blue 34% over Cod Gray (--sea-800)
-const SEA_HAZE_COLOR: [number, number, number] = [0.214, 0.412, 0.557];             // Celestial Blue 66% over Cod Gray, toward the sky
+/** Wires fade out between these fractions of the canvas height below the horizon. */
+const WIRE_FADE: [number, number] = [0.14, 0.01];
+/** The sea surface turns to the haze colour between these fractions of the canvas height below the horizon. */
+const FACE_HAZE: [number, number] = [0.1, 0];
+
+const DEFAULT_PALETTE: HeroPalette = {
+  sea: [0.071, 0.071, 0.071, 1.0],     // Cod Gray
+  haze: [0.071, 0.071, 0.071],
+  wire: [0.953, 0.953, 0.953, 0.34],   // Smoke White
+  node: [0.953, 0.953, 0.953, 0.86],
+};
 const FAR_PLANE = 400_000;
 
 /* ------------------------------------------------------------------ */
@@ -131,6 +143,9 @@ uniform vec4 u_fade;       // nearEnd, nearStart, farStart, farEnd (metres)
 uniform float u_depthDim;  // how much to dim the far side (0..1)
 uniform vec3 u_hazeColor;  // colour the surface tints toward with distance
 uniform vec2 u_hazeRange;  // metres behind the node where the tint starts / completes
+uniform float u_horizonPx;  // the horizon row, in px from the bottom of the drawing buffer
+uniform vec2 u_wireFade;    // px below the horizon where wires start / finish fading out; 0 disables
+uniform vec2 u_hazeScreen;  // px below the horizon where the surface starts / finishes turning to haze; 0 uses u_hazeRange
 
 out vec4 o_color;
 
@@ -138,8 +153,19 @@ void main() {
   float near = smoothstep(u_fade.x, u_fade.y, v_dist);
   float far = 1.0 - smoothstep(u_fade.z, u_fade.w, v_dist);
   float dim = 1.0 - u_depthDim * smoothstep(-8.0, 8.0, v_dist);
-  vec3 rgb = mix(u_color.rgb, u_hazeColor, smoothstep(u_hazeRange.x, u_hazeRange.y, v_dist));
+  float drop = u_horizonPx - gl_FragCoord.y;
+  // Aerial perspective in screen space: the far sea turns toward the haze colour over the
+  // last stretch before the horizon, the way open water takes on the sky in the distance.
+  float haze = u_hazeScreen.x > 0.0
+    ? 1.0 - smoothstep(u_hazeScreen.y, u_hazeScreen.x, drop)
+    : smoothstep(u_hazeRange.x, u_hazeRange.y, v_dist);
+  vec3 rgb = mix(u_color.rgb, u_hazeColor, haze);
   float a = u_color.a * near * far * dim;
+  // Wires thin out before the horizon instead of packing into a solid band, so the
+  // surface reads as carrying on past what the eye can resolve.
+  if (u_wireFade.x > 0.0) {
+    a *= smoothstep(u_wireFade.y, u_wireFade.x, drop);
+  }
   o_color = vec4(rgb * a, a);   // premultiplied
 }
 `;
@@ -371,7 +397,7 @@ class HeroRenderer {
     this.program = compileProgram(gl, line_vs, line_fs);
     const names = [
       "u_model", "u_view", "u_proj", "u_camDist", "u_isWave", "u_time", "u_steep",
-      "u_color", "u_fade", "u_depthDim", "u_hazeColor", "u_hazeRange",
+      "u_color", "u_fade", "u_depthDim", "u_hazeColor", "u_hazeRange", "u_horizonPx", "u_wireFade", "u_hazeScreen",
     ];
     this.u = Object.fromEntries(names.map((n) => [n, gl.getUniformLocation(this.program, n)]));
 
@@ -404,7 +430,7 @@ class HeroRenderer {
     this.proj = buildProjection(aspect);
   }
 
-  render(t: number, spin: number, animate: boolean, width: number, height: number) {
+  render(t: number, spin: number, animate: boolean, width: number, height: number, palette: HeroPalette) {
     const gl = this.gl;
     gl.viewport(0, 0, width, height);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -417,17 +443,22 @@ class HeroRenderer {
     gl.uniform1i(this.u.u_isWave!, 1);
     gl.uniform1f(this.u.u_depthDim!, 0);
     gl.uniform4f(this.u.u_fade!, -1e9, -1e9 + 1, 1e9 - 1, 1e9);
+    gl.uniform1f(this.u.u_horizonPx!, height * (1 - HORIZON_FRAC));
+    gl.uniform2f(this.u.u_wireFade!, 0, 0);
+    gl.uniform2f(this.u.u_hazeScreen!, height * FACE_HAZE[0], height * FACE_HAZE[1]);
     if (this.faces) {
-      gl.uniform4f(this.u.u_color!, ...SEA_FACE_COLOR);
-      gl.uniform3f(this.u.u_hazeColor!, ...SEA_HAZE_COLOR);
-      gl.uniform2f(this.u.u_hazeRange!, ...FACE_HAZE_RANGE);
+      gl.uniform4f(this.u.u_color!, ...palette.sea);
+      gl.uniform3f(this.u.u_hazeColor!, ...palette.haze);
+      gl.uniform2f(this.u.u_hazeRange!, ...FACE_HAZE_RANGE);  // unused while FACE_HAZE is on
       gl.bindVertexArray(this.faces.vao);
       gl.drawArrays(gl.TRIANGLES, 0, this.faces.count);
     }
 
     // sea wires: rows run to the horizon, columns fade before they bunch at the vanishing point
-    gl.uniform4f(this.u.u_color!, ...WAVE_COLOR);
+    gl.uniform4f(this.u.u_color!, ...palette.wire);
     gl.uniform2f(this.u.u_hazeRange!, 1e9, 2e9);
+    gl.uniform2f(this.u.u_hazeScreen!, 0, 0);
+    gl.uniform2f(this.u.u_wireFade!, height * WIRE_FADE[0], height * WIRE_FADE[1]);
     gl.bindVertexArray(this.sea.vao);
     gl.drawArrays(gl.LINES, 0, this.sea.rowVertices);
     gl.uniform4f(this.u.u_fade!, -1e9, -1e9 + 1, ...COL_FADE);
@@ -438,8 +469,9 @@ class HeroRenderer {
       buildNodeModel(this.nodeModel, t, spin, animate);
       gl.uniformMatrix4fv(this.u.u_model!, false, this.nodeModel);
       gl.uniform1i(this.u.u_isWave!, 0);
-      gl.uniform4f(this.u.u_color!, ...NODE_COLOR);
+      gl.uniform4f(this.u.u_color!, ...palette.node);
       gl.uniform4f(this.u.u_fade!, -1e4, -1e4 + 1, 1e4 - 1, 1e4);
+      gl.uniform2f(this.u.u_wireFade!, 0, 0);
       gl.uniform1f(this.u.u_depthDim!, NODE_DEPTH_DIM);
       gl.bindVertexArray(this.node.vao);
       gl.drawArrays(gl.LINES, 0, this.node.count);
@@ -462,8 +494,10 @@ class HeroRenderer {
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 
-export function NodeWaveHero({ className }: NodeWaveHeroProps) {
+export function NodeWaveHero({ className, palette = DEFAULT_PALETTE }: NodeWaveHeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const paletteRef = useRef(palette);
+  paletteRef.current = palette;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -527,7 +561,7 @@ export function NodeWaveHero({ className }: NodeWaveHeroProps) {
       if ((visible && !reducedMotion) || needsFrame) {
         needsFrame = false;
         const t = reducedMotion ? 0 : (now - loadedAt) / 1000;
-        renderer.render(t, INITIAL_SPIN + t * SPIN_RAD_PER_S, !reducedMotion, width, height);
+        renderer.render(t, INITIAL_SPIN + t * SPIN_RAD_PER_S, !reducedMotion, width, height, paletteRef.current);
       }
     };
     raf = requestAnimationFrame(frame);

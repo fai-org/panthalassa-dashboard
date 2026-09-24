@@ -1,14 +1,12 @@
 /*
- * Design tokens. FAI overlay in the Celestial Blue register: the ten permitted
- * FAI fills, with Celestial Blue carrying the page the way International Orange
- * carries master-brand work. FAI has no navy, so the sea is built from two of
- * its fills: Celestial Blue laid over Cod Gray at a fixed share. Every grey is
- * Cod Gray over Smoke White; every blue is Celestial Blue over Cod Gray or
- * Smoke White. Nothing here is a new hex.
+ * Design tokens. FAI overlay, only the ten permitted fills: every grey is Cod
+ * Gray over Smoke White, and the one blue tint is Celestial Blue over Smoke
+ * White. The page reads on Smoke White; the big fields (the opening poster, the
+ * model's frame, the closing band) take the saturated fills whole.
  *
  * Type is IBM Plex: Serif for the reading voice (headings and prose), Sans for
- * utility labels, Mono for numerals. Schmalfette Grotesk sets the one display
- * headline. Geometry is rectilinear: 2px radius, no shadows, no blur.
+ * utility labels, Mono for numerals. Schmalfette Grotesk sets the poster.
+ * Geometry is rectilinear: 2px radius, no shadows, no blur.
  */
 @font-face {
   font-family: "Schmalfette Grotesk";
@@ -25,7 +23,7 @@
   --fai-smoke-white: #f3f3f3;
   --fai-timberwolf: #d9d9d6;
 
-  /* FAI program hues. Celestial Blue carries this page; the others only mark the terrestrial power sources. */
+  /* FAI program hues. Celestial Blue is the ocean; the others only mark the terrestrial power sources. */
   --fai-chrome-yellow: #ffa300;
   --fai-iris-violet: #7150d6;
   --fai-deep-teal: #0e8c88;
@@ -33,20 +31,8 @@
   --fai-celestial-blue: #4997d0;
   --fai-frontier-crimson: #c8102e;
 
-  /* The sea: Celestial Blue over Cod Gray. 900 is the page ground below the
-     horizon, 700 is ink and strokes on light surfaces (7:1 on Smoke White),
-     500 is the sky and every ocean-side fill. 100 is a soft ocean tint on light. */
-  --sea-900: color-mix(in srgb, var(--fai-celestial-blue) 24%, var(--fai-cod-gray));
-  --sea-800: color-mix(in srgb, var(--fai-celestial-blue) 34%, var(--fai-cod-gray));
-  --sea-700: color-mix(in srgb, var(--fai-celestial-blue) 50%, var(--fai-cod-gray));
-  --sea-500: var(--fai-celestial-blue);
+  /* The one blue tint: the soft ocean highlight on light surfaces. */
   --sea-100: color-mix(in srgb, var(--fai-celestial-blue) 16%, var(--fai-smoke-white));
-
-  /* Type and rules on the sea: Smoke White by opacity. 2 is 7:1, 3 is 4.8:1 on --sea-900. */
-  --on-sea: var(--fai-smoke-white);
-  --on-sea-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--sea-900));
-  --on-sea-3: color-mix(in srgb, var(--fai-smoke-white) 60%, var(--sea-900));
-  --sea-rule: color-mix(in srgb, var(--fai-smoke-white) 16%, var(--sea-900));
 
   /* Light surfaces (the dashboard). Smoke White is the working white; the ground is a Cod Gray tint of it. */
   --bg: color-mix(in srgb, var(--fai-cod-gray) 6%, var(--fai-smoke-white));
@@ -61,28 +47,28 @@
   --text-tertiary: color-mix(in srgb, var(--fai-cod-gray) 64%, var(--fai-smoke-white));
 
   /* The interactive colour on light surfaces: slider thumbs, links, the open group. */
-  --accent: var(--sea-700);
-  --accent-ink: var(--sea-700);
+  --accent: var(--fai-cod-gray);
+  --accent-ink: var(--fai-cod-gray);
   --accent-strong: var(--fai-cod-gray);
   --accent-soft: var(--sea-100);
   --accent-soft-border: color-mix(in srgb, var(--fai-celestial-blue) 40%, var(--fai-smoke-white));
 
   /* The side key. Panthalassa is the ocean (Celestial Blue), Terrestrial is land (Cod Gray).
      The fill carries the side in bars and marks; the ink is for text keyed to a side. */
-  --side-ocean: var(--sea-500);
-  --side-ocean-ink: var(--sea-700);
+  --side-ocean: var(--fai-celestial-blue);
   --side-ocean-soft: var(--sea-100);
   --side-land: color-mix(in srgb, var(--fai-cod-gray) 64%, var(--fai-smoke-white));
   --side-land-ink: var(--fai-cod-gray);
   --side-land-soft: color-mix(in srgb, var(--fai-cod-gray) 10%, var(--fai-smoke-white));
 
-  /* International Orange marks the finding (what the dearer build costs beyond the cheaper one),
-     the one call to action, and focus. Never body-size text on light (2.97:1 on Smoke White). */
+  /* International Orange: the poster's name, the closing field, what a figure adds (the cost
+     overage, the battery bridge, the tug), and focus on dark and saturated grounds. Never
+     body-size text on light (2.97:1 on Smoke White). */
   --finding: var(--fai-international-orange);
   --focus: var(--fai-international-orange);
 
   /* Status colours for baseline deltas. */
-  --positive: var(--sea-700);
+  --positive: var(--fai-cod-gray);
   --negative: var(--fai-cod-gray);
 
   /* Terrestrial "Power source" button dots, one per source (distinct by request). FAI hues for the
@@ -117,7 +103,7 @@ body {
 }
 
 body {
-  background: var(--sea-900);
+  background: var(--fai-smoke-white);
   color: var(--text-primary);
   font-family: var(--font-utility);
   font-size: 14px;

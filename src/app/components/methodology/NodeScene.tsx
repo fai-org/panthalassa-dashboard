@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { nodeVertices } from './nodeGeometry.js';
 import { sampleSurface } from '../../lib/gerstner.js';
-import { ORANGE, SEA_800, SMOKE, smoke } from './palette.js';
+import { ORANGE, INK, SMOKE, smoke } from './palette.js';
 
 const vertices = nodeVertices();
 /** Perspective wireframe view of the repository's exact node geometry. */
@@ -22,7 +22,7 @@ export function NodeScene({ waves, still = false }: { waves: boolean; still?: bo
       if (canvas.width !== side) canvas.width = canvas.height = side;
       ctx.setTransform(side / 500, 0, 0, side / 500, 0, 0);
       ctx.clearRect(0, 0, 500, 500);
-      ctx.fillStyle = SEA_800; ctx.fillRect(0, 0, 500, 500);
+      ctx.fillStyle = INK; ctx.fillRect(0, 0, 500, 500);
       const t = waves && !still && !media.matches ? time / 1000 : 0;
       const swell = waves ? sampleSurface(0, 0, t).height * 1.6 : 0;
       const project = (x: number, y: number, z: number) => {

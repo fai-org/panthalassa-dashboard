@@ -1,15 +1,15 @@
-/* Takeaways, on the deep sea like the methodology. Plex Serif throughout; the claim in each row is the heading. */
+/* Takeaways, on Smoke White like the methodology. Plex Serif throughout; the claim in each row is the heading. */
 .section {
   padding: 64px max(32px, calc((100% - 1120px) / 2)) 64px;
-  background: var(--sea-900);
-  color: var(--on-sea-2);
+  background: var(--fai-smoke-white);
+  color: var(--text-secondary);
   font-family: var(--font-body);
   scroll-margin-top: 24px;
 }
 .content { max-width: 1120px; margin: 0 auto; }
 .title {
   margin: 0 0 32px;
-  color: var(--on-sea);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 400;
@@ -21,12 +21,12 @@
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
   gap: 48px;
   padding: 32px 0;
-  border-top: 1px solid var(--sea-rule);
+  border-top: 1px solid var(--border);
 }
 .takeaway:last-child { padding-bottom: 0; }
 .takeaway h3 {
   margin: 0;
-  color: var(--on-sea);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 24px;
   font-weight: 400;
@@ -38,15 +38,15 @@
 .takeaway p, .takeaway li { font-size: 16px; line-height: 1.7; }
 .takeaway p { margin: 0 0 16px; }
 .takeaway p:last-child { margin-bottom: 0; }
-.takeaway strong { color: var(--on-sea); font-weight: 600; }
+.takeaway strong { color: var(--text-primary); font-weight: 600; }
 .takeaway ul { padding-left: 24px; margin: 16px 0; }
 .takeaway li { padding-left: 4px; margin-bottom: 16px; }
-.takeaway li::marker { color: var(--sea-500); }
+.takeaway li::marker { color: var(--fai-celestial-blue); }
 .figure { margin: 24px 0 0; }
-.figure > a { display: block; background: var(--fai-smoke-white); padding: 8px; }
+.figure > a { display: block; background: var(--fai-smoke-white); border: 1px solid var(--border); padding: 8px; }
 .figure img { display: block; width: 100%; height: auto; }
-.figure figcaption { margin-top: 12px; color: var(--on-sea-3); font: 13px/1.6 var(--font-utility); }
-.figure figcaption a { color: var(--on-sea); text-underline-offset: 3px; }
+.figure figcaption { margin-top: 12px; color: var(--text-tertiary); font: 13px/1.6 var(--font-utility); }
+.figure figcaption a { color: var(--text-primary); text-underline-offset: 3px; }
 @media (max-width: 900px) { .takeaway { gap: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); } .takeaway h3 { font-size: 22px; } }
 @media (max-width: 719px) {
   .section { padding: 48px 24px; }

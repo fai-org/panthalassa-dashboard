@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { nodeVertices } from './nodeGeometry.js';
 import styles from './Methodology.module.css';
-import { SEA_800, smoke } from './palette.js';
+import { INK, smoke } from './palette.js';
 
 const vertices = nodeVertices();
 /** Approved fleet scene: one zoom, with continuing ripples and manual replay. */
@@ -32,7 +32,7 @@ export function FleetScene() {
     const side=Math.min(1100,Math.max(500,(canvas.clientWidth||440)*(typeof devicePixelRatio==='number'?devicePixelRatio:1)));
     if(canvas.width!==side)canvas.width=canvas.height=side;
     ctx.setTransform(side/500,0,0,side/500,0,0);
-    ctx.fillStyle=SEA_800;ctx.fillRect(0,0,500,500);
+    ctx.fillStyle=INK;ctx.fillRect(0,0,500,500);
     const span=44*Math.pow(780/44,progress),scale=500/span;
     // The scene is fixed in world space: only the camera magnification changes.
     const cy=229+progress*21;

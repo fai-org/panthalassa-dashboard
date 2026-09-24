@@ -16,17 +16,10 @@
   flex-shrink: 0;
 }
 
-/* A 4px rule in the side's colour keys the column to its side from the top: Celestial Blue
-   for the ocean, Cod Gray for land. The same fills mark the side in every table and bar. */
-.headerOcean {
-  border-top: 4px solid var(--side-ocean);
-}
-
-.headerLand {
-  border-top: 4px solid var(--side-land-ink);
-}
-
+/* The side's square keys the column, the same mark the comparison tables use. */
 .headerTitle {
+  display: flex;
+  align-items: center;
   flex: 1 0 auto;
   white-space: nowrap;
   font-family: var(--font-body);
@@ -34,6 +27,13 @@
   font-weight: 600;
   margin: 0;
   color: var(--text-primary);
+}
+
+.headerTitle :global(.side-mark) {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-right: 12px;
 }
 
 .panelToggle {
