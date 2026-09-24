@@ -14,13 +14,13 @@
 }
 
 /* The two display sizes are solved together so the question turns its corner on the horizon.
-   Schmalfette at 0.02em tracking, measured in the browser: caps 0.706em tall; "CAN THE OCEAN" 3.54em long;
+   Schmalfette at 0.02em tracking: caps 0.706em tall; "CAN THE OCEAN" 3.78em long;
    "POWER AI?" 2.692em long. The first words stand from 48px above the poster's foot up to
    the horizon; the rest takes the width left beside them, never taller than the sky allows. */
 .hero {
   --hero-h: max(100svh, 640px);
   --sky-h: calc(var(--hero-h) * var(--horizon-frac));
-  --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.56);
+  --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.8);
   --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 24px);
   --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 2.72, (var(--sky-h) - 40px) / 0.706);
   /* The wave band ends about 14% of the poster below the horizon; the introduction starts under it. */
@@ -57,7 +57,6 @@
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 0.8;
-  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
@@ -72,6 +71,7 @@
   top: var(--sky-h);
   z-index: 2;
   font-size: var(--fs-v);
+  letter-spacing: 0.02em; /* set where the size is, so the em resolves against it */
   color: var(--fai-international-orange);
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -85,6 +85,7 @@
   bottom: calc(var(--hero-h) - var(--sky-h) - 0.06em);
   z-index: 0;
   font-size: var(--fs-h);
+  letter-spacing: 0.02em;
   color: var(--fai-cod-gray);
 }
 
