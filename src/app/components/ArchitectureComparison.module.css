@@ -3,7 +3,8 @@
 }
 
 /* No gutters between columns, so the row rules run unbroken and a highlight fills its whole
-   cell; the cells carry the spacing. Figures are right-aligned so the columns scan. */
+   cell; the cells carry the spacing. Every column is set flush right, the labels included, so
+   each label sits against its figures and the columns scan. */
 .headerRow,
 .row {
   display: grid;
@@ -24,6 +25,7 @@
   color: var(--text-tertiary);
   margin: 0;
   padding: 16px 12px 8px 0;
+  text-align: right;
 }
 
 .colHeader {
@@ -51,6 +53,7 @@
   padding: 12px 12px 12px 0;
   font-size: 13px;
   font-weight: 500;
+  text-align: right;
   color: var(--text-primary);
 }
 
@@ -92,6 +95,7 @@
   .rowLabel {
     grid-area: label;
     padding: 12px 0 4px;
+    text-align: left;
     color: var(--text-tertiary);
   }
 

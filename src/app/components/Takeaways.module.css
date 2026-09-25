@@ -43,9 +43,9 @@
 .takeaway strong { color: var(--text-primary); font-weight: 600; }
 /* A bullet's heading in the paper template's style: Plex Sans, bold, all caps, tracked. */
 .takeaway li > strong:first-child { font: 600 0.875em/1 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
-.takeaway ul { padding-left: 24px; margin: 16px 0; }
-.takeaway li { padding-left: 4px; margin-bottom: 16px; }
-.takeaway li::marker { color: var(--fai-celestial-blue); }
+/* No bullets: each item opens on its caps lead-in, which marks it better than a small dot. */
+.takeaway ul { list-style: none; padding-left: 0; margin: 16px 0; }
+.takeaway li { margin-bottom: 16px; }
 .figure { margin: 24px 0 0; }
 .figure > a { display: block; background: var(--fai-smoke-white); border: 1px solid var(--border); padding: 8px; }
 .figure img { display: block; width: 100%; height: auto; }

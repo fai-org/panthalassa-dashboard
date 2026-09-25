@@ -99,10 +99,10 @@
   white-space: nowrap;
 }
 
-/* The finding, with the percentage at display size. */
+/* The finding, with the percentage at display size, centred on the sentence beside it. */
 .verdict {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 24px;
   font-family: var(--font-body);
   font-size: 20px;
@@ -123,6 +123,7 @@
 
 .verdictText {
   max-width: 34em;
+  text-wrap: balance;
 }
 
 .verdictText :global(.num) {
@@ -132,6 +133,7 @@
 @media (max-width: 1311px) {
   .verdict {
     flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
   }
 }

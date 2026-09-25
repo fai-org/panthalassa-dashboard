@@ -68,11 +68,11 @@
   text-align: right;
 }
 
-/* One full-width track per row: the same scale for every category. */
+/* One full-width track per row: the same scale for every category. No outline, so the fill
+   reads as the bar. */
 .track {
   height: 8px;
   background: var(--surface-alt);
-  border: 1px solid var(--border);
 }
 
 .fill {

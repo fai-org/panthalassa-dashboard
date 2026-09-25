@@ -39,7 +39,9 @@
 .appendix li { margin: 0 0 8px; }
 /* A bullet's heading in the paper template's style: Plex Sans, bold, all caps, tracked. */
 .appendix li > strong:first-child { font: 600 0.875em/1 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
-.appendix li::marker { color: var(--fai-celestial-blue); }
+/* A list whose items open on a caps lead-in drops its bullets, as in the takeaways; plain lists
+   keep quiet bullets in the text colour. */
+.appendix ul:has(> li > strong:first-child) { list-style: none; padding-left: 0; }
 .appendix math { color: var(--text-primary); font-size: 1.08em; }
 .appendix :global(span.math.display) { display: block; overflow-x: auto; padding: 12px 4px; margin: 8px 0 16px; }
 .appendix :global(.panel) > p:has(> strong:first-child) { margin-top: 24px; }

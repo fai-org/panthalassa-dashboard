@@ -57,14 +57,18 @@
 .chartHeading { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; border-bottom: 1px solid var(--m-line); padding-bottom: 16px; font: 600 13px/1.4 var(--font-utility); color: var(--m-ink); }
 .chartHeading span:last-child { font-weight: 400; color: var(--m-faint); }
 .chart svg { display: block; overflow: visible; font-family: var(--font-utility); }
-.legend { display: flex; flex-direction: column; gap: 8px; font: 12px/1.4 var(--font-utility); color: var(--m-muted); }
+/* Two kinds of text under a chart: the key names what a colour is (sans, ink); the notes explain
+   how to read the figure (serif italic, the reading voice). */
+.legend { display: flex; flex-direction: column; gap: 8px; font: 500 12px/1.4 var(--font-utility); color: var(--m-ink); }
 .legend span { display: flex; align-items: center; gap: 12px; }
 .legend i { display: inline-block; width: 24px; height: 2px; flex-shrink: 0; }
 .resourceKey { background: var(--text-tertiary); opacity: 0.6; }
 .computeKey { background: var(--fai-celestial-blue); height: 3px !important; }
 .batteryKey { background: var(--fai-international-orange); }
-.methodology .chartCaption { font: 12px/1.6 var(--font-utility); color: var(--m-faint); margin-top: 16px; }
-.chartFoot { font: 12px/1.6 var(--font-utility); color: var(--m-muted); padding-top: 16px; }
+.methodology .chartCaption,
+.chartFoot { font: italic 14px/1.5 var(--font-body); color: var(--m-muted); }
+.methodology .chartCaption { margin-top: 20px; }
+.chartFoot { padding-top: 8px; }
 
 /* Failures */
 .failureSection { padding: 48px 0; border-top: 1px solid var(--m-line); }
@@ -75,11 +79,12 @@
 .failureSection .failureIntro p { font-size: 17px; line-height: 1.7; }
 .failureTable { width: 100%; border-collapse: collapse; margin-top: 32px; text-align: left; }
 /* Every cell has the same 16px inset, so the heads, the plain row and the banded rows share
-   one left edge per column. The failure names are bold cells in the paper template's style. */
+   one edge per column. The failure names are bold cells in the paper template's style, set flush
+   right against what the model counts, like the takeaway claims. */
 .failureTable th,
 .failureTable td { padding: 16px; border-bottom: 1px solid var(--m-line); vertical-align: baseline; font-size: 16px; line-height: 1.6; }
 .failureTable thead th { font: 600 12px/1.4 var(--font-utility); color: var(--m-faint); padding-top: 0; padding-bottom: 12px; }
-.failureTable th:first-child { width: 25%; min-width: 184px; padding-right: 24px; }
+.failureTable th:first-child { width: 25%; min-width: 184px; padding-right: 24px; text-align: right; }
 .failureTable tbody th { color: var(--m-ink); font: 600 13px/1.5 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
 .failureTable tbody td { color: var(--m-muted); }
 /* The four whole-node outcomes share one band; chip degradation above them stands apart. */
@@ -102,7 +107,7 @@
 .fleetCircle { position: relative; aspect-ratio: 1; width: 100%; max-width: 440px; margin: auto; border-radius: 50%; overflow: hidden; background: var(--fai-cod-gray); }
 .fleetCircle canvas { display: block; width: 100%; height: 100%; }
 .fleetSceneLabel { position: absolute; top: 12%; left: 0; right: 0; text-align: center; font: 600 13px var(--font-utility); color: var(--fai-smoke-white); pointer-events: none; }
-.fleetFigure figcaption { margin: 16px auto 0; text-align: center; color: var(--m-faint); font: 12px/1.6 var(--font-utility); }
+.fleetFigure figcaption { margin: 16px auto 0; text-align: center; color: var(--m-muted); font: italic 14px/1.5 var(--font-body); }
 .fleetReplay { display: block; margin: 8px auto 0; padding: 4px 8px; background: none; border: 0; color: var(--m-ink); font: 500 13px/1.5 var(--font-utility); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 .fleetReplay[hidden] { display: none; }
 .fleetCosts { margin-top: 40px; }
@@ -114,8 +119,8 @@
 .costGrid p { max-width: 460px; }
 .costRows { margin: 32px 0 0; }
 .costRows > div { display: grid; grid-template-columns: minmax(160px, 25%) minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--m-line); }
-/* Bold cells in the paper template's style, like the failure names. */
-.costRows dt { color: var(--m-ink); font: 600 13px/1.5 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
+/* Bold cells in the paper template's style, flush right like the failure names. */
+.costRows dt { color: var(--m-ink); font: 600 13px/1.5 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; text-align: right; }
 .costRows dd { margin: 0; color: var(--m-muted); font-size: 16px; line-height: 1.6; }
 .methodology .costAppendix { margin-top: 24px; border-left: 2px solid var(--m-accent); padding: 4px 0 4px 24px; font-size: 16px; line-height: 1.6; color: var(--m-ink); }
 
@@ -173,9 +178,10 @@
   .failureTable,
   .failureTable tbody { display: block; }
   .failureTable tr { display: block; border-top: 1px solid var(--m-line); padding: 16px; }
-  .failureTable th:first-child { display: block; width: auto; min-width: 0; padding: 0 0 4px; border: 0; }
+  .failureTable th:first-child { display: block; width: auto; min-width: 0; padding: 0 0 4px; border: 0; text-align: left; }
   .failureTable td { display: block; padding: 0; border: 0; }
   .failureCalculation { border-top: 1px solid var(--m-line); }
   .failureAssumptions { padding-left: 16px; }
   .costRows > div { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+  .costRows dt { text-align: left; }
 }
