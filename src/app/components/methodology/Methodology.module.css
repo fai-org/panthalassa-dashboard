@@ -87,8 +87,6 @@
 .failureTable th:first-child { width: 25%; min-width: 184px; padding-right: 24px; text-align: right; }
 .failureTable tbody th { color: var(--m-ink); font: 600 13px/1.5 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
 .failureTable tbody td { color: var(--m-muted); }
-/* The four whole-node outcomes share one band; chip degradation above them stands apart. */
-.failureTable .nodeFailureRow { background: var(--bg); }
 .failureCalculation { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; padding: 16px 0; font-size: 16px; line-height: 1.6; color: var(--m-muted); }
 .failureCalculation strong { font-weight: 600; color: var(--m-ink); }
 .failureAssumptions { border-left: 2px solid var(--m-accent); padding: 4px 0 4px 24px; }

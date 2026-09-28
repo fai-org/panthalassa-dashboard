@@ -83,7 +83,7 @@ export function CostPerWattBreakdown({ oceanResult, terrestrialResult }: Props) 
           </span>
           <span className={styles.colHeader} style={{ gridColumn: col.terrestrial, gridRow: 1 }}>
             <SideMark side="land" />
-            Terrestrial
+            Land-based
           </span>
 
           <span className={styles.rowLabel} style={{ gridColumn: col.label, gridRow: 2 }}>

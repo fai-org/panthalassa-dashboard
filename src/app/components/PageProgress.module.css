@@ -1,0 +1,74 @@
+/* The reading bar: five chapters, each with a hairline that fills as you read it. It takes
+   the surface under it: clear with Cod Gray type over the poster's sky, Cod Gray glass over
+   the sea, Smoke White glass over the reading and the model. */
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--reading-bar-height, 50px);
+  padding: 0 max(16px, env(safe-area-inset-left));
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.chapters {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 920px;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr 1.1fr 1.1fr 1fr;
+  gap: clamp(8px, 2vw, 24px);
+}
+.chapters li { min-width: 0; }
+.chapters a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: var(--reading-bar-height, 50px);
+  gap: 6px;
+  padding: 7px 0;
+  color: inherit;
+  text-decoration: none;
+  text-align: center;
+  font: 500 13px/1.3 var(--font-utility);
+}
+.chapters a[aria-current] { font-weight: 600; }
+.track { height: 2px; overflow: hidden; }
+.track > span { display: block; height: 100%; transform-origin: left; }
+
+.sky { background: transparent; color: rgb(18 18 18 / 0.72); }
+.sky a[aria-current], .sky a:hover { color: var(--fai-cod-gray); }
+.sky .track { background: rgb(18 18 18 / 0.18); }
+.sky .track > span { background: var(--fai-cod-gray); }
+
+.sea {
+  background: rgb(18 18 18 / 0.72);
+  color: rgb(243 243 243 / 0.72);
+  border-color: rgb(243 243 243 / 0.12);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.sea a[aria-current], .sea a:hover { color: var(--fai-smoke-white); }
+.sea .track { background: rgb(243 243 243 / 0.2); }
+.sea .track > span { background: var(--fai-smoke-white); }
+
+.paper {
+  background: rgb(243 243 243 / 0.86);
+  color: var(--text-tertiary);
+  border-color: rgb(18 18 18 / 0.12);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.paper a[aria-current], .paper a:hover { color: var(--fai-cod-gray); }
+.paper .track { background: rgb(18 18 18 / 0.12); }
+.paper .track > span { background: var(--fai-cod-gray); }
+
+.chapters a:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+
+@media (max-width: 500px) {
+  .bar { padding-inline: 8px; }
+  .chapters { gap: 5px; }
+  .chapters a { font-size: 12px; }
+}
+@media (max-width: 360px) { .chapters a { font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .bar { transition: none; } }

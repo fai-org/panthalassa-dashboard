@@ -3,6 +3,7 @@ import { useModel } from "../hooks/useModel.js";
 import { SliderPanel } from "../components/SliderPanel.js";
 import { SharedInputsPanel } from "../components/SharedInputsPanel.js";
 import { ComparisonVerdict } from "../components/ComparisonVerdict.js";
+import { LcoeBand } from "../components/LcoeBand.js";
 import { ResultsHeader } from "../components/ResultsHeader.js";
 import { CostBreakdown } from "../components/CostBreakdown.js";
 import { BaselineComparison } from "../components/BaselineComparison.js";
@@ -14,6 +15,7 @@ import {
   TerrestrialBaselineComparison,
   TerrestrialControls,
   TerrestrialDiagnostics,
+  TerrestrialLcoeBand,
   TerrestrialResults,
   buildTerrestrialInputs,
   runTerrestrialModel,
@@ -81,26 +83,34 @@ export function OldDashboard() {
 
           <ComparisonVerdict oceanResult={result} terrestrialResult={terrestrialResult} />
 
+          {/* Each architecture gets its own column under a side-keyed head: Celestial Blue for
+              the ocean fleet, Cod Gray for the land-based plant. Paired cards share a row, so
+              the two breakdowns and the two LCOEs sit level. The columns break for the shared
+              tables and pick up again below them. */}
+          <div className={styles.sides}>
+            <section className={styles.side} aria-labelledby="ocean-costs">
+              <h3 id="ocean-costs" className={`${styles.sideHead} ${styles.sideOcean}`}>Panthalassa</h3>
+              <CostBreakdown result={result} />
+              <LcoeBand result={result} />
+            </section>
+            <section className={styles.side} aria-labelledby="land-costs">
+              <h3 id="land-costs" className={`${styles.sideHead} ${styles.sideLand}`}>Land-based</h3>
+              <TerrestrialResults result={terrestrialResult} />
+              <TerrestrialLcoeBand result={terrestrialResult} />
+            </section>
+          </div>
+
           <ArchitectureComparison oceanResult={result} terrestrialResult={terrestrialResult} />
           <CostPerWattBreakdown oceanResult={result} terrestrialResult={terrestrialResult} />
 
-          {/* Below the shared comparison, each architecture gets its own column under a
-              side-keyed head: Celestial Blue for the ocean fleet, Cod Gray for the terrestrial
-              plant. Everything in a column belongs to that side. */}
           <div className={styles.sides}>
-            <section className={styles.side} aria-labelledby="ocean-side">
-              <h3 id="ocean-side" className={`${styles.sideHead} ${styles.sideOcean}`}>
-                Panthalassa
-              </h3>
-              <CostBreakdown result={result} />
+            <section className={styles.side} aria-labelledby="ocean-fleet">
+              <h3 id="ocean-fleet" className={`${styles.sideHead} ${styles.sideOcean}`}>Panthalassa</h3>
               <BaselineComparison result={result} />
               <ResultsHeader result={result} isPending={isPending} />
             </section>
-            <section className={styles.side} aria-labelledby="land-side">
-              <h3 id="land-side" className={`${styles.sideHead} ${styles.sideLand}`}>
-                Terrestrial
-              </h3>
-              <TerrestrialResults result={terrestrialResult} />
+            <section className={styles.side} aria-labelledby="land-plant">
+              <h3 id="land-plant" className={`${styles.sideHead} ${styles.sideLand}`}>Land-based</h3>
               <TerrestrialBaselineComparison result={terrestrialResult} />
               <TerrestrialDiagnostics result={terrestrialResult} />
             </section>

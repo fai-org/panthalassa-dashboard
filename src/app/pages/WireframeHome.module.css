@@ -6,6 +6,7 @@
  * column is Celestial Blue; the page ends on an International Orange field.
  */
 .page {
+  --reading-bar-height: 50px;
   --gutter: max(32px, calc(50vw - 560px));
 
   background: var(--fai-smoke-white);
@@ -16,13 +17,14 @@
 /* The two display sizes are solved together so the question turns its corner on the horizon.
    Schmalfette at 0.02em tracking: caps 0.706em tall; "CAN THE OCEAN" 3.78em long;
    "POWER AI?" 2.692em long. The first words stand from 48px above the poster's foot up to
-   the horizon; the rest takes the width left beside them, never taller than the sky allows. */
+   the horizon; the rest takes the width left beside them, never taller than the sky allows
+   below the reading bar (its height plus 24px stays clear above the caps). */
 .hero {
   --hero-h: max(100svh, 640px);
   --sky-h: calc(var(--hero-h) * var(--horizon-frac));
   --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.8);
   --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 24px);
-  --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 2.72, (var(--sky-h) - 40px) / 0.706);
+  --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 2.72, (var(--sky-h) - var(--reading-bar-height) - 24px) / 0.706);
   /* The wave band ends about 14% of the poster below the horizon; the introduction starts under it. */
   --sea-top: calc(var(--sky-h) + 0.14 * var(--hero-h) + 24px);
   --ink-dark-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--fai-cod-gray));
@@ -151,10 +153,12 @@
   color: var(--fai-cod-gray);
 }
 
-/* The model runs edge to edge; its own columns carry the colour (see OldDashboard). */
-.dashboard {
-  scroll-margin-top: 0;
-}
+/* Sections land just below the fixed reading bar. The model runs edge to edge and its
+   side columns stick under the bar, so it lands flush against it. */
+.page > section { scroll-margin-top: calc(var(--reading-bar-height) + 14px); }
+.page > .dashboard { scroll-margin-top: var(--reading-bar-height); }
+/* The explanation opens on its own padding; any margin would show the end of the sea. */
+.page > .hero + section { scroll-margin-top: var(--reading-bar-height); }
 
 .dashboard > div {
   container: dashboard / inline-size;

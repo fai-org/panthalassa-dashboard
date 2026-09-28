@@ -33,7 +33,7 @@ export function ComparisonVerdict({ oceanResult, terrestrialResult }: Props) {
 
   const sides = [
     { key: "ocean" as const, label: "Panthalassa", value: ocean },
-    { key: "land" as const, label: "Terrestrial", value: terrestrial },
+    { key: "land" as const, label: "Land-based", value: terrestrial },
   ];
 
   return (
@@ -80,7 +80,7 @@ export function ComparisonVerdict({ oceanResult, terrestrialResult }: Props) {
           <>
             <strong className={styles.big}>{pct.toFixed(1)}%</strong>
             <span className={styles.verdictText}>
-              {lower ? "less" : "more"} than the terrestrial build.{" "}
+              {lower ? "less" : "more"} than the land-based build.{" "}
               {lower ? "Panthalassa saves" : "Panthalassa costs an extra"}{" "}
               <span className="num">{formatUsdCompact(diff)}</span> over the analysis period.
             </span>

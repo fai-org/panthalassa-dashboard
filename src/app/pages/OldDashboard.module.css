@@ -39,8 +39,8 @@
   grid-area: ocean;
   min-width: 0;
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: var(--reading-bar-height, 0px);
+  height: calc(100vh - var(--reading-bar-height, 0px));
   background: var(--fai-celestial-blue);
 }
 
@@ -54,8 +54,8 @@
   grid-area: land;
   min-width: 0;
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: var(--reading-bar-height, 0px);
+  height: calc(100vh - var(--reading-bar-height, 0px));
   background: var(--fai-timberwolf);
 }
 
@@ -87,19 +87,27 @@
   min-width: 0;
 }
 
-/* Below the shared comparison, one column per architecture. */
+/* One column per architecture: a head and two cards. Each column is a subgrid over the same
+   three rows, so a card and its counterpart on the other side start on the same line. */
 .sides {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 48px 32px;
-  align-items: start;
+  grid-template-rows: repeat(3, auto);
+  gap: 40px 32px;
 }
 
 .side {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  align-content: start;
   min-width: 0;
+}
+
+/* Rows line up across the pair, but each section keeps its own height rather than
+   stretching its tiles apart to match the taller side. */
+.side > * {
+  align-self: start;
 }
 
 /* The column head: the side's name over a 4px rule in its colour. It replaces the first
@@ -116,6 +124,21 @@
 
 .sideHead + :global(.card) {
   border-top: 0;
+}
+
+/* A tile grid directly under the head: cover the first row's rules, however many columns
+   the grid has made. */
+.sideHead + :not(:global(.card)) {
+  position: relative;
+}
+
+.sideHead + :not(:global(.card))::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 1px;
+  background: var(--fai-smoke-white);
 }
 
 .sideOcean {

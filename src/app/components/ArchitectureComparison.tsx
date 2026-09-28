@@ -1,7 +1,7 @@
 import type { ModelResult } from "../../model/index.js";
 import type { TerrestrialModelResult } from "../../terrestrial/model/types.js";
 import { comparableOutputsFromPanthalassa } from "../../terrestrial/integration/index.js";
-import { formatDataGb, formatUsdCompact, formatUsdPerUnit } from "../lib/formatters.js";
+import { formatUsdCompact } from "../lib/formatters.js";
 import { SideMark } from "./SideMark.js";
 import { highlightClass, lowerSide } from "../lib/compare.js";
 import styles from "./ArchitectureComparison.module.css";
@@ -18,14 +18,15 @@ interface Props {
  * off by fleet-rounding) -- a tautology, not a real comparison. Every row
  * kept below reflects a genuine architectural difference. "All-in cost per
  * target watt" is broken down by cost component in CostPerWattBreakdown
- * (rendered just below this card), so it isn't repeated here.
+ * (rendered just below this card), so it isn't repeated here. Power-system
+ * LCOE has its own headline card pair (LcoeBand/TerrestrialLcoeBand) instead
+ * of a row here.
  */
 export function ArchitectureComparison({ oceanResult, terrestrialResult }: Props) {
   const ocean = comparableOutputsFromPanthalassa(oceanResult);
   const terrestrial = terrestrialResult.comparable;
 
-  // Every row is a cost, so the lower figure is the better one. The data row
-  // compares on the present-value cost of moving the same data.
+  // Every row is a cost, so the lower figure is the better one.
   const rows = [
     {
       label: "Present-value lifecycle cost",
@@ -34,25 +35,10 @@ export function ArchitectureComparison({ oceanResult, terrestrialResult }: Props
       better: lowerSide(ocean.present_value_lifecycle_cost_usd, terrestrial.present_value_lifecycle_cost_usd),
     },
     {
-      label: "Power-system LCOE",
-      ocean: formatUsdPerUnit(ocean.power_system_lcoe_usd_per_mwh, 2) + "/MWh",
-      terrestrial: formatUsdPerUnit(terrestrial.power_system_lcoe_usd_per_mwh, 2) + "/MWh",
-      better: lowerSide(ocean.power_system_lcoe_usd_per_mwh, terrestrial.power_system_lcoe_usd_per_mwh),
-    },
-    {
       label: "Initial compute-hardware capex",
       ocean: formatUsdCompact(ocean.initial_compute_hardware_capex_usd),
       terrestrial: formatUsdCompact(terrestrial.initial_compute_hardware_capex_usd),
       better: lowerSide(ocean.initial_compute_hardware_capex_usd, terrestrial.initial_compute_hardware_capex_usd),
-    },
-    {
-      label: "Workload data transferred",
-      ocean: `${formatDataGb(ocean.total_workload_data_transferred_gb)} · ${formatUsdCompact(ocean.present_value_workload_data_transfer_cost_usd)} PV`,
-      terrestrial: `${formatDataGb(terrestrial.total_workload_data_transferred_gb)} · ${formatUsdCompact(terrestrial.present_value_workload_data_transfer_cost_usd)} PV`,
-      better: lowerSide(
-        ocean.present_value_workload_data_transfer_cost_usd,
-        terrestrial.present_value_workload_data_transfer_cost_usd,
-      ),
     },
   ];
   const marks = { ocean: styles.betterOcean!, land: styles.betterLand!, worse: styles.worse! };
@@ -68,7 +54,7 @@ export function ArchitectureComparison({ oceanResult, terrestrialResult }: Props
           </span>
           <span className={styles.colHeader}>
             <SideMark side="land" />
-            Terrestrial
+            Land-based
           </span>
         </div>
         {rows.map((row) => (
