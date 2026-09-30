@@ -80,7 +80,10 @@
   letter-spacing: 0.02em; /* set where the size is, so the em resolves against it */
 }
 
+/* Nudged so the C's ink lines up with the P's: Schmalfette's side bearing is 0.012em, and
+   the lower line is 2.5 times the size. */
 .questionFirst {
+  margin-left: 0.018em;
   font-size: var(--fs-top);
 }
 

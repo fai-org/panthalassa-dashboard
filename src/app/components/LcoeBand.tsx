@@ -15,7 +15,7 @@ export function LcoeBand({ result }: Props) {
         {formatUsdPerUnit(result.lcoe.lcoe_usd_per_mwh, 2)}
         <span className={styles.unit}>/MWh</span>
       </p>
-      <p className={styles.sub}>Compute-agnostic, over the node's economic life.</p>
+      <p className={styles.sub}>Compute-agnostic, over the node’s economic life.</p>
     </section>
   );
 }
