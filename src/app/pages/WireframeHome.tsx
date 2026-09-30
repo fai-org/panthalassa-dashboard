@@ -11,11 +11,11 @@ import lockupUrl from "../assets/fai-lockup-black.svg";
 /**
  * Home page. The opening is a poster: a flat Celestial Blue sky over a Cod Gray
  * sea, split where the WebGL horizon lands (the background and the hero share
- * HORIZON_FRAC). The question is set in Schmalfette and turns a corner at the
- * horizon: "Can the Ocean" rises upright out of the sea along the left gutter,
- * "Power AI?" rests on the horizon from its top. The introduction sits in the
- * sea between the upright words and the node, and the reading voice continues
- * below on Smoke White.
+ * HORIZON_FRAC). The question is set in Schmalfette and stacks in the sky:
+ * "Can the Ocean" over "Power AI?", which rests on the horizon. The sky is as
+ * tall as the question needs, and the sea canvas moves down to meet it. The
+ * introduction sits in the sea beside the node, and the reading voice
+ * continues below on Smoke White.
  */
 
 /** Cod Gray sea; wires and node in Smoke White; the far sea hazes a little toward the sky. */
@@ -42,10 +42,9 @@ export function WireframeHome() {
       <section id="intro" className={styles.hero} aria-labelledby="page-title">
         <div className={styles.poster}>
           <NodeWaveHero className={styles.canvas} palette={HERO_PALETTE} />
-          {/* One question, one corner at the horizon: the first words rise out of the sea,
-              the rest sits on the water line beside them. Nothing overlaps. */}
+          {/* One question in two lines, the larger one resting on the water line. */}
           <h1 id="page-title" className={styles.question}>
-            <span className={styles.questionRise}>Can the Ocean</span>{" "}
+            <span className={styles.questionFirst}>Can the Ocean</span>{" "}
             <span className={styles.questionRest}>Power AI?</span>
           </h1>
         </div>

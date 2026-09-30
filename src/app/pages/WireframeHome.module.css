@@ -1,7 +1,7 @@
 /*
  * The page: a poster, then a book. The opening is a Bauhaus poster in FAI's
- * saturated fills (Celestial Blue sky, Cod Gray sea, the question in
- * International Orange and Cod Gray) with the introduction in the sea; the
+ * saturated fills (Celestial Blue sky, Cod Gray sea, the question stacked in
+ * Cod Gray on the sky) with the introduction in the sea; the
  * reading runs on Smoke White in IBM Plex Serif; the model's Panthalassa
  * column is Celestial Blue; the page ends on an International Orange field.
  */
@@ -14,22 +14,24 @@
   min-height: 100vh;
 }
 
-/* The two display sizes are solved together so the question turns its corner on the horizon.
-   Schmalfette at 0.02em tracking: caps 0.706em tall; "CAN THE OCEAN" 3.78em long;
-   "POWER AI?" 2.692em long. The first words stand from 48px above the poster's foot up to
-   the horizon; the rest takes the width left beside them, never taller than the sky allows
-   below the reading bar (its height plus 24px stays clear above the caps). */
+/* The question stacks in the sky: "CAN THE OCEAN" at 0.4 of the size of "POWER AI?", line
+   box on line box, the lower line resting on the horizon. Schmalfette at 0.02em tracking:
+   "POWER AI?" is 2.692em long. The question and the introduction share a left edge indented
+   from the gutter by 0.32 of the headline size plus 24px; "POWER AI?" takes the width left
+   after it. The sky grows to hold both lines under the reading bar, and the sea canvas keeps
+   its viewport height and moves down with the horizon. */
 .hero {
   --hero-h: max(100svh, 640px);
-  --sky-h: calc(var(--hero-h) * var(--horizon-frac));
-  --fs-v: calc((var(--hero-h) - var(--sky-h) - 48px) / 3.8);
-  --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 24px);
-  --fs-h: min(360px, (100vw - var(--h-left) - var(--gutter)) / 2.72, (var(--sky-h) - var(--reading-bar-height) - 24px) / 0.706);
-  /* The wave band ends about 14% of the poster below the horizon; the introduction starts under it. */
+  --fs-h: min(360px, (100vw - 2 * var(--gutter) - 24px) / 3.04);
+  --fs-top: calc(0.4 * var(--fs-h));
+  --h-left: calc(var(--gutter) + 0.32 * var(--fs-h) + 24px);
+  --sky-h: max(var(--hero-h) * var(--horizon-frac), var(--reading-bar-height) + 26px + 0.8 * var(--fs-top) + 0.74 * var(--fs-h));
+  --poster-h: calc(var(--sky-h) + (1 - var(--horizon-frac)) * var(--hero-h));
+  /* The wave band ends about 14% of the viewport below the horizon; the introduction starts under it. */
   --sea-top: calc(var(--sky-h) + 0.14 * var(--hero-h) + 24px);
   --ink-dark-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--fai-cod-gray));
   position: relative;
-  min-height: var(--hero-h);
+  min-height: var(--poster-h);
   background: var(--fai-cod-gray);
   color: var(--fai-smoke-white);
 }
@@ -37,7 +39,7 @@
 .poster {
   position: relative;
   isolation: isolate;
-  height: var(--hero-h);
+  height: var(--poster-h);
   overflow: hidden;
   background: linear-gradient(
     to bottom,
@@ -48,51 +50,46 @@
   );
 }
 
-.canvas {
+.poster > .canvas {
   z-index: 1;
+  top: calc(var(--sky-h) - var(--horizon-frac) * var(--hero-h));
+  bottom: auto;
+  height: var(--hero-h);
 }
 
+/* Behind the sea canvas with its base just below the horizon, so the opaque sea faces clip
+   the bottom sliver of the caps and the wave wires break over it. */
 .question {
   position: absolute;
-  inset: 0;
+  left: var(--h-left);
+  bottom: calc(var(--poster-h) - var(--sky-h) - 0.06 * var(--fs-h));
+  z-index: 0;
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 0.8;
+  color: var(--fai-cod-gray);
   text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
 }
 
-/* Upright in International Orange along the left gutter, rising out of the sea to the
-   horizon, in front of the water. Orange never reaches the sky: it and Celestial Blue share
-   a luminance. */
-.questionRise {
-  position: absolute;
-  left: var(--gutter);
-  top: var(--sky-h);
-  z-index: 2;
-  font-size: var(--fs-v);
-  letter-spacing: 0.02em; /* set where the size is, so the em resolves against it */
-  color: var(--fai-international-orange);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-/* Behind the sea canvas with its base just below the horizon, so the opaque sea faces clip
-   the bottom sliver of the caps and the wave wires break over it. */
+.questionFirst,
 .questionRest {
-  position: absolute;
-  left: var(--h-left);
-  bottom: calc(var(--hero-h) - var(--sky-h) - 0.06em);
-  z-index: 0;
-  font-size: var(--fs-h);
-  letter-spacing: 0.02em;
-  color: var(--fai-cod-gray);
+  display: block;
+  letter-spacing: 0.02em; /* set where the size is, so the em resolves against it */
 }
 
-/* The introduction, in the sea between the upright words and the node: it hangs from under
-   the wave band on the headline's left edge, and the poster grows if it runs long.
+.questionFirst {
+  font-size: var(--fs-top);
+}
+
+.questionRest {
+  font-size: var(--fs-h);
+}
+
+/* The introduction, in the sea beside the node: it hangs from under the wave band on the
+   question's left edge, and the poster grows if it runs long.
    The node stands at 75% of the width on wide screens. */
 .intro {
   position: relative;
@@ -101,7 +98,7 @@
   flex-direction: column;
   gap: 16px;
   width: min(34rem, 75vw - var(--h-left) - 112px);
-  margin: calc(var(--sea-top) - var(--hero-h)) 0 0 var(--h-left);
+  margin: calc(var(--sea-top) - var(--poster-h)) 0 0 var(--h-left);
   padding-bottom: 96px;
 }
 
@@ -189,8 +186,14 @@
 }
 
 /* Where the node stands in the middle (narrow or tall canvases), the introduction moves
-   below the poster, still in the sea. */
+   below the poster, still in the sea, and the question drops its indent to share the
+   gutter with it. */
 @media (max-width: 899px), (max-aspect-ratio: 11/10) {
+  .hero {
+    --fs-h: min(360px, (100vw - 2 * var(--gutter)) / 2.72);
+    --h-left: var(--gutter);
+  }
+
   .intro {
     width: auto;
     max-width: 40rem;
@@ -199,8 +202,6 @@
   }
 }
 
-/* Phones keep the corner: the first words stay upright in the sea and the rest takes what
-   is left of the sky. */
 @media (max-width: 672px) {
   .page {
     --gutter: 16px;
@@ -208,7 +209,6 @@
 
   .hero {
     --hero-h: max(100svh, 600px);
-    --h-left: calc(var(--gutter) + 0.8 * var(--fs-v) + 16px);
   }
 
   .intro {
