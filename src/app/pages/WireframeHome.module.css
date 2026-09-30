@@ -14,17 +14,26 @@
   min-height: 100vh;
 }
 
-/* The question stacks in the sky: "CAN THE OCEAN" at 0.4 of the size of "POWER AI?", line
-   box on line box, the lower line resting on the horizon. Schmalfette at 0.02em tracking:
-   "POWER AI?" is 2.692em long. The question and the introduction share a left edge indented
-   from the gutter by 0.32 of the headline size plus 24px; "POWER AI?" takes the width left
-   after it. The sky grows to hold both lines under the reading bar, and the sea canvas keeps
-   its viewport height and moves down with the horizon. */
+/* The node's place in the sea, read by the WebGL hero. Registered so it resolves to pixels. */
+@property --node-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+/* The poster keeps to the page column, the same one the reading bar and the reading below
+   use. The question stacks in the sky: "CAN THE OCEAN" at 0.4 of the size of "POWER AI?",
+   line box on line box, the lower line resting on the horizon. "POWER AI?" runs the column
+   edge to edge: in Schmalfette at 0.02em tracking its ink is 2.648em wide. The introduction
+   takes the left half of the column and the node stands in the middle of the right half.
+   The sky grows to hold both lines under the reading bar, and the sea canvas keeps its
+   viewport height and moves down with the horizon. */
 .hero {
   --hero-h: max(100svh, 640px);
-  --fs-h: min(360px, (100vw - 2 * var(--gutter) - 24px) / 3.04);
+  --column: calc(100vw - 2 * var(--gutter));
+  --fs-h: calc(var(--column) / 2.648);
   --fs-top: calc(0.4 * var(--fs-h));
-  --h-left: calc(var(--gutter) + 0.32 * var(--fs-h) + 24px);
+  --node-x: calc(var(--gutter) + 0.75 * var(--column));
   --sky-h: max(var(--hero-h) * var(--horizon-frac), var(--reading-bar-height) + 26px + 0.8 * var(--fs-top) + 0.74 * var(--fs-h));
   --poster-h: calc(var(--sky-h) + (1 - var(--horizon-frac)) * var(--hero-h));
   /* The wave band ends about 14% of the viewport below the horizon; the introduction starts under it. */
@@ -61,7 +70,7 @@
    the bottom sliver of the caps and the wave wires break over it. */
 .question {
   position: absolute;
-  left: var(--h-left);
+  left: var(--gutter);
   bottom: calc(var(--poster-h) - var(--sky-h) - 0.06 * var(--fs-h));
   z-index: 0;
   margin: 0;
@@ -77,13 +86,13 @@
 .questionFirst,
 .questionRest {
   display: block;
-  letter-spacing: 0.02em; /* set where the size is, so the em resolves against it */
+  /* Pulled back by the side bearing so the ink, not the glyph box, sits on the column edge.
+     Set where the size is, so the em resolves against it. */
+  margin-left: -0.012em;
+  letter-spacing: 0.02em;
 }
 
-/* Nudged so the C's ink lines up with the P's: Schmalfette's side bearing is 0.012em, and
-   the lower line is 2.5 times the size. */
 .questionFirst {
-  margin-left: 0.018em;
   font-size: var(--fs-top);
 }
 
@@ -91,17 +100,16 @@
   font-size: var(--fs-h);
 }
 
-/* The introduction, in the sea beside the node: it hangs from under the wave band on the
-   question's left edge, and the poster grows if it runs long.
-   The node stands at 75% of the width on wide screens. */
+/* The introduction, in the left half of the column beside the node: it hangs from under the
+   wave band on the question's left edge, and the poster grows if it runs long. */
 .intro {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: min(34rem, 75vw - var(--h-left) - 112px);
-  margin: calc(var(--sea-top) - var(--poster-h)) 0 0 var(--h-left);
+  width: min(34rem, 0.5 * var(--column) - 16px);
+  margin: calc(var(--sea-top) - var(--poster-h)) 0 0 var(--gutter);
   padding-bottom: 96px;
 }
 
@@ -110,6 +118,7 @@
   font-size: 17px;
   line-height: 1.65;
   color: var(--ink-dark-2);
+  text-wrap: pretty;
 }
 
 .intro strong {
@@ -189,14 +198,8 @@
 }
 
 /* Where the node stands in the middle (narrow or tall canvases), the introduction moves
-   below the poster, still in the sea, and the question drops its indent to share the
-   gutter with it. */
+   below the poster, still in the sea. */
 @media (max-width: 899px), (max-aspect-ratio: 11/10) {
-  .hero {
-    --fs-h: min(360px, (100vw - 2 * var(--gutter)) / 2.72);
-    --h-left: var(--gutter);
-  }
-
   .intro {
     width: auto;
     max-width: 40rem;
@@ -205,17 +208,20 @@
   }
 }
 
-@media (max-width: 672px) {
+/* Below 720px the reading sections take a 24px margin; the poster, bar and footer share it. */
+@media (max-width: 719px) {
   .page {
-    --gutter: 16px;
+    --gutter: 24px;
   }
+}
 
+@media (max-width: 672px) {
   .hero {
     --hero-h: max(100svh, 600px);
   }
 
   .intro {
-    padding: 40px 16px 64px;
+    padding: 40px var(--gutter) 64px;
   }
 
   .intro p {

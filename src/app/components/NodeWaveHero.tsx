@@ -54,7 +54,7 @@ const CAM_DISTANCE = 190;                    // m horizontally from the node
 const FOV_Y = (40 * Math.PI) / 180;          // vertical field of view
 const TILT = Math.atan2(CAM_HEIGHT, CAM_DISTANCE);   // optical axis points at the node's water line
 const CAM_DIST = Math.hypot(CAM_HEIGHT, CAM_DISTANCE);
-const NODE_NDC_X_WIDE = 0.5;                 // node sits right of centre on wide canvases (lens shift)
+const NODE_NDC_X_WIDE = 0.5;                 // node sits right of centre on wide canvases (lens shift); also the furthest it may go
 const WIDE_ASPECT = 1.1;
 const MAX_ASPECT = 2.4;                      // widest canvas the grid is sized for
 const SPIN_RAD_PER_S = (2 * Math.PI) / 150;  // slow turntable
@@ -346,13 +346,13 @@ function buildView(): mat4 {
  * Perspective projection with a lens shift: the horizon (the horizontal
  * direction, which sits TILT above the optical axis) is moved to
  * HORIZON_FRAC from the top, and on wide canvases the node is moved right
- * of centre. Shifting in clip space keeps the horizon level.
+ * of centre, by `nodeShiftX` in NDC. Shifting in clip space keeps the horizon level.
  */
-function buildProjection(aspect: number): mat4 {
+function buildProjection(aspect: number, nodeShiftX: number): mat4 {
   const proj = mat4.perspective(mat4.create(), FOV_Y, aspect, 1, FAR_PLANE);
   const horizonUnshifted = Math.tan(TILT) / Math.tan(FOV_Y / 2);
   const shiftY = 1 - 2 * HORIZON_FRAC - horizonUnshifted;
-  const shiftX = aspect >= WIDE_ASPECT ? NODE_NDC_X_WIDE : 0;
+  const shiftX = aspect >= WIDE_ASPECT ? nodeShiftX : 0;
   const shift = mat4.fromTranslation(mat4.create(), [shiftX, shiftY, 0]);
   return mat4.multiply(mat4.create(), shift, proj);
 }
@@ -426,8 +426,8 @@ class HeroRenderer {
     this.node = makeLineVao(this.gl, this.program, positions);
   }
 
-  setAspect(aspect: number) {
-    this.proj = buildProjection(aspect);
+  setAspect(aspect: number, nodeShiftX: number) {
+    this.proj = buildProjection(aspect, nodeShiftX);
   }
 
   render(t: number, spin: number, animate: boolean, width: number, height: number, palette: HeroPalette) {
@@ -526,7 +526,12 @@ export function NodeWaveHero({ className, palette = DEFAULT_PALETTE }: NodeWaveH
         canvas.width = width;
         canvas.height = height;
       }
-      renderer?.setAspect(width / height);
+      // The page may place the node with a --node-x length (from the canvas's left edge).
+      const nodeX = parseFloat(getComputedStyle(canvas).getPropertyValue("--node-x"));
+      const nodeShiftX = nodeX > 0 && canvas.clientWidth > 0
+        ? Math.max(-NODE_NDC_X_WIDE, Math.min(NODE_NDC_X_WIDE, (2 * nodeX) / canvas.clientWidth - 1))
+        : NODE_NDC_X_WIDE;
+      renderer?.setAspect(width / height, nodeShiftX);
       needsFrame = true;
     };
     resize();
