@@ -13,7 +13,7 @@ export function SharedInputsPanel({ inputs, setInput }: Props) {
   return (
     <div className="card">
       <div className={styles.header}>
-        <span className={styles.eyebrow}>Shared</span>
+        <h3 className={styles.title}>Shared inputs</h3>
       </div>
       <div className={styles.grid}>
         {SHARED_SLIDERS.map((slider) => (

@@ -9,9 +9,11 @@ const chapters = [
   ["appendix", "Appendix"],
 ] as const;
 
+type Tone = "sky" | "sea" | "paper";
+
 export function PageProgress({ heroHorizon }: { heroHorizon: number }) {
   const nav = useRef<HTMLElement>(null);
-  const [position, setPosition] = useState({ index: 0, fraction: 0, dark: false });
+  const [position, setPosition] = useState<{ index: number; fraction: number; tone: Tone }>({ index: 0, fraction: 0, tone: "sky" });
 
   useEffect(() => {
     let frame = 0;
@@ -29,15 +31,16 @@ export function PageProgress({ heroHorizon }: { heroHorizon: number }) {
       const start = bounds[index]!.top;
       const end = bounds[index + 1]?.top ?? maxScroll - window.scrollY + anchor;
       const fraction = atEnd ? 1 : Math.max(0, Math.min(1, (anchor - start) / Math.max(1, end - start)));
-      // Follow the surface behind the bar, including the hero's sky/ocean boundary.
-      const middle = barHeight / 2;
+      // Follow the surface behind the bar: clear while the poster's sky fills it, dark while
+      // any of the sea is under it, Smoke White once the reading has taken over. The sea
+      // canvas draws its horizon at heroHorizon of its own height.
       const hero = bounds[0]!;
-      const dashboard = bounds[2]!;
-      const overSky = hero.top <= middle && hero.top + hero.height * heroHorizon > middle;
-      const overDashboard = dashboard.top <= middle && dashboard.bottom > middle;
-      const dark = !overSky && !overDashboard;
-      setPosition(previous => previous.index === index && previous.dark === dark &&
-        Math.abs(previous.fraction - fraction) < 0.001 ? previous : { index, fraction, dark });
+      const sea = document.querySelector(`#${chapters[0][0]} canvas`)?.getBoundingClientRect() ?? hero;
+      const overHero = hero.top < barHeight && hero.bottom > 0;
+      const overSky = overHero && sea.top + sea.height * heroHorizon > barHeight;
+      const tone: Tone = overSky ? "sky" : overHero ? "sea" : "paper";
+      setPosition(previous => previous.index === index && previous.tone === tone &&
+        Math.abs(previous.fraction - fraction) < 0.001 ? previous : { index, fraction, tone });
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     window.addEventListener("scroll", schedule, { passive: true });
@@ -53,7 +56,7 @@ export function PageProgress({ heroHorizon }: { heroHorizon: number }) {
     };
   }, [heroHorizon]);
 
-  return <nav ref={nav} className={`${styles.bar} ${position.dark ? styles.dark : ""}`} aria-label="Page sections">
+  return <nav ref={nav} className={`${styles.bar} ${styles[position.tone]}`} aria-label="Page sections">
     <ol className={styles.chapters}>{chapters.map(([id, label], index) => <li key={id}>
       <a href={`#${id}`} aria-current={index === position.index ? "location" : undefined}>
         <span>{label}</span>

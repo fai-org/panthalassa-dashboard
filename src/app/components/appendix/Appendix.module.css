@@ -1,56 +1,62 @@
+/* Appendix: native details on Smoke White. Summaries are Plex Serif; tables and captions keep the reading face. */
 .appendix {
-  padding: 0 max(28px, calc((100% - 1160px) / 2)) 72px;
-  color: #a6bac8;
-  background: #112a40;
-  font-size: 15px;
-  line-height: 1.65;
-  scroll-margin-top: 28px;
+  padding: 0 max(32px, calc((100% - 1120px) / 2)) 96px;
+  color: var(--text-secondary);
+  background: var(--fai-smoke-white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  scroll-margin-top: 32px;
 }
 .appendix > h2 {
-  margin: 0 0 18px;
-  padding-top: 36px;
-  border-top: 1px solid rgba(178, 210, 227, .18);
-  font-size: clamp(30px, 3.8vw, 40px);
-  font-weight: 450;
-  line-height: 1.2;
-  letter-spacing: -.025em;
-  color: #e1ebf0;
+  margin: 0 0 16px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
-.appendix > p { max-width: 820px; margin: 0 0 28px; }
-.appendix details { border-top: 1px solid rgba(178, 210, 227, .18); }
-.appendix details:last-child { border-bottom: 1px solid rgba(178, 210, 227, .18); }
+.appendix > p { max-width: 820px; margin: 0 0 32px; }
+.appendix details { border-top: 1px solid var(--border); }
+.appendix details:last-child { border-bottom: 1px solid var(--border); }
 .appendix summary {
-  padding: 20px 0;
-  color: #e1ebf0;
+  padding: 24px 0;
+  color: var(--text-primary);
   font-size: 20px;
-  font-weight: 450;
+  font-weight: 400;
   line-height: 1.4;
   cursor: pointer;
 }
-.appendix summary::marker { color: #b4e6d5; }
-.appendix summary:focus-visible, .appendix a:focus-visible { outline: 2px solid #b4e6d5; outline-offset: 4px; }
-.appendix :global(.panel) { max-width: 820px; margin: 0 0 30px 24px; }
-.appendix p { margin: 0 0 15px; }
-.appendix strong { color: #e1ebf0; font-weight: 550; }
-.appendix a { color: #b4e6d5; text-underline-offset: 3px; }
-.appendix ul, .appendix ol { padding-left: 22px; margin: 16px 0 20px; }
-.appendix li { margin: 0 0 10px; }
-.appendix li::marker { color: #b4e6d5; }
-.appendix math { color: #e1ebf0; font-size: 1.08em; }
-.appendix :global(span.math.display) { display: block; overflow-x: auto; padding: 13px 5px; margin: 10px 0 18px; }
-.appendix :global(.panel) > p:has(> strong:first-child) { margin-top: 20px; }
-.appendix table { width: 100%; border-collapse: collapse; margin: 18px 0 23px; font-size: 14px; }
-.appendix th { color: #e1ebf0; font-weight: 550; text-align: left; }
-.appendix th, .appendix td { padding: 11px 14px 11px 0; border-bottom: 1px solid #355066; vertical-align: top; }
-.appendix td:first-child { min-width: 125px; color: #e1ebf0; }
+.appendix summary::marker { color: var(--fai-celestial-blue); }
+.appendix :global(.panel) { max-width: 820px; margin: 0 0 32px 24px; }
+.appendix p { margin: 0 0 16px; }
+.appendix strong { color: var(--text-primary); font-weight: 600; }
+.appendix a { color: var(--text-primary); text-underline-offset: 3px; }
+.appendix ul, .appendix ol { padding-left: 24px; margin: 16px 0 24px; }
+.appendix li { margin: 0 0 8px; }
+/* A bullet's heading in the paper template's style: Plex Sans, bold, all caps, tracked. */
+.appendix li > strong:first-child { font: 600 0.875em/1 var(--font-utility); letter-spacing: 0.05em; text-transform: uppercase; }
+/* A list whose items open on a caps lead-in drops its bullets, as in the takeaways; plain lists
+   keep quiet bullets in the text colour. */
+.appendix ul:has(> li > strong:first-child) { list-style: none; padding-left: 0; }
+.appendix math { color: var(--text-primary); font-size: 1.08em; }
+.appendix :global(span.math.display) { display: block; overflow-x: auto; padding: 12px 4px; margin: 8px 0 16px; }
+.appendix :global(.panel) > p:has(> strong:first-child) { margin-top: 24px; }
+.appendix table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 15px; }
+.appendix th { color: var(--text-primary); font: 600 13px/1.4 var(--font-utility); text-align: left; }
+.appendix th, .appendix td { padding: 12px 16px 12px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.appendix td:first-child { min-width: 128px; color: var(--text-primary); }
 .appendix td:nth-child(2) { min-width: 140px; }
 .appendix table p { margin: 0; }
 .appendix :global(.table-wrap) { overflow-x: auto; }
-.appendix figure { margin: 22px 0; }
+.appendix figure { margin: 24px 0; }
 .appendix figure img { display: block; width: 100%; height: auto; }
-.appendix figcaption { font-size: 12px; margin-top: 9px; }
+.appendix figcaption { font: 13px/1.6 var(--font-utility); color: var(--text-tertiary); margin-top: 8px; }
 @media (max-width: 719px) {
-  .appendix { padding: 0 24px 48px; }
+  .appendix { padding: 0 24px 64px; }
   .appendix summary { font-size: 18px; }
   .appendix :global(.panel) { margin-left: 0; }
   .appendix math { font-size: 1em; }

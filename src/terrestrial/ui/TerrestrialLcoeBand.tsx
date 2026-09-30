@@ -1,25 +1,21 @@
 import type { TerrestrialModelResult } from "../model/types.js";
 import { formatUsdPerUnit } from "../../app/lib/formatters.js";
-import bandStyles from "../../app/components/TotalOutputBand.module.css";
+import styles from "../../app/components/LcoeBand.module.css";
 
 interface Props {
   result: TerrestrialModelResult;
 }
 
-/** Reuses TotalOutputBand's CSS module for visual consistency; sits in its own row below the total-lifecycle-cost cards. */
+/** The land-based power-system LCOE, set like LcoeBand so the pair reads identically. */
 export function TerrestrialLcoeBand({ result }: Props) {
   return (
-    <div className={`card ${bandStyles.accentCard}`}>
-      <div className={bandStyles.eyebrowRow}>
-        <span className={bandStyles.eyebrow}>Land-based</span>
-      </div>
-      <div className={bandStyles.wrap}>
-        <div className={bandStyles.half}>
-          <span className={bandStyles.label}>Power-system LCOE</span>
-          <span className={`${bandStyles.value} num`}>{formatUsdPerUnit(result.lcoe.lcoe_usd_per_mwh, 2)}/MWh</span>
-          <span className={bandStyles.sub}>Generation-only, over the power system's economic life.</span>
-        </div>
-      </div>
-    </div>
+    <section className={`card ${styles.card}`}>
+      <h4 className={styles.title}>Power-system LCOE</h4>
+      <p className={`${styles.value} num`}>
+        {formatUsdPerUnit(result.lcoe.lcoe_usd_per_mwh, 2)}
+        <span className={styles.unit}>/MWh</span>
+      </p>
+      <p className={styles.sub}>Generation-only, over the power system’s economic life.</p>
+    </section>
   );
 }

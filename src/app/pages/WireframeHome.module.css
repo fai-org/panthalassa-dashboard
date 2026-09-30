@@ -1,262 +1,234 @@
+/*
+ * The page: a poster, then a book. The opening is a Bauhaus poster in FAI's
+ * saturated fills (Celestial Blue sky, Cod Gray sea, the question stacked in
+ * Cod Gray on the sky) with the introduction in the sea; the
+ * reading runs on Smoke White in IBM Plex Serif; the model's Panthalassa
+ * column is Celestial Blue; the page ends on an International Orange field.
+ */
 .page {
   --reading-bar-height: 50px;
-  --sky-top: #e9f4fb;
-  --sky-mid: #a9d0ec;
-  --sky-horizon: #4d93cc;
-  --deep: #112a40;
   --gutter: max(32px, calc(50vw - 560px));
-  --ink: #0b2a44;
-  --ink-muted: #2f5b7d;
-  --fg: #e3ebf2;
-  --fg-muted: #8fa5b8;
-  --hairline: rgba(227, 235, 242, 0.14);
 
-  background: var(--deep);
-  color: var(--fg);
+  background: var(--fai-smoke-white);
+  color: var(--text-primary);
   min-height: 100vh;
 }
 
-.page > section { scroll-margin-top: calc(var(--reading-bar-height) + 14px); }
-
-.dashboard {
-  container: dashboard / inline-size;
-  margin: 0 12px 24px;
-  border: 1px solid #9eafb9;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  background: var(--bg);
-  color: var(--text-primary);
+/* The node's place in the sea, read by the WebGL hero. Registered so it resolves to pixels. */
+@property --node-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
 }
 
-.dashboard > div {
-  border-radius: inherit;
-}
-
-.dashboard header {
-  border-radius: 8px 8px 0 0;
-}
-
-@media (max-width: 720px) {
-  .dashboard {
-    margin-inline: 6px;
-  }
-}
-
+/* The poster keeps to the page column, the same one the reading bar and the reading below
+   use. The question stacks in the sky: "CAN THE OCEAN" at 0.4 of the size of "POWER AI?",
+   line box on line box, the lower line resting on the horizon. "POWER AI?" runs the column
+   edge to edge: in Schmalfette at 0.02em tracking its ink is 2.648em wide. The introduction
+   takes the left half of the column and the node stands in the middle of the right half.
+   The sky grows to hold both lines under the reading bar, and the sea canvas keeps its
+   viewport height and moves down with the horizon. */
 .hero {
+  --hero-h: max(100svh, 640px);
+  --column: calc(100vw - 2 * var(--gutter));
+  --fs-h: calc(var(--column) / 2.648);
+  --fs-top: calc(0.4 * var(--fs-h));
+  --node-x: calc(var(--gutter) + 0.75 * var(--column));
+  --sky-h: max(var(--hero-h) * var(--horizon-frac), var(--reading-bar-height) + 26px + 0.8 * var(--fs-top) + 0.74 * var(--fs-h));
+  --poster-h: calc(var(--sky-h) + (1 - var(--horizon-frac)) * var(--hero-h));
+  /* The wave band ends about 14% of the viewport below the horizon; the introduction starts under it. */
+  --sea-top: calc(var(--sky-h) + 0.14 * var(--hero-h) + 24px);
+  --ink-dark-2: color-mix(in srgb, var(--fai-smoke-white) 76%, var(--fai-cod-gray));
   position: relative;
-  height: 100vh;
-  min-height: 900px;
+  min-height: var(--poster-h);
+  background: var(--fai-cod-gray);
+  color: var(--fai-smoke-white);
+}
+
+.poster {
+  position: relative;
+  isolation: isolate;
+  height: var(--poster-h);
   overflow: hidden;
   background: linear-gradient(
     to bottom,
-    var(--sky-top) 0%,
-    var(--sky-mid) calc(var(--horizon) - 24%),
-    var(--sky-horizon) var(--horizon),
-    var(--deep) var(--horizon),
-    var(--deep) 100%
+    var(--fai-celestial-blue) 0,
+    var(--fai-celestial-blue) var(--sky-h),
+    var(--fai-cod-gray) var(--sky-h),
+    var(--fai-cod-gray) 100%
   );
 }
 
-.topbar {
+.poster > .canvas {
+  z-index: 1;
+  top: calc(var(--sky-h) - var(--horizon-frac) * var(--hero-h));
+  bottom: auto;
+  height: var(--hero-h);
+}
+
+/* Behind the sea canvas with its base just below the horizon, so the opaque sea faces clip
+   the bottom sliver of the caps and the wave wires break over it. */
+.question {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 20px var(--gutter);
-  z-index: 2;
-}
-
-.brand {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.nav {
-  display: flex;
-  gap: 24px;
-}
-
-.navLink {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-.navLink:hover {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
-}
-
-.title {
-  position: absolute;
-  top: 11vh;
   left: var(--gutter);
-  z-index: 2;
-  max-width: 60vw;
+  bottom: calc(var(--poster-h) - var(--sky-h) - 0.06 * var(--fs-h));
+  z-index: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.8;
+  color: var(--fai-cod-gray);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-.eyebrow {
+.questionFirst,
+.questionRest {
   display: block;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-  margin-bottom: 12px;
+  /* Pulled back by the side bearing so the ink, not the glyph box, sits on the column edge.
+     Set where the size is, so the em resolves against it. */
+  margin-left: -0.012em;
+  letter-spacing: 0.02em;
 }
 
-.headline {
-  font-size: clamp(36px, 5vw, 72px);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--ink);
+.questionFirst {
+  font-size: var(--fs-top);
 }
 
-.heroSubtitle {
-  max-width: 38rem;
-  margin: 16px 0 0;
-  font-size: clamp(15px, 1.3vw, 17px);
-  line-height: 1.55;
-  color: var(--ink-muted);
+.questionRest {
+  font-size: var(--fs-h);
 }
 
-.copy {
-  position: absolute;
-  left: var(--gutter);
-  bottom: 48px;
+/* The introduction, in the left half of the column beside the node: it hangs from under the
+   wave band on the question's left edge, and the poster grows if it runs long. */
+.intro {
+  position: relative;
   z-index: 2;
-  width: min(34rem, 43vw);
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 24px 28px;
-  border: 1px solid rgba(227, 235, 242, 0.28);
-  border-radius: 2px;
-  background: rgba(9, 24, 38, 0.6);
-  backdrop-filter: blur(6px);
+  width: min(34rem, 0.5 * var(--column) - 16px);
+  margin: calc(var(--sea-top) - var(--poster-h)) 0 0 var(--gutter);
+  padding-bottom: 96px;
 }
 
-.copy p {
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--fg-muted);
+.intro p {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-dark-2);
+  text-wrap: pretty;
 }
 
-.copy strong {
-  color: var(--fg);
-  font-weight: 650;
+.intro strong {
+  color: var(--fai-smoke-white);
+  font-weight: 600;
 }
 
-.copy p:first-child {
-  font-size: 18px;
-  color: var(--fg);
+.intro .heroSubtitle {
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--ink-dark-2);
 }
 
+.intro .lead {
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--fai-smoke-white);
+}
+
+/* Secondary by intent: the page asks readers to take the explanation first. */
 .cta {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   align-self: flex-start;
-  margin-top: 8px;
-  padding: 10px 16px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--fg);
+  margin-top: 16px;
+  padding: 12px 16px;
+  font-family: var(--font-utility);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fai-smoke-white);
   text-decoration: none;
-  border: 1px solid rgba(227, 235, 242, 0.45);
+  border: 1px solid var(--fai-smoke-white);
   border-radius: 2px;
 }
 
+/* Black on orange, a permitted pairing. */
 .cta:hover {
-  background: rgba(227, 235, 242, 0.08);
-  border-color: var(--fg);
+  background: var(--fai-international-orange);
+  border-color: var(--fai-international-orange);
+  color: var(--fai-cod-gray);
 }
 
-.body {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-  padding: 72px var(--gutter) 96px;
-  max-width: none;
-  margin: 0 auto;
-  border-top: 1px solid var(--hairline);
+/* Sections land just below the fixed reading bar. The model runs edge to edge and its
+   side columns stick under the bar, so it lands flush against it. */
+.page > section { scroll-margin-top: calc(var(--reading-bar-height) + 14px); }
+.page > .dashboard { scroll-margin-top: var(--reading-bar-height); }
+/* The explanation opens on its own padding; any margin would show the end of the sea. */
+.page > .hero + section { scroll-margin-top: var(--reading-bar-height); }
+
+.dashboard > div {
+  container: dashboard / inline-size;
+  color: var(--text-primary);
 }
 
-.body h2 {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  margin-bottom: 14px;
+.dashboard:focus {
+  outline: none;
 }
 
-.body p {
-  font-size: 14px;
-  line-height: 1.65;
-  color: var(--fg-muted);
+/* The page ends on the committed orange field, with the black lockup (a permitted pairing). */
+.footer {
+  display: flex;
+  align-items: center;
+  padding: 64px var(--gutter);
+  background: var(--fai-international-orange);
 }
 
-.canvas {
-  z-index: 1;
+.lockup {
+  display: block;
+  line-height: 0;
 }
 
-@media (max-width: 720px) {
-  .hero {
-    min-height: 720px;
-  }
-  .topbar {
-    padding: 16px 20px;
-  }
-  .title {
-    left: 20px;
-    top: 10vh;
-    max-width: calc(100vw - 40px);
-  }
-  .copy {
-    left: 20px;
-    right: 20px;
-    bottom: 28px;
-    max-width: none;
-  }
-  .body {
-    grid-template-columns: 1fr;
-    padding: 48px 20px 64px;
-  }
+.lockup img {
+  display: block;
+  width: auto;
+  height: 48px;
 }
 
-/* Keep the full introduction below the illustration when side-by-side space is limited. */
-@media (max-width: 1000px), (max-aspect-ratio: 11/10) {
-  .hero {
-    height: auto;
-    min-height: 0;
-    padding-top: 720px;
-    padding-bottom: 32px;
-    background: linear-gradient(to bottom, var(--sky-top) 0px, var(--sky-mid) 115px, var(--sky-horizon) 288px, var(--deep) 288px, var(--deep) 100%);
-  }
-  .canvas { height: 720px; }
-  .title { top: 56px; left: 24px; max-width: min(600px, calc(100% - 48px)); }
-  .copy {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
+/* Where the node stands in the middle (narrow or tall canvases), the introduction moves
+   below the poster, still in the sea. */
+@media (max-width: 899px), (max-aspect-ratio: 11/10) {
+  .intro {
     width: auto;
-    max-width: 42rem;
-    margin: 0 24px;
-    padding: 24px;
+    max-width: 40rem;
+    margin: 0;
+    padding: 48px var(--gutter) 80px;
+  }
+}
+
+/* Below 720px the reading sections take a 24px margin; the poster, bar and footer share it. */
+@media (max-width: 719px) {
+  .page {
+    --gutter: 24px;
+  }
+}
+
+@media (max-width: 672px) {
+  .hero {
+    --hero-h: max(100svh, 600px);
+  }
+
+  .intro {
+    padding: 40px var(--gutter) 64px;
+  }
+
+  .intro p {
+    font-size: 17px;
+  }
+
+  .intro .lead {
+    font-size: 20px;
   }
 }

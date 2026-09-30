@@ -1,29 +1,39 @@
 .wrap {
-  padding: 6px 20px 10px;
+  padding: 0;
 }
 
+/* No gutters between columns, so the row rules run unbroken and a highlight fills its whole
+   cell; the cells carry the spacing. Every column is set flush right, the labels included, so
+   each label sits against its figures and the columns scan. */
 .headerRow,
 .row {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
+  align-items: stretch;
 }
 
 .headerRow {
-  padding: 10px 0 8px;
   border-bottom: 1px solid var(--border);
 }
 
 .cornerLabel {
+  font-family: var(--font-utility);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-tertiary);
+  margin: 0;
+  padding: 16px 12px 8px 0;
+  text-align: right;
 }
 
 .colHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 12px 8px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -32,7 +42,6 @@
 }
 
 .row {
-  padding: 11px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -41,17 +50,35 @@
 }
 
 .rowLabel {
-  font-size: 12.5px;
+  padding: 12px 12px 12px 0;
+  font-size: 13px;
   font-weight: 500;
+  text-align: right;
   color: var(--text-primary);
 }
 
 .rowValue {
+  padding: 12px;
   font-size: 13px;
   font-weight: 600;
+  text-align: right;
   color: var(--text-primary);
   min-width: 0;
   overflow-wrap: break-word;
+}
+
+/* The lower figure in a row is highlighted in its side's colour; the other goes quiet. */
+.betterOcean {
+  background: var(--side-ocean-soft);
+}
+
+.betterLand {
+  background: var(--side-land-soft);
+}
+
+.worse {
+  font-weight: 400;
+  color: var(--text-secondary);
 }
 
 @media (max-width: 640px) {
@@ -62,13 +89,19 @@
   .row {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas: "label label" "ocean terrestrial";
-    row-gap: 4px;
-    padding: 10px 0;
+    padding-bottom: 8px;
   }
 
   .rowLabel {
     grid-area: label;
+    padding: 12px 0 4px;
+    text-align: left;
     color: var(--text-tertiary);
+  }
+
+  .rowValue {
+    padding: 8px 12px;
+    text-align: left;
   }
 
   .rowValue:nth-of-type(2) {
@@ -81,12 +114,12 @@
 
   .rowValue::before {
     display: block;
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--text-tertiary);
-    margin-bottom: 1px;
+    margin-bottom: 2px;
   }
 
   .rowValue:nth-of-type(2)::before {

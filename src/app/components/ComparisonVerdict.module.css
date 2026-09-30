@@ -1,0 +1,139 @@
+/* The comparison, drawn. Panthalassa's bar is Celestial Blue, Terrestrial's is Cod Gray at 64%,
+   and the stretch the dearer build runs past the cheaper one is International Orange: the one
+   place on the dashboard that colour appears. */
+:global(.card).verdictCard {
+  padding: 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sub {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* Two bars on one scale. Label and value on the first line, the bar on the second. */
+.bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 16px;
+  row-gap: 8px;
+}
+
+.barLabel {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-utility);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.barValue {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.track {
+  grid-column: 1 / -1;
+  display: flex;
+  height: 48px;
+  background: var(--surface-alt);
+}
+
+.fill {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.fillOcean {
+  background: var(--side-ocean);
+}
+
+.fillLand {
+  background: var(--side-land);
+}
+
+/* The overage: what one build costs beyond the other. Cod Gray label on orange (5.7:1). */
+.diff {
+  flex-shrink: 0;
+  height: 100%;
+  background: var(--finding);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  overflow: hidden;
+}
+
+.diffLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fai-cod-gray);
+  white-space: nowrap;
+}
+
+/* The finding, with the percentage at display size, centred on the sentence beside it. */
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+/* Plex Serif, not the mono of the other figures: at this size a monospaced full stop opens a gap. */
+.big {
+  font-family: var(--font-body);
+  font-variant-numeric: lining-nums;
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.verdictText {
+  max-width: 34em;
+  text-wrap: balance;
+}
+
+.verdictText :global(.num) {
+  font-weight: 600;
+}
+
+@media (max-width: 1311px) {
+  .verdict {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

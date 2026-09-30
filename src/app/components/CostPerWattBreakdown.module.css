@@ -1,5 +1,5 @@
 .wrap {
-  padding: 18px 20px 20px;
+  padding: 16px 0 0;
 }
 
 .titleRow {
@@ -7,24 +7,27 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .title {
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
 }
 
 .subtitle {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-tertiary);
 }
 
+/* No gutters between columns, so the row rules run unbroken and a highlight fills its whole
+   cell; the cells carry the spacing. Every column is set flush right, the labels included, so
+   each label sits against its figures and the columns scan. */
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 0 16px;
 }
 
 .cornerLabel,
@@ -33,26 +36,34 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  padding: 0 0 8px;
+  padding: 0 12px 8px;
   border-bottom: 1px solid var(--border);
 }
 
 .cornerLabel {
+  padding-left: 0;
+  text-align: right;
   color: var(--text-tertiary);
 }
 
 .colHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
   color: var(--accent-strong);
 }
 
 .rowLabel {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
-  padding: 10px 0;
+  padding: 12px 12px 12px 0;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .rowValue {
@@ -61,29 +72,30 @@
   color: var(--text-primary);
   min-width: 0;
   overflow-wrap: break-word;
-  padding: 10px 0;
+  padding: 12px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  text-align: right;
 }
 
+/* Panthalassa's plant, fuel and facility are one bundled figure spanning three rows. It takes no
+   fill: shading is reserved for the lower figure, and a grey block read as one merged slab. */
 .nodesCell {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
   gap: 2px;
-  padding: 10px 10px 10px 0;
+  padding: 12px;
   border-bottom: 1px solid var(--border);
-  background: var(--surface-alt);
-  border-radius: 4px;
 }
 
 .nodesLabel {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
 }
 
 .nodesValue {
@@ -92,26 +104,36 @@
   color: var(--text-primary);
 }
 
+/* A bold cell in the paper template's style: Plex Sans, bold, all caps, tracked. The total sits
+   under a heavier Cod Gray rule, drawn over the last row's hairline. */
 .totalLabel {
-  font-size: 12.5px;
-  font-weight: 700;
+  font-family: var(--font-utility);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--text-primary);
-  padding: 11px 0;
-  border-top: 1px solid var(--border);
+  padding: 12px 12px 12px 0;
+  border-top: 2px solid var(--fai-cod-gray);
   border-bottom: 1px solid var(--border);
+  margin-top: -1px;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  text-align: right;
 }
 
 .totalValue {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
-  padding: 11px 0;
-  border-top: 1px solid var(--border);
+  padding: 12px;
+  border-top: 2px solid var(--fai-cod-gray);
+  margin-top: -1px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .lastRowLabel {
@@ -131,14 +153,29 @@
 
   .rowLabel,
   .totalLabel {
-    font-size: 11.5px;
+    font-size: 12px;
   }
+}
+
+/* The lower figure in a like-for-like row is highlighted in its side's colour; the other goes quiet. */
+.betterOcean {
+  background: var(--side-ocean-soft);
+}
+
+.betterLand {
+  background: var(--side-land-soft);
+}
+
+.worse {
+  font-weight: 400;
+  color: var(--text-secondary);
 }
 
 @container results (max-width: 400px) {
   .wrap { padding: 14px 12px; }
-  .grid { column-gap: 8px; }
-  .colHeader, .cornerLabel { font-size: 10px; overflow-wrap: anywhere; }
-  .nodesCell { padding-right: 4px; min-width: 0; }
+  .colHeader, .cornerLabel { font-size: 10px; }
+  .colHeader :global(.side-mark) { display: none; }
+  .rowValue, .totalValue, .nodesCell, .colHeader { padding-left: 6px; padding-right: 6px; }
+  .nodesCell { min-width: 0; }
   .totalValue, .nodesValue { min-width: 0; overflow-wrap: anywhere; }
 }

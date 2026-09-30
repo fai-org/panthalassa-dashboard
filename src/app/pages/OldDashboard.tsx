@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useModel } from "../hooks/useModel.js";
 import { SliderPanel } from "../components/SliderPanel.js";
 import { SharedInputsPanel } from "../components/SharedInputsPanel.js";
-import { TotalOutputBand } from "../components/TotalOutputBand.js";
+import { ComparisonVerdict } from "../components/ComparisonVerdict.js";
 import { LcoeBand } from "../components/LcoeBand.js";
 import { ResultsHeader } from "../components/ResultsHeader.js";
 import { CostBreakdown } from "../components/CostBreakdown.js";
@@ -15,7 +15,6 @@ import {
   TerrestrialBaselineComparison,
   TerrestrialControls,
   TerrestrialDiagnostics,
-  TerrestrialOutputBand,
   TerrestrialLcoeBand,
   TerrestrialResults,
   buildTerrestrialInputs,
@@ -59,17 +58,12 @@ export function OldDashboard() {
     [inputs, terrestrialInputs],
   );
 
-  const costDifferencePercent =
-    100 * (1 - result.costs.total_node_fleet_cost_usd / terrestrialResult.costs.total_lifecycle_cost_usd);
-  const roundedDifference = Math.abs(costDifferencePercent).toFixed(1);
-
   return (
     <div className={styles.shell} ref={shellRef}>
-      <header className={styles.topbar}>
-        <h2 className={styles.title}>The Interactive Model</h2>
-      </header>
-
+      {/* Three columns: the Panthalassa inputs on a Celestial Blue field, the results on
+          Smoke White, the land-based inputs on Timberwolf. The heading heads the results. */}
       <div className={styles.layout}>
+        <h2 id="model-heading" className={styles.title}>Now, make the model yours</h2>
         <aside className={styles.sidebar}>
           <SliderPanel inputs={inputs} setInput={setInput} resetAll={resetAll} collapsible={compactControls} />
         </aside>
@@ -87,40 +81,39 @@ export function OldDashboard() {
         <main className={styles.main}>
           <SharedInputsPanel inputs={inputs} setInput={setInput} />
 
-          <div className={styles.compareRow}>
-            <TotalOutputBand result={result} />
-            <TerrestrialOutputBand result={terrestrialResult} />
-          </div>
+          <ComparisonVerdict oceanResult={result} terrestrialResult={terrestrialResult} />
 
-          <div
-            className={`${styles.costComparison} ${costDifferencePercent < 0 ? styles.costPremium : ""}`}
-            aria-live="polite"
-          >
-            {roundedDifference === "0.0" ? "Same cost as land-based" : <>
-              <strong className="num">{roundedDifference}%</strong>
-              <span>{costDifferencePercent > 0 ? "less" : "more"} than land-based</span>
-            </>}
-          </div>
-
-          <div className={styles.compareRow}>
-            <CostBreakdown result={result} />
-            <TerrestrialResults result={terrestrialResult} />
-          </div>
-
-          <div className={styles.compareRow}>
-            <LcoeBand result={result} />
-            <TerrestrialLcoeBand result={terrestrialResult} />
+          {/* Each architecture gets its own column under a side-keyed head: Celestial Blue for
+              the ocean fleet, Cod Gray for the land-based plant. Paired cards share a row, so
+              the two breakdowns and the two LCOEs sit level. The columns break for the shared
+              tables and pick up again below them. */}
+          <div className={styles.sides}>
+            <section className={styles.side} aria-labelledby="ocean-costs">
+              <h3 id="ocean-costs" className={`${styles.sideHead} ${styles.sideOcean}`}>Panthalassa</h3>
+              <CostBreakdown result={result} />
+              <LcoeBand result={result} />
+            </section>
+            <section className={styles.side} aria-labelledby="land-costs">
+              <h3 id="land-costs" className={`${styles.sideHead} ${styles.sideLand}`}>Land-based</h3>
+              <TerrestrialResults result={terrestrialResult} />
+              <TerrestrialLcoeBand result={terrestrialResult} />
+            </section>
           </div>
 
           <ArchitectureComparison oceanResult={result} terrestrialResult={terrestrialResult} />
           <CostPerWattBreakdown oceanResult={result} terrestrialResult={terrestrialResult} />
 
-          <div className={styles.compareRow}>
-            <BaselineComparison result={result} />
-            <TerrestrialBaselineComparison result={terrestrialResult} />
-
-            <ResultsHeader result={result} isPending={isPending} />
-            <TerrestrialDiagnostics result={terrestrialResult} />
+          <div className={styles.sides}>
+            <section className={styles.side} aria-labelledby="ocean-fleet">
+              <h3 id="ocean-fleet" className={`${styles.sideHead} ${styles.sideOcean}`}>Panthalassa</h3>
+              <BaselineComparison result={result} />
+              <ResultsHeader result={result} isPending={isPending} />
+            </section>
+            <section className={styles.side} aria-labelledby="land-plant">
+              <h3 id="land-plant" className={`${styles.sideHead} ${styles.sideLand}`}>Land-based</h3>
+              <TerrestrialBaselineComparison result={terrestrialResult} />
+              <TerrestrialDiagnostics result={terrestrialResult} />
+            </section>
           </div>
         </main>
 

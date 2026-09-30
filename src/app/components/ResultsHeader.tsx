@@ -38,7 +38,7 @@ export function ResultsHeader({ result, isPending }: Props) {
     {
       label: "Per-node cost",
       value: formatUsdCompact(result.costs.physical_node_cost_usd),
-      sub: "Hull, PTO, battery, onboard systems, and compute -- one node, before replacement or maintenance.",
+      sub: "Hull, PTO, battery, onboard systems, and compute for one node, before replacement or maintenance.",
     },
     {
       label: "Resource capacity factor",
@@ -64,7 +64,7 @@ export function ResultsHeader({ result, isPending }: Props) {
       {tiles.map((tile) => (
         <div key={tile.label} className={`card ${styles.tile} ${tile.primary ? styles.tilePrimary : ""}`}>
           {isPending && <span className={styles.pendingDot} aria-hidden />}
-          <span className={styles.label}>{tile.label}</span>
+          <h4 className={styles.label}>{tile.label}</h4>
           <span className={`${styles.value} num`}>{tile.value}</span>
           <span className={styles.sub}>{tile.sub}</span>
           {tile.secondary && (

@@ -1,133 +1,198 @@
 .shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-.topbar {
-  flex-shrink: 0;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.title {
-  margin: 0;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
+/* Three columns, each a flat field: the Panthalassa inputs in Celestial Blue, the results on
+   Smoke White, the land-based inputs in Timberwolf. The fields are painted on the grid itself
+   so they run the full height behind the sticky panels. No boxes inside: sections are divided
+   by a Cod Gray rule over their heading. */
 .layout {
-  flex: 1;
+  --side-w: clamp(260px, 20cqw, 340px);
   display: grid;
-  grid-template-columns: clamp(260px, 20cqw, 340px) minmax(0, 1fr) clamp(260px, 20cqw, 340px);
-  grid-template-areas: "ocean results land";
-  min-height: 0;
+  grid-template-columns: var(--side-w) minmax(0, 1fr) var(--side-w);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "ocean head land"
+    "ocean results land";
   align-items: start;
+  background: linear-gradient(
+    to right,
+    var(--fai-celestial-blue) 0,
+    var(--fai-celestial-blue) var(--side-w),
+    var(--fai-smoke-white) var(--side-w),
+    var(--fai-smoke-white) calc(100% - var(--side-w)),
+    var(--fai-timberwolf) calc(100% - var(--side-w)),
+    var(--fai-timberwolf) 100%
+  );
 }
 
+/* On Celestial Blue only Cod Gray holds 4.5:1, so every ink is Cod Gray and the rules are
+   Cod Gray at partial strength. The blue field is the side key, so the square is dropped. */
 .sidebar {
+  --text-secondary: var(--fai-cod-gray);
+  --text-tertiary: var(--fai-cod-gray);
+  --border: rgb(18 18 18 / 0.22);
+  --border-strong: rgb(18 18 18 / 0.5);
+  --surface: var(--fai-celestial-blue);
+  --surface-alt: rgb(18 18 18 / 0.1);
+  --focus: var(--fai-cod-gray);
   grid-area: ocean;
   min-width: 0;
   position: sticky;
   top: var(--reading-bar-height, 0px);
   height: calc(100vh - var(--reading-bar-height, 0px));
-  border-right: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--fai-celestial-blue);
 }
 
+/* Timberwolf: the tertiary grey falls under 4.5:1 here, so it steps up to the secondary. */
 .terrestrialSidebar {
+  --text-tertiary: var(--text-secondary);
+  --border: rgb(18 18 18 / 0.16);
+  --surface: var(--fai-timberwolf);
+  --surface-alt: rgb(18 18 18 / 0.06);
+  --focus: var(--fai-cod-gray);
   grid-area: land;
   min-width: 0;
   position: sticky;
   top: var(--reading-bar-height, 0px);
   height: calc(100vh - var(--reading-bar-height, 0px));
-  border-left: 1px solid var(--border);
-  background: var(--surface);
+  background: var(--fai-timberwolf);
+}
+
+.sidebar :global(.side-mark),
+.terrestrialSidebar :global(.side-mark) {
+  display: none;
+}
+
+/* The section heading heads the results column, on its left edge. */
+.title {
+  grid-area: head;
+  margin: 0;
+  padding: 64px 32px 0;
+  font-family: var(--font-body);
+  font-size: clamp(32px, 3.4vw, 48px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .main {
   grid-area: results;
   container: results / inline-size;
-  padding: 24px;
+  padding: 40px 32px 96px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 48px;
   min-width: 0;
 }
 
-.compareRow {
+/* One column per architecture: a head and two cards. Each column is a subgrid over the same
+   three rows, so a card and its counterpart on the other side start on the same line. */
+.sides {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 20px;
-  align-items: start;
+  grid-template-rows: repeat(3, auto);
+  gap: 40px 32px;
 }
 
-.costComparison {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  padding: 14px 20px;
-  border: 1px solid #bdd3cc;
-  border-radius: var(--radius);
-  background: #e8f1ed;
-  color: #244b40;
-  font-size: 15px;
+.side {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  align-content: start;
+  min-width: 0;
 }
 
-.costComparison strong {
-  font-size: 27px;
-  font-weight: 600;
-  line-height: 1.2;
+/* Rows line up across the pair, but each section keeps its own height rather than
+   stretching its tiles apart to match the taller side. */
+.side > * {
+  align-self: start;
 }
 
-.costPremium {
-  background: #f5eeea;
-  border-color: #dfc9bc;
-  color: #74442e;
+/* The column head: the side's name over a 4px rule in its colour. It replaces the first
+   section's own rule. */
+.sideHead {
+  margin: 0 0 -24px;
+  padding: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text-primary);
+  border-bottom: 4px solid;
 }
 
-/* Reflow both controls together; neither remains sticky across grid rows. */
+.sideHead + :global(.card) {
+  border-top: 0;
+}
+
+/* A tile grid directly under the head: cover the first row's rules, however many columns
+   the grid has made. */
+.sideHead + :not(:global(.card)) {
+  position: relative;
+}
+
+.sideHead + :not(:global(.card))::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 1px;
+  background: var(--fai-smoke-white);
+}
+
+.sideOcean {
+  border-bottom-color: var(--side-ocean);
+}
+
+.sideLand {
+  border-bottom-color: var(--side-land-ink);
+}
+
+/* Both input panels side by side over the results; neither stays sticky across grid rows. */
 @container dashboard (max-width: 1200px) {
   .layout {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: "ocean land" "results results";
+    grid-template-rows: auto;
+    grid-template-areas: "head head" "ocean land" "results results";
+    background: var(--fai-smoke-white);
   }
 
   .sidebar,
   .terrestrialSidebar {
     position: static;
     height: min(420px, 50svh);
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+  }
+
+  .title {
+    padding: 64px 16px 32px;
   }
 
   .main {
-    padding: 18px 16px;
+    padding: 40px 16px 80px;
   }
-
-  .topbar {
-    padding: 14px 16px;
-  }
-
 }
 
 @container dashboard (max-width: 680px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "ocean" "land" "results";
+    grid-template-areas: "head" "ocean" "land" "results";
   }
-  .sidebar, .terrestrialSidebar { height: auto; border-left: none; }
-  .main { padding: 16px 12px; }
+
+  .sidebar,
+  .terrestrialSidebar {
+    height: auto;
+  }
+
+  .title {
+    padding: 48px 16px 24px;
+  }
+
+  .main {
+    padding: 32px 16px 64px;
+  }
 }
 
 @container results (max-width: 640px) {
-  .compareRow { grid-template-columns: minmax(0, 1fr); }
+  .sides { grid-template-columns: minmax(0, 1fr); }
 }
