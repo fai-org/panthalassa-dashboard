@@ -4,7 +4,7 @@ import { sampleSurface } from '../../lib/gerstner.js';
 import { ORANGE, INK, SMOKE, smoke } from './palette.js';
 
 const vertices = nodeVertices();
-/** Perspective wireframe view of the repository's exact node geometry. */
+/** Perspective wireframe view of the approved reference-based node geometry. */
 export function NodeScene({ waves, still = false }: { waves: boolean; still?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -69,5 +69,5 @@ export function NodeScene({ waves, still = false }: { waves: boolean; still?: bo
     draw(0); frame = requestAnimationFrame(loop);
     return () => { cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect(); };
   }, [waves, still]);
-  return <canvas ref={ref} style={{ width: '100%', display: 'block' }} role="img" aria-label={waves ? 'The original node geometry, floating upright as smooth waves pass; most of its spar is underwater.' : 'The original node geometry upright, with most of its spar underwater.'} />;
+  return <canvas ref={ref} style={{ width: '100%', display: 'block' }} role="img" aria-label={waves ? 'The reference-based node geometry, floating upright as smooth waves pass; most of its spar is underwater.' : 'The reference-based node geometry upright, with most of its spar underwater.'} />;
 }

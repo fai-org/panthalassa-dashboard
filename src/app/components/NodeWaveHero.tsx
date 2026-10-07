@@ -21,8 +21,8 @@ import styles from "./NodeWaveHero.module.css";
  * under the wires closes the last sliver so sea and sky meet with a hard
  * edge.
  *
- * The node line list is exported from the Blender model by
- * scripts/export_node_wire.py (metres, +Z up, float at the top).
+ * The node line list follows the approved CEO reference silhouette
+ * (illustrative metres, +Z up, float at the top).
  */
 
 type RGBA = [number, number, number, number];

@@ -1,15 +1,16 @@
 {
-  "segments": 1785,
+  "segments": 2088,
   "min": [
     -5.5,
-    -5.5962,
-    0.17
+    -5.5,
+    5.70232558139535
   ],
   "max": [
     5.5,
     5.5,
-    69.4
+    69.40032558139535
   ],
   "format": "little-endian int16, 6 per segment (x0 y0 z0 x1 y1 z1); v = min + (q + 32768) / 65535 * (max - min)",
-  "units": "metres, +Z up, float at the top"
+  "units": "Illustrative metres, +Z up, float centre at 63.9",
+  "source": "Approved wireframe silhouette based on CEO-supplied reference image, October 7 2026; visualization only."
 }
