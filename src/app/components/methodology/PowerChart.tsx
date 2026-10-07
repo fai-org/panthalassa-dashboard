@@ -88,8 +88,8 @@ export function PowerChart({ state, active = true, still = false }: {state: Visu
     </svg>
     <div className={styles.legend}>
       <span><i className={styles.resourceKey}/>Wave-derived power before equipment limits</span>
-      {capped && <span><i className={styles.computeKey}/>{battery ? 'Power Supplied to Compute sans battery' : 'Power supplied to computing · before batteries'}</span>}
-      {battery && <span><i className={styles.batteryKey}/>Power Supplied to Compute with battery</span>}
+      {capped && <span><i className={styles.computeKey}/>{battery ? 'Power supplied to compute sans battery' : 'Power supplied to computing · before batteries'}</span>}
+      {battery && <span><i className={styles.batteryKey}/>Power supplied to compute with battery</span>}
     </div>
     <p className={styles.chartCaption}>{variable ? 'Illustrative wave variability' : 'Simplified resource profile'} · stage durations not to scale</p>
     {battery && <div className={styles.chartFoot}>Shaded area: energy supplied to computing.<br/>Short lull fully bridged; deeper lull only partly bridged.</div>}
