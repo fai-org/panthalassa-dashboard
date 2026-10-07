@@ -31,7 +31,6 @@ export function SeaMap({ state }: {state: VisualState}) {
       <path d={path(belt) || ''} fill={INK} opacity=".22"/>
       <path d={path(geoGraticule10()) || ''} fill="none" stroke={INK} strokeWidth=".65" opacity=".14"/>
       <path d={path(land) || ''} fill={SMOKE} stroke={INK} strokeOpacity=".5" strokeWidth=".6"/>
-      <text x="240" y={route ? 185 : 205} textAnchor="middle" fill={INK} fontSize={font+1} letterSpacing="3">AUSTRALIA</text>
       {route && <>
         <path d={`M${p[0]},${p[1]} L${s[0]},${s[1]}`} stroke={INK} strokeOpacity=".45" strokeWidth="1.5" strokeDasharray="3 5" fill="none"/>
         <path d={returning ? `M${s[0]+7},${s[1]-12} L${p[0]+7},${p[1]+14}` : `M${transfer[0]},${transfer[1]} L${s[0]},${s[1]-13}`} stroke={INK} strokeWidth="1.8" fill="none" markerEnd={`url(#${id}-arrow)`}/>
