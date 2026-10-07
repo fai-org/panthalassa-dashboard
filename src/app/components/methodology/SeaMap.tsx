@@ -23,7 +23,7 @@ export function SeaMap({ state }: {state: VisualState}) {
   const path = geoPath(projection);
   const p = projection(port)!; const s = projection(park)!;
   const transfer = projection([135.82,-35.17])!;
-  const belt = { type: 'Polygon' as const, coordinates: [[...Array.from({length: 73},(_,i) => [-180+i*5,-40]),...Array.from({length:73},(_,i)=>[180-i*5,-60]),[-180,-40]]] };
+  const belt = { type: 'Polygon' as const, coordinates: [[...Array.from({length: 73},(_,i) => [-180+i*5,-32]),...Array.from({length:73},(_,i)=>[180-i*5,-60]),[-180,-32]]] };
   return <svg ref={ref} viewBox="0 0 500 500" role="img" aria-label={route ? 'Illustrative route from southern Australia to the model reference sea park at 53.6 degrees south, 133.6 degrees east.' : 'Globe centered on Australia and the ocean to its south. The reference location is marked south of Australia.'}>
     <defs><clipPath id={`${id}-clip`}><circle cx="250" cy="250" r="237"/></clipPath><marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1L8 5L0 9" fill="none" stroke={INK} strokeWidth="1.6"/></marker></defs>
     <circle cx="250" cy="250" r="237" fill={SKY}/>
