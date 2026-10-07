@@ -5,9 +5,9 @@ import styles from './Methodology.module.css';
 export function FailureSection() {
   return <section id="failures" className={styles.failureSection} aria-labelledby="failure-heading">
     <div className={styles.failureIntro}>
-      <h2 id="failure-heading">Account for Failures</h2>
-      <p>Output lost from failures that cause unexpected downtime, maintenance, or even total node loss is then subtracted from the scheduled output calculated in the previous step. Gradual chip degradation is modeled separately from incidents that interrupt the whole node. For those incidents, the failure rate slider sets their overall frequency: for example, a 3% setting means an average of three incidents per 100 nodes operating for one year.</p>
-      <p>The model divides that rate among four kinds of node failures using fixed probability weights. It then multiplies each outcome’s expected number of incidents by the computing contribution lost per incident, and adds those losses together.</p>
+      <h2 id="failure-heading">Account for failures</h2>
+      <p>Output lost from failures that cause unexpected downtime, maintenance, or even total node loss is then subtracted from the scheduled output calculated in the previous step.</p>
+      <p>The model aggregates the 4 kinds of non-chip-related failure outcomes (listed below) into a single overall failure rate. The failure modes are combined according to fixed probability weights. It then multiplies each outcome’s expected number of incidents by the computing contribution lost per incident, and adds those losses together.</p>
     </div>
     <table className={styles.failureTable} aria-label="Failure categories and their effects on the model">
       <thead><tr><th scope="col">Failure</th><th scope="col">What the model counts</th></tr></thead>
