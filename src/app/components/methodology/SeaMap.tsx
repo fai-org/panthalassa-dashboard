@@ -24,7 +24,7 @@ export function SeaMap({ state }: {state: VisualState}) {
   const p = projection(port)!; const s = projection(park)!;
   const transfer = projection([135.82,-35.17])!;
   const belt = { type: 'Polygon' as const, coordinates: [[...Array.from({length: 73},(_,i) => [-180+i*5,-40]),...Array.from({length:73},(_,i)=>[180-i*5,-60]),[-180,-40]]] };
-  return <svg ref={ref} viewBox="0 0 500 500" role="img" aria-label={route ? 'Illustrative route from southern Australia to the model reference sea park at 53.6 degrees south, 133.6 degrees east.' : 'Globe centered on Australia and the Southern Ocean. The reference location is marked south of Australia.'}>
+  return <svg ref={ref} viewBox="0 0 500 500" role="img" aria-label={route ? 'Illustrative route from southern Australia to the model reference sea park at 53.6 degrees south, 133.6 degrees east.' : 'Globe centered on Australia and the ocean to its south. The reference location is marked south of Australia.'}>
     <defs><clipPath id={`${id}-clip`}><circle cx="250" cy="250" r="237"/></clipPath><marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1L8 5L0 9" fill="none" stroke={INK} strokeWidth="1.6"/></marker></defs>
     <circle cx="250" cy="250" r="237" fill={SKY}/>
     <g clipPath={`url(#${id}-clip)`}>
@@ -32,7 +32,6 @@ export function SeaMap({ state }: {state: VisualState}) {
       <path d={path(geoGraticule10()) || ''} fill="none" stroke={INK} strokeWidth=".65" opacity=".14"/>
       <path d={path(land) || ''} fill={SMOKE} stroke={INK} strokeOpacity=".5" strokeWidth=".6"/>
       <text x="240" y={route ? 185 : 205} textAnchor="middle" fill={INK} fontSize={font+1} letterSpacing="3">AUSTRALIA</text>
-      <text x="115" y="410" fill={INK} fontSize={font} letterSpacing="3" transform="rotate(12 115 410)">SOUTHERN OCEAN</text>
       {route && <>
         <path d={`M${p[0]},${p[1]} L${s[0]},${s[1]}`} stroke={INK} strokeOpacity=".45" strokeWidth="1.5" strokeDasharray="3 5" fill="none"/>
         <path d={returning ? `M${s[0]+7},${s[1]-12} L${p[0]+7},${p[1]+14}` : `M${transfer[0]},${transfer[1]} L${s[0]},${s[1]-13}`} stroke={INK} strokeWidth="1.8" fill="none" markerEnd={`url(#${id}-arrow)`}/>

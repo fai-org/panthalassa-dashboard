@@ -3,7 +3,7 @@ export interface StoryStep { id: string; chapter: string; title: string; visual:
 
 export const STEPS: StoryStep[] = [
   { id: 'physical-node', chapter: '01 / The physical system', title: 'This is a node', visual: 'node', paragraphs: [
-    'A node is a floating power plant with computing hardware onboard. As waves lift and lower it, water is pushed up an internal tube into a pressurized reservoir, then flows through a turbine that drives an electrical generator. The electricity powers onboard computers, while the surrounding ocean helps cool them. Inputs and results travel between the node and land by satellite.'
+    'A node is a floating energy system that generates power from waves to power computing hardware onboard. As waves lift and lower it, water is pushed up an internal tube into a pressurized reservoir, then flows through a turbine that drives an electrical generator. The electricity powers onboard computers, while the surrounding ocean helps cool them. Inputs and results travel between the node and land by satellite.'
   ] },
   { id: 'wave-resource', chapter: '01 / The physical system', title: 'An ocean of stored energy', visual: 'waves', paragraphs: [
     'Ocean waves act like a giant solar battery: uneven heating by the sun creates winds, which transfer energy into the water. That energy travels as swell, persisting after the wind has subsided.',
