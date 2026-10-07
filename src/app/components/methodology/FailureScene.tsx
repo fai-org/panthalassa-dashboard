@@ -47,13 +47,7 @@ export function FailureScene() {
     };
   }, []);
 
-  function pause(value: boolean) {
-    pausedRef.current = value;
-    setPaused(value);
-    controller.current?.setPaused(value);
-  }
   function select(offset: number) {
-    pause(true);
     const value = (mode + offset + FAILURES.length) % FAILURES.length;
     modeRef.current = value;
     setMode(value);
@@ -72,7 +66,6 @@ export function FailureScene() {
       <button type="button" onClick={() => select(-1)} aria-label="Previous failure mode">Previous</button>
       <span>{mode + 1} / {FAILURES.length}</span>
       <button type="button" onClick={() => select(1)} aria-label="Next failure mode">Next</button>
-      {!unavailable && <button type="button" onClick={() => pause(!paused)}>{paused ? 'Play animation' : 'Pause animation'}</button>}
     </div>
   </figure>;
 }

@@ -86,7 +86,6 @@
 .methodology .failureCaption p { font-size: 16px; line-height: 1.6; }
 .failureControls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; max-width: 488px; font: 13px/1.5 var(--font-utility); color: var(--m-muted); }
 .failureControls button { border: 0; background: none; padding: 8px 0; font: inherit; color: var(--m-ink); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
-.failureControls button:last-child { margin-left: auto; }
 .failureFallback { display: block; padding: 35% 15%; text-align: center; color: var(--fai-smoke-white); font: 15px/1.6 var(--font-utility); }
 .failureAssumptions { border-left: 2px solid var(--m-accent); padding: 4px 0 4px 24px; }
 .failureSection .failureAssumptions { margin-top: 32px; }

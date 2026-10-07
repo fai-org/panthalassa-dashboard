@@ -8,64 +8,64 @@ const profile=[[0.6395348837209303, 5.70232558139535], [1.5988372093023255, 6.85
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setClearColor(0x121212);renderer.outputColorSpace=THREE.SRGBColorSpace;mount.appendChild(renderer.domElement);
 const scene=new THREE.Scene();scene.fog=new THREE.Fog(0x121212,170,330);
 const camera=new THREE.PerspectiveCamera(42,1,.1,600);camera.position.set(68,65,195);camera.lookAt(7,-10,0);
-scene.add(new THREE.HemisphereLight(0xc8e3ee,0x101c24,2.3));const key=new THREE.DirectionalLight(0xe1edf2,3);key.position.set(-65,90,65);scene.add(key);const rim=new THREE.DirectionalLight(0x5e9cbe,2);rim.position.set(30,15,-60);scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xdedede,0x1a1a1a,2.3));const key=new THREE.DirectionalLight(0xebebeb,3);key.position.set(-65,90,65);scene.add(key);const rim=new THREE.DirectionalLight(0x919191,2);rim.position.set(30,15,-60);scene.add(rim);
 function material(color,opacity=1){return new THREE.MeshStandardMaterial({color,roughness:.68,metalness:.25,transparent:opacity<1,opacity});}
 function box(parent,w,h,d,x,y,z,color){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material(color));m.position.set(x,y,z);parent.add(m);return m;}
-function segment(parent,a,b,color=0x97b5c5,opacity=.55){const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a),new THREE.Vector3(...b)]);const l=new THREE.Line(g,new THREE.LineBasicMaterial({color,transparent:true,opacity}));parent.add(l);return l;}
-function edges(parent,mesh,color=0x91a7b2,opacity=.5){const e=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),new THREE.LineBasicMaterial({color,transparent:true,opacity}));e.position.copy(mesh.position);e.rotation.copy(mesh.rotation);parent.add(e);return e;}
-function makeNode(){const group=new THREE.Group();const geom=new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(p[0],p[1]-62)),64);const shell=new THREE.Mesh(geom,material(0x243c49,.82));group.add(shell);const wire=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(wireVertices,3)),new THREE.LineBasicMaterial({color:0xcbd8db,transparent:true,opacity:.5}));group.add(wire);
- const lights=[];for(let i=0;i<6;i++){const light=new THREE.Mesh(new THREE.BoxGeometry(.72,.72,.72),new THREE.MeshBasicMaterial({color:0xb4dced,transparent:true,opacity:.9}));light.position.set(-1.6+(i%3)*1.5,1.4+Math.floor(i/3)*1.6,5);group.add(light);lights.push(light);}group.userData.lights=lights;scene.add(group);return group;}
+function segment(parent,a,b,color=0xb0b0b0,opacity=.55){const g=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a),new THREE.Vector3(...b)]);const l=new THREE.Line(g,new THREE.LineBasicMaterial({color,transparent:true,opacity}));parent.add(l);return l;}
+function edges(parent,mesh,color=0xa3a3a3,opacity=.5){const e=new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),new THREE.LineBasicMaterial({color,transparent:true,opacity}));e.position.copy(mesh.position);e.rotation.copy(mesh.rotation);parent.add(e);return e;}
+function makeNode(){const group=new THREE.Group();const geom=new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(p[0],p[1]-62)),64);const shell=new THREE.Mesh(geom,material(0x383838,.82));group.add(shell);const wire=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(wireVertices,3)),new THREE.LineBasicMaterial({color:0xd5d5d5,transparent:true,opacity:.5}));group.add(wire);
+ const lights=[];for(let i=0;i<6;i++){const light=new THREE.Mesh(new THREE.BoxGeometry(.72,.72,.72),new THREE.MeshBasicMaterial({color:0xd5d5d5,transparent:true,opacity:.9}));light.position.set(-1.6+(i%3)*1.5,1.4+Math.floor(i/3)*1.6,5);group.add(light);lights.push(light);}group.userData.lights=lights;scene.add(group);return group;}
 const node=makeNode();node.scale.setScalar(.74);
 function opacity(group,value){group.traverse(o=>{if(o.material){if(o.userData.baseOpacity===undefined)o.userData.baseOpacity=o.material.opacity;o.material.transparent=true;o.material.opacity=o.userData.baseOpacity*value;}});}
 // A translucent ocean surface keeps the submerged structure legible.
-const oceanGeo=new THREE.PlaneGeometry(650,650,130,130);oceanGeo.rotateX(-Math.PI/2);const ocean=new THREE.Mesh(oceanGeo,new THREE.MeshStandardMaterial({color:0x356c89,transparent:true,opacity:.30,roughness:.38,metalness:.45,depthWrite:false,side:THREE.DoubleSide}));scene.add(ocean);
-const gridData=[];for(let z=-320;z<=320;z+=10)for(let x=-320;x<320;x+=5)gridData.push(x,0,z,x+5,0,z);for(let x=-320;x<=320;x+=10)for(let z=-320;z<320;z+=5)gridData.push(x,0,z,x,0,z+5);const gridGeo=new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(gridData,3));const grid=new THREE.LineSegments(gridGeo,new THREE.LineBasicMaterial({color:0x91b9c9,transparent:true,opacity:.19,depthWrite:false}));scene.add(grid);
+const oceanGeo=new THREE.PlaneGeometry(650,650,130,130);oceanGeo.rotateX(-Math.PI/2);const ocean=new THREE.Mesh(oceanGeo,new THREE.MeshStandardMaterial({color:0x252525,transparent:true,opacity:.30,roughness:.38,metalness:.45,depthWrite:false,side:THREE.DoubleSide}));scene.add(ocean);
+const gridData=[];for(let z=-320;z<=320;z+=10)for(let x=-320;x<320;x+=5)gridData.push(x,0,z,x+5,0,z);for(let x=-320;x<=320;x+=10)for(let z=-320;z<320;z+=5)gridData.push(x,0,z,x,0,z+5);const gridGeo=new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(gridData,3));const grid=new THREE.LineSegments(gridGeo,new THREE.LineBasicMaterial({color:0xefefef,transparent:true,opacity:.19,depthWrite:false}));scene.add(grid);
 const port=new THREE.Group();port.scale.setScalar(.7);port.position.set(39,0,-8);scene.add(port);
 // A compact shipyard seen across a broad stretch of open water.
-const quay=box(port,65,4,78,70,0,-20,0x47575f);edges(port,quay,0x7e949f,.38);
-const apron=box(port,61,.3,73,69.5,2.15,-20,0x5e6c70);
+const quay=box(port,65,4,78,70,0,-20,0x545454);edges(port,quay,0x909090,.38);
+const apron=box(port,61,.3,73,69.5,2.15,-20,0x696969);
 for(const z of [-49,-17,15]){
- const pier=box(port,25,2.2,7,29,1,z,0x68767b);edges(port,pier,0xaab7bb,.35);
- for(const x of [20,30,39])for(const zz of [z-2,z+2])box(port,.65,10,.65,x,-4,zz,0x3f515a);
+ const pier=box(port,25,2.2,7,29,1,z,0x737373);edges(port,pier,0xb5b5b5,.35);
+ for(const x of [20,30,39])for(const zz of [z-2,z+2])box(port,.65,10,.65,x,-4,zz,0x4e4e4e);
 }
 function crane(x,z,height){
  const g=new THREE.Group();g.position.set(x,0,z);port.add(g);
  for(const dx of [-5,5])for(const dz of [-4,4]){
-  const leg=box(g,.8,height,.8,dx,height/2+2,dz,0x8f9fa5);
-  segment(g,[dx,4,dz],[dx===-5?5:-5,height-3,dz],0x7c919b,.6);
+  const leg=box(g,.8,height,.8,dx,height/2+2,dz,0x9c9c9c);
+  segment(g,[dx,4,dz],[dx===-5?5:-5,height-3,dz],0x8d8d8d,.6);
  }
- const bridge=box(g,14,1.7,10,0,height+2,0,0x9faeb3);edges(g,bridge,0xd0d7d8,.4);
+ const bridge=box(g,14,1.7,10,0,height+2,0,0xababab);edges(g,bridge,0xd6d6d6,.4);
  for(const dz of [-3,3]){
-  box(g,33,.6,.6,-10,height+4,dz,0x9baeb8);
-  box(g,.6,10,.6,3,height+9,dz,0xa7b8be);
-  segment(g,[-26,height+4,dz],[3,height+14,dz],0xc7d2d6,.6);
-  segment(g,[6,height+4,dz],[3,height+14,dz],0xc7d2d6,.6);
-  for(let dx=-23;dx<5;dx+=6)segment(g,[dx,height+4,dz],[dx+3,height+6,dz],0x8ea2ad,.45);
+  box(g,33,.6,.6,-10,height+4,dz,0xababab);
+  box(g,.6,10,.6,3,height+9,dz,0xb5b5b5);
+  segment(g,[-26,height+4,dz],[3,height+14,dz],0xd0d0d0,.6);
+  segment(g,[6,height+4,dz],[3,height+14,dz],0xd0d0d0,.6);
+  for(let dx=-23;dx<5;dx+=6)segment(g,[dx,height+4,dz],[dx+3,height+6,dz],0x9f9f9f,.45);
  }
- box(g,4,3,4,-4,height,0,0x4d6e81);
- segment(g,[-20,height+4,0],[-20,6,0],0xc7d2d6,.7);box(g,4,.6,4,-20,5.7,0,0x8f9b9d);
+ box(g,4,3,4,-4,height,0,0x686868);
+ segment(g,[-20,height+4,0],[-20,6,0],0xd0d0d0,.7);box(g,4,.6,4,-20,5.7,0,0x999999);
 }
 crane(48,-39,21);crane(49,-7,24);crane(49,24,19);
 for(const z of [-44,-15]){
- const hall=box(port,24,7,15,79,5.5,z,0x697b83);edges(port,hall,0x98abb4,.35);
+ const hall=box(port,24,7,15,79,5.5,z,0x787878);edges(port,hall,0xa8a8a8,.35);
  const roofShape=new THREE.Shape();roofShape.moveTo(-12,0);roofShape.lineTo(0,3.3);roofShape.lineTo(12,0);roofShape.closePath();
- const roof=new THREE.Mesh(new THREE.ExtrudeGeometry(roofShape,{depth:15,bevelEnabled:false}),material(0x8c9ba0));roof.position.set(79,9,z-7.5);port.add(roof);
- for(let dx=-8;dx<=8;dx+=8)box(port,4.5,4,.15,79+dx,4.5,z+7.6,0x364c59);
+ const roof=new THREE.Mesh(new THREE.ExtrudeGeometry(roofShape,{depth:15,bevelEnabled:false}),material(0x989898));roof.position.set(79,9,z-7.5);port.add(roof);
+ for(let dx=-8;dx<=8;dx+=8)box(port,4.5,4,.15,79+dx,4.5,z+7.6,0x484848);
 }
 for(let row=0;row<3;row++)for(let col=0;col<4;col++){
- const storage=box(port,7,2.7,3,65+col*8.1,3.8,7+row*4.3,(row+col)%3===0?0x8c8172:0x5e7785);edges(port,storage,0x9fadb4,.28);
- if((row+col)%2===0)box(port,7,2.7,3,65+col*8.1,6.5,7+row*4.3,0x6f8089);
+ const storage=box(port,7,2.7,3,65+col*8.1,3.8,7+row*4.3,(row+col)%3===0?0x828282:0x737373);edges(port,storage,0xababab,.28);
+ if((row+col)%2===0)box(port,7,2.7,3,65+col*8.1,6.5,7+row*4.3,0x7d7d7d);
 }
 // One docked vessel gives the yard a readable sense of scale.
 const docked=new THREE.Group();docked.position.set(29,.3,-33);port.add(docked);
 const vesselShape=new THREE.Shape();vesselShape.moveTo(-3,-12);vesselShape.lineTo(3,-12);vesselShape.lineTo(3,9);vesselShape.lineTo(0,14);vesselShape.lineTo(-3,9);vesselShape.closePath();
 const vesselGeo=new THREE.ExtrudeGeometry(vesselShape,{depth:2,bevelEnabled:true,bevelSize:.35,bevelThickness:.4,bevelSegments:1});vesselGeo.rotateX(-Math.PI/2);
-const vessel=new THREE.Mesh(vesselGeo,material(0x7e919a));docked.add(vessel);edges(docked,vessel,0xc2cdd0,.45);box(docked,4.5,3.5,5,0,3.7,7,0xb2bdc0);box(docked,4,1,13,0,2.7,-3,0x566f7d);
-const dish=new THREE.Mesh(new THREE.SphereGeometry(2.1,16,10,0,Math.PI*2,0,.9),material(0xb9c7cd));dish.rotation.z=-.7;dish.position.set(43,9,2);port.add(dish);box(port,.35,5,.35,43,5,2,0x9eadb4);
+const vessel=new THREE.Mesh(vesselGeo,material(0x8e8e8e));docked.add(vessel);edges(docked,vessel,0xcbcbcb,.45);box(docked,4.5,3.5,5,0,3.7,7,0xbbbbbb);box(docked,4,1,13,0,2.7,-3,0x6b6b6b);
+const dish=new THREE.Mesh(new THREE.SphereGeometry(2.1,16,10,0,Math.PI*2,0,.9),material(0xc4c4c4));dish.rotation.z=-.7;dish.position.set(43,9,2);port.add(dish);box(port,.35,5,.35,43,5,2,0xaaaaaa);
 // Starlink-like flat spacecraft with one solar-array wing.
-const sat=new THREE.Group();sat.position.set(-4,51,-13);sat.scale.setScalar(.8);sat.rotation.set(.2,.3,-.2);scene.add(sat);const panel=box(sat,19,.3,10,-9,0,0,0x31556c);edges(sat,panel,0x9bb9c7,.8);for(let x=-17;x<0;x+=2.8)segment(sat,[x,.2,-5],[x,.2,5],0xa1c3d4,.45);for(let z=-2.5;z<5;z+=2.5)segment(sat,[-18.5,.2,z],[.5,.2,z],0xa1c3d4,.45);box(sat,1,.4,1,2,0,0,0xa2b4bd);const bus=box(sat,6,1.3,8,6,0,0,0xa3b6bf);edges(sat,bus,0xd9e2e4,.7);box(sat,.3,3,.3,7,-2,0,0x9bb1bf);
-const tug=new THREE.Group();tug.scale.setScalar(.72);scene.add(tug);const hullShape=new THREE.Shape();hullShape.moveTo(-6,-2.4);hullShape.lineTo(4,-2.4);hullShape.lineTo(7,0);hullShape.lineTo(4,2.4);hullShape.lineTo(-6,2.4);hullShape.closePath();const hullGeo=new THREE.ExtrudeGeometry(hullShape,{depth:2,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.5,bevelThickness:.4});hullGeo.rotateX(-Math.PI/2);const hull=new THREE.Mesh(hullGeo,material(0x69808d));tug.add(hull);edges(tug,hull,0xe0e7e7,.55);const cabin=box(tug,4.5,3.7,3,-1,3.6,0,0xa0b0b5);edges(tug,cabin,0xe0e7e7,.6);box(tug,3,.9,2,-.6,4.2,0,0x36576a);box(tug,.2,4,.2,0,7.2,0,0xd8e0e3);tug.visible=false;
-const tow=segment(scene,[0,0,0],[0,0,0],0xd7c4ac,.7);
+const sat=new THREE.Group();sat.position.set(-4,51,-13);sat.scale.setScalar(.8);sat.rotation.set(.2,.3,-.2);scene.add(sat);const panel=box(sat,19,.3,10,-9,0,0,0x4f4f4f);edges(sat,panel,0xb4b4b4,.8);for(let x=-17;x<0;x+=2.8)segment(sat,[x,.2,-5],[x,.2,5],0xbdbdbd,.45);for(let z=-2.5;z<5;z+=2.5)segment(sat,[-18.5,.2,z],[.5,.2,z],0xbdbdbd,.45);box(sat,1,.4,1,2,0,0,0xb1b1b1);const bus=box(sat,6,1.3,8,6,0,0,0xb3b3b3);edges(sat,bus,0xe0e0e0,.7);box(sat,.3,3,.3,7,-2,0,0xadadad);
+const tug=new THREE.Group();tug.scale.setScalar(.72);scene.add(tug);const hullShape=new THREE.Shape();hullShape.moveTo(-6,-2.4);hullShape.lineTo(4,-2.4);hullShape.lineTo(7,0);hullShape.lineTo(4,2.4);hullShape.lineTo(-6,2.4);hullShape.closePath();const hullGeo=new THREE.ExtrudeGeometry(hullShape,{depth:2,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.5,bevelThickness:.4});hullGeo.rotateX(-Math.PI/2);const hull=new THREE.Mesh(hullGeo,material(0x7c7c7c));tug.add(hull);edges(tug,hull,0xe6e6e6,.55);const cabin=box(tug,4.5,3.7,3,-1,3.6,0,0xadadad);edges(tug,cabin,0xe6e6e6,.6);box(tug,3,.9,2,-.6,4.2,0,0x515151);box(tug,.2,4,.2,0,7.2,0,0xdfdfdf);tug.visible=false;
+const tow=segment(scene,[0,0,0],[0,0,0],0xc6c6c6,.7);
 // Expanding wavefronts suggest radio transmission, without projectile-like dots.
 const signals = [];
 for (let leg = 0; leg < 2; leg++) {
@@ -75,7 +75,7 @@ for (let leg = 0; leg < 2; leg++) {
       return new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0);
     });
     const ring = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),
-      new THREE.LineBasicMaterial({color: 0xa7d0e1, transparent: true, opacity: 0, depthWrite: false}));
+      new THREE.LineBasicMaterial({color: 0xc9c9c9, transparent: true, opacity: 0, depthWrite: false}));
     scene.add(ring);
     signals.push({ring, leg, phase: i / 3});
   }
