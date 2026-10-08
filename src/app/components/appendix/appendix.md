@@ -12,7 +12,7 @@ P_{\mathrm{wave}}(t)=F(t)\,D\,c(D)\,\eta,
 \qquad c(D)=\frac{1.3D+5.6}{100}.
 $$
 
-Here, $t$ is time; $P_{\mathrm{wave}}(t)$ is wave-derived electrical power before equipment limits, in kW; $F(t)$ is incident wave flux in kW/m; $D$ is hull diameter in metres; $c(D)$ is the dimensionless capture width ratio at that diameter; and $\eta$ is the dimensionless end-to-end efficiency. In the fitted relationship, $D$ is entered as its numerical value in metres, and 1.3 and 5.6 are fitted coefficients; dividing by 100 converts the fitted percentage into a fraction. Capture width ratio describes how much power the device absorbs relative to the waves crossing a span as wide as its hull. The fitted relationship comes from [Babarit’s database of wave-energy converters](https://doi.org/10.1016/j.renene.2015.02.049). The default hull diameter $D=20\,\mathrm{m}$ and hydroelectric conversion efficiency $\eta=85\%$ describe a Panthalassa reference design. The efficiency is an engineering estimate, broadly in line with hydroelectric dam conversion efficiencies, rather than an independently measured fleet result.
+Here, $t$ is time; $P_{\mathrm{wave}}(t)$ is wave-derived electrical power before equipment limits, in kW; $F(t)$ is incident wave flux in kW/m; $D$ is hull diameter in metres; $c(D)$ is the dimensionless capture width ratio at that diameter; and $\eta$ is the dimensionless end-to-end efficiency. In the fitted relationship, $D$ is entered as its numerical value in metres, and 1.3 and 5.6 are fitted coefficients. Capture width ratio describes how much power the device absorbs relative to the waves crossing a span as wide as its hull. The fitted relationship comes from [Babarit’s database of wave-energy converters](https://doi.org/10.1016/j.renene.2015.02.049). The default hull diameter $D=20\,\mathrm{m}$ and hydroelectric conversion efficiency $\eta=85\%$ describe a Panthalassa reference design. The efficiency is an engineering estimate, broadly in line with hydroelectric dam conversion efficiencies.
 
 To keep the model simple, it uses an average capture width ratio $c(D)$ for each hull diameter. More sophisticated, proprietary models could make capture width ratio a function of sea state as well, such as $c(D,H_s,T_e)$, where $H_s$ is significant wave height in metres and $T_e$ is energy period in seconds. This model varies the incoming wave flux with sea state but holds capture width ratio fixed for a given diameter.
 
@@ -24,7 +24,7 @@ P_{\mathrm{cap}}=\min(P,P_{\mathrm{PTO}}),
 P_{\mathrm{direct}}(t)=\min\!\left(P_{\mathrm{wave}}(t),P_{\mathrm{cap}}\right).
 $$
 
-$P$ is installed rated compute power; $P_{\mathrm{PTO}}$ is the power take-off rating, set to $1.5P$; $P_{\mathrm{cap}}$ is their binding upper limit; and $P_{\mathrm{direct}}(t)$ is power supplied directly to computing before battery support. All four are in kW. This leaves generating headroom above the compute requirement. The wave flux needed to reach the compute cap, $F_{\mathrm{full}}$ in kW/m, is
+$P$ is installed rated compute power; $P_{\mathrm{PTO}}$ is the power take-off rating, set to $1.5P$ to have electrical generation headroom above the compute requirement, to produce a surplus for charging batteries; $P_{\mathrm{cap}}$ is the limiting electrical equipment rated capacity; and $P_{\mathrm{direct}}(t)$ is power supplied directly to computing before battery support. All four are in kW. The wave flux needed to satisfy compute capacity demand, $F_{\mathrm{full}}$ in kW/m, is
 
 $$
 F_{\mathrm{full}}=\frac{P_{\mathrm{cap}}}{D\,c(D)\,\eta}.
@@ -36,7 +36,7 @@ $$
 F\approx0.49H_s^2T_e,
 $$
 
-Here, $H_s$ is significant wave height in metres, $T_e$ is energy period in seconds, and $F$ is flux in kW/m. The approximate coefficient 0.49 combines seawater density, gravity, and unit conversion in the deep-water wave-power relation. The model converts each historical observation into usable power; it does not assume the average wave resource is continuously available. The distance slider changes the travel scenario, not this resource location.
+Here, $H_s$ is significant wave height in metres, $T_e$ is energy period in seconds, and $F$ is flux in kW/m. The approximate coefficient 0.49 combines seawater density, gravity, and unit conversion in the deep-water wave-power relation. The model converts each historical observation into usable power.
 
 ## How travel and maintenance become scheduled output
 
@@ -64,7 +64,11 @@ $j$ labels a stage in the planned calendar; $T_j$ is its duration in hours; $t$ 
 
 Travel time is distance divided by speed. The reference route uses a 50 km near-port tug leg, a tug speed of 300 km/day, and self-propulsion at 48 km/day. These are simplified operating assumptions. The linear travel profile is illustrative; sea-park energy uses the historical distribution rather than the plateau shown in the diagram.
 
+**A conservative tugging assumption.** A more conservative model could assume zero electricity generation during tug out and tug in. Batteries would then bridge the shortfall as they do during a lull in waves. Each modeled tug leg lasts four hours, matching the default battery’s four hours of usable storage at rated compute power. A fully charged default battery could therefore cover an entire tug leg even with zero generation. The model starts the outbound leg with a full battery; coverage during tug in would depend on the charge remaining. Zero generation during towing does not automatically mean hours of computing lost. The current calculations and figure retain the simplified wave-power ramps during tugging.
+
 **Maintenance calendar.** Full maintenance nominally finishes at years 5, 10, 15, and so on, with seven days at dock. The node leaves the sea park early enough to complete the return and service by that date. Healthy chips are retained; failed chips are replaced during the visit. Chip-triggered returns may bring full maintenance forward by up to six months, as explained under chip failures. Service completed exactly at the analysis endpoint is excluded because it cannot improve output within the period.
+
+The five-year major-maintenance interval is based on common ship survey and dry-docking schedules. [Lloyd’s Register](https://www.lr.org/en/knowledge/class-news/08-24/) describes a five-year survey cycle, while the [American Bureau of Shipping](https://ww2.eagle.org/en/PRArchive/abs-and-a-p--moller-agree-on-extended-survey-periods.html) documents five-year dry-docking intervals for eligible containerships. Ships also receive intermediate inspections: [IMO SOLAS requirements, as summarized by the UK Maritime and Coastguard Agency](https://www.gov.uk/government/publications/mgn-672m-extended-dry-docking/mgn-672m-extended-dry-docking), call for at least two bottom inspections in five years; [DNV](https://www.dnv.com/news/2020/dnv-gl-s-remote-in-water-ship-surveys-using-rov-mark-a-world-first-184199/) demonstrates how these can be performed in water where permitted. These practices inform the model’s major-service cadence; they do not establish a node-specific regulatory schedule or validate the assumed seven-day service duration.
 
 The travel profile, full departure battery, and service policy are reference-design operating assumptions provided through Panthalassa correspondence. They are not measured averages from an operating fleet.
 
@@ -123,7 +127,9 @@ The three metrics answer different practical questions:
 
 The sea-park calculations below use the historical record at the selected site. The dashboard then weights each of these percentages by time at the sea park, time in transit, and time at dock over the selected analysis period. The displayed journey-wide percentages do not reduce expected output or determine fleet size; those calculations independently account for travel, service, chip degradation, and expected failures.
 
-**Shared quantities.** $P$ is rated compute power in kW; $P_{\mathrm{idle}}=0.15P$ is the server idle requirement in kW; $B_{\max}$ is usable battery energy in kWh. Historical observation $i$ lasts $\Delta t_i$ hours and supplies $P_i$ kW to computing from waves alone, after equipment limits. Total historical time is $T_{\mathrm{hist}}=\sum_i\Delta t_i$. The 15% idle requirement comes from Panthalassa; useful work above idle is assumed proportional to electrical power.
+**Shared quantities.** $P$ is rated compute power in kW; $P_{\mathrm{idle}}=0.15P$ is the server idle requirement in kW; $B_{\max}$ is usable battery energy in kWh. Historical observation $i$ lasts $\Delta t_i$ hours and supplies $P_i$ kW to computing from waves alone, after equipment limits. Total historical time is $T_{\mathrm{hist}}=\sum_i\Delta t_i$.
+
+**Basis for the idle-power assumption.** The 15% idle fraction is an engineering assumption informed by published server measurements. [Latif et al., Table 1](https://arxiv.org/html/2412.08602v1#S5), report 1.86 kW at idle for an eight-GPU NVIDIA H100 HGX server: about 22% of its 8.43 kW median draw during the combined GPU/CPU stress test. That idle draw is about 18% of the 10.2 kW maximum system power specified in [NVIDIA’s DGX H100 datasheet](https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/nvidia-dgx-h100-datasheet.pdf), a reference point for a related eight-GPU system. The model uses 15%, assuming that a purpose-built node could reduce idle overhead through more efficient power delivery and supporting hardware. This reduction is an engineering judgment, not a result established by the cited measurements; an idle fraction near 20% would be a more conservative benchmark. Useful work above idle is assumed proportional to electrical power.
 
 **First calculate the battery’s contribution.** For each consecutive below-full-power lull $\ell$, the energy deficit $D_\ell$ and fraction covered $q_\ell$ are
 

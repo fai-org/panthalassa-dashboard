@@ -25,12 +25,11 @@ is the dimensionless capture width ratio at that diameter; and
 is the dimensionless end-to-end efficiency. In the fitted relationship,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>D</mi><annotation encoding="application/x-tex">D</annotation></semantics></math>
 is entered as its numerical value in metres, and 1.3 and 5.6 are fitted
-coefficients; dividing by 100 converts the fitted percentage into a
-fraction. Capture width ratio describes how much power the device
+coefficients. Capture width ratio describes how much power the device
 absorbs relative to the waves crossing a span as wide as its hull. The
 fitted relationship comes from <a
 href="https://doi.org/10.1016/j.renene.2015.02.049">Babarit’s database
-of wave-energy converters</a>. The default hull diameter <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mn>20</mn><mspace width="0.167em"/><mi mathvariant="normal">m</mi></mrow><annotation encoding="application/x-tex">D=20\,\mathrm{m}</annotation></semantics></math> and hydroelectric conversion efficiency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>85</mn><mo>%</mo></mrow><annotation encoding="application/x-tex">\eta=85\%</annotation></semantics></math> describe a Panthalassa reference design. The efficiency is an engineering estimate, broadly in line with hydroelectric dam conversion efficiencies, rather than an independently measured fleet result.</p>
+of wave-energy converters</a>. The default hull diameter <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mn>20</mn><mspace width="0.167em"/><mi mathvariant="normal">m</mi></mrow><annotation encoding="application/x-tex">D=20\,\mathrm{m}</annotation></semantics></math> and hydroelectric conversion efficiency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mn>85</mn><mo>%</mo></mrow><annotation encoding="application/x-tex">\eta=85\%</annotation></semantics></math> describe a Panthalassa reference design. The efficiency is an engineering estimate, broadly in line with hydroelectric dam conversion efficiencies.</p>
 <p>To keep the model simple, it uses an average capture width ratio <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>(</mo><mi>D</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">c(D)</annotation></semantics></math> for each hull diameter. More sophisticated, proprietary models could make capture width ratio a function of sea state as well, such as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>(</mo><mi>D</mi><mo>,</mo><msub><mi>H</mi><mi>s</mi></msub><mo>,</mo><msub><mi>T</mi><mi>e</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">c(D,H_s,T_e)</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mi>s</mi></msub><annotation encoding="application/x-tex">H_s</annotation></semantics></math> is significant wave height in metres and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>e</mi></msub><annotation encoding="application/x-tex">T_e</annotation></semantics></math> is energy period in seconds. This model varies the incoming wave flux with sea state but holds capture width ratio fixed for a given diameter.</p>
 <p>Electrical power supplied directly to computing is limited by the rated capacity of the generator or the installed computing payload:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow></msub><mo>=</mo><mo>min</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>P</mi><mo>,</mo><msub><mi>P</mi><mrow><mi mathvariant="normal">P</mi><mi mathvariant="normal">T</mi><mi mathvariant="normal">O</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>P</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mo>min</mo><mspace width="-0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mrow><mi mathvariant="normal">w</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">v</mi><mi mathvariant="normal">e</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><msub><mi>P</mi><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
@@ -42,13 +41,12 @@ P_{\mathrm{direct}}(t)=\min\!\left(P_{\mathrm{wave}}(t),P_{\mathrm{cap}}\right).
 is installed rated compute power;
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi mathvariant="normal">P</mi><mi mathvariant="normal">T</mi><mi mathvariant="normal">O</mi></mrow></msub><annotation encoding="application/x-tex">P_{\mathrm{PTO}}</annotation></semantics></math>
 is the power take-off rating, set to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.5</mn><mi>P</mi></mrow><annotation encoding="application/x-tex">1.5P</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1.5</mn><mi>P</mi></mrow><annotation encoding="application/x-tex">1.5P</annotation></semantics></math> to have electrical generation headroom above the compute requirement, to produce a surplus for charging batteries;
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow></msub><annotation encoding="application/x-tex">P_{\mathrm{cap}}</annotation></semantics></math>
-is their binding upper limit; and
+is the limiting electrical equipment rated capacity; and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi mathvariant="normal">d</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">r</mi><mi mathvariant="normal">e</mi><mi mathvariant="normal">c</mi><mi mathvariant="normal">t</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{\mathrm{direct}}(t)</annotation></semantics></math>
 is power supplied directly to computing before battery support. All four
-are in kW. This leaves generating headroom above the compute
-requirement. The wave flux needed to reach the compute cap,
+are in kW. The wave flux needed to satisfy compute capacity demand,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mrow><mi mathvariant="normal">f</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">l</mi></mrow></msub><annotation encoding="application/x-tex">F_{\mathrm{full}}</annotation></semantics></math>
 in kW/m, is</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mrow><mi mathvariant="normal">f</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">l</mi><mi mathvariant="normal">l</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>P</mi><mrow><mi mathvariant="normal">c</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">p</mi></mrow></msub><mrow><mi>D</mi><mspace width="0.167em"></mspace><mi>c</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>D</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>η</mi></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
@@ -75,9 +73,7 @@ is energy period in seconds, and
 is flux in kW/m. The approximate coefficient 0.49 combines seawater
 density, gravity, and unit conversion in the deep-water wave-power
 relation. The model converts each historical observation into usable
-power; it does not assume the average wave resource is continuously
-available. The distance slider changes the travel scenario, not this
-resource location.</p>
+power.</p>
 </div></details><details id="how-travel-and-maintenance-become-scheduled-output"><summary>How travel
 and maintenance become scheduled output</summary><div class="panel">
 <p>Scheduled output is the energy a node supplies to computing under its
@@ -157,6 +153,7 @@ scale.</figcaption>
 at 48 km/day. These are simplified operating assumptions. The linear
 travel profile is illustrative; sea-park energy uses the historical
 distribution rather than the plateau shown in the diagram.</p>
+<p><strong>A conservative tugging assumption.</strong> A more conservative model could assume zero electricity generation during tug out and tug in. Batteries would then bridge the shortfall as they do during a lull in waves. Each modeled tug leg lasts four hours, matching the default battery’s four hours of usable storage at rated compute power. A fully charged default battery could therefore cover an entire tug leg even with zero generation. The model starts the outbound leg with a full battery; coverage during tug in would depend on the charge remaining. Zero generation during towing does not automatically mean hours of computing lost. The current calculations and figure retain the simplified wave-power ramps during tugging.</p>
 <p><strong>Maintenance calendar.</strong> Full maintenance nominally
 finishes at years 5, 10, 15, and so on, with seven days at dock. The
 node leaves the sea park early enough to complete the return and service
@@ -165,6 +162,7 @@ during the visit. Chip-triggered returns may bring full maintenance
 forward by up to six months, as explained under chip failures. Service
 completed exactly at the analysis endpoint is excluded because it cannot
 improve output within the period.</p>
+<p>The five-year major-maintenance interval is based on common ship survey and dry-docking schedules. <a href="https://www.lr.org/en/knowledge/class-news/08-24/">Lloyd’s Register</a> describes a five-year survey cycle, while the <a href="https://ww2.eagle.org/en/PRArchive/abs-and-a-p--moller-agree-on-extended-survey-periods.html">American Bureau of Shipping</a> documents five-year dry-docking intervals for eligible containerships. Ships also receive intermediate inspections: <a href="https://www.gov.uk/government/publications/mgn-672m-extended-dry-docking/mgn-672m-extended-dry-docking">IMO SOLAS requirements, as summarized by the UK Maritime and Coastguard Agency</a>, call for at least two bottom inspections in five years; <a href="https://www.dnv.com/news/2020/dnv-gl-s-remote-in-water-ship-surveys-using-rov-mark-a-world-first-184199/">DNV</a> demonstrates how these can be performed in water where permitted. These practices inform the model’s major-service cadence; they do not establish a node-specific regulatory schedule or validate the assumed seven-day service duration.</p>
 <p>The travel profile, full departure battery, and service policy are
 reference-design operating assumptions provided through Panthalassa
 correspondence. They are not measured averages from an operating
@@ -308,8 +306,8 @@ hours and supplies
 kW to computing from waves alone, after equipment limits. Total
 historical time is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">i</mi><mi mathvariant="normal">s</mi><mi mathvariant="normal">t</mi></mrow></msub><mo>=</mo><msub><mo>∑</mo><mi>i</mi></msub><mi>Δ</mi><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">T_{\mathrm{hist}}=\sum_i\Delta t_i</annotation></semantics></math>.
-The 15% idle requirement comes from Panthalassa; useful work above idle
-is assumed proportional to electrical power.</p>
+</p>
+<p><strong>Basis for the idle-power assumption.</strong> The 15% idle fraction is an engineering assumption informed by published server measurements. <a href="https://arxiv.org/html/2412.08602v1#S5">Latif et al., Table 1</a>, report 1.86 kW at idle for an eight-GPU NVIDIA H100 HGX server: about 22% of its 8.43 kW median draw during the combined GPU/CPU stress test. That idle draw is about 18% of the 10.2 kW maximum system power specified in <a href="https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/nvidia-dgx-h100-datasheet.pdf">NVIDIA’s DGX H100 datasheet</a>, a reference point for a related eight-GPU system. The model uses 15%, assuming that a purpose-built node could reduce idle overhead through more efficient power delivery and supporting hardware. This reduction is an engineering judgment, not a result established by the cited measurements; an idle fraction near 20% would be a more conservative benchmark. Useful work above idle is assumed proportional to electrical power.</p>
 <p><strong>First calculate the battery’s contribution.</strong> For each
 consecutive below-full-power lull
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>ℓ</mo><annotation encoding="application/x-tex">\ell</annotation></semantics></math>,
