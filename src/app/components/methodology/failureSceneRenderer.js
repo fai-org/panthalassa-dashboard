@@ -107,7 +107,7 @@ function draw(t){const mode=Math.floor(t/6.5)%5,s=t%6.5;if(mode!==current){curre
  else{
   node.userData.lights.forEach(l=>l.material.opacity=s>.2?.04:.9);
   if(mode===1){
-   const travel=ease((s-1.2)/3.7);
+   const travel=ease((s-.3)/3.7);
    const centerX=mix(-51,44,travel);
    node.position.set(centerX,wave(centerX,3,t)*.65,3);
    active=s<.2;
