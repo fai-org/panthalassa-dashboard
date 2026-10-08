@@ -50,9 +50,9 @@ export function WireframeHome() {
         </div>
 
         <div className={styles.intro}>
-          <p className={styles.lead}><strong>Yes it can and, done right, it would be cheaper than building data centers on land.</strong></p>
+          <p className={styles.lead}><strong>Yes it can and, done right, it could be cheaper than building data centers on land.</strong></p>
           <p>This work models one approach to harnessing wave energy put forward by the startup <strong>Panthalassa</strong>, which would place floating data centers far offshore, and compares this to a range of land-based behind-the-meter alternatives. While Panthalassa’s approach poses significant operational challenges, <strong>my model finds that these challenges are likely surmountable.</strong></p>
-          <p>You can go straight to the dashboard, where you can change my default assumptions, but since few of us have any physical intuition for ocean data centers, <strong>I strongly encourage you to first read my short explanation of how Panthalassa operates and how my model works.</strong></p>
+          <p>You can go straight to the dashboard, where you can change my default assumptions and come to your own conclusions. But before you do, since most people don’t have any intuition or context on ocean data centers, <strong>I highly recommend first reading my explanation of how Panthalassa operates and how my model works.</strong></p>
           <a href="#dashboard" className={styles.cta}>
             Skip the explanation
             <span aria-hidden="true">&darr;</span>

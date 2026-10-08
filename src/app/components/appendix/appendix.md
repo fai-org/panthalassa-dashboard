@@ -33,10 +33,17 @@ $$
 **Where the waves come from.** At sea park, the model uses [Copernicus WAVERYS](https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_WAV_001_032/description), with three-hourly observations from 1980–2025 at 53.6°S, 133.6°E. Significant wave height $H_s$ and energy period $T_e$ are converted into deep-water wave flux using
 
 $$
-F\approx0.49H_s^2T_e,
+F=\frac{\rho g^2}{64\pi\times1{,}000}H_s^2T_e
+\approx0.49H_s^2T_e.
 $$
 
-Here, $H_s$ is significant wave height in metres, $T_e$ is energy period in seconds, and $F$ is flux in kW/m. The approximate coefficient 0.49 combines seawater density, gravity, and unit conversion in the deep-water wave-power relation. The model converts each historical observation into usable power.
+Here, $H_s$ is significant wave height in metres, $T_e$ is energy period in seconds, and $F$ is flux in kW/m. In the [standard deep-water wave-power relation](https://doi.org/10.3390/pr9030460), $\rho\approx1{,}025\,\mathrm{kg/m^3}$ is seawater density and $g\approx9.81\,\mathrm{m/s^2}$ is gravitational acceleration. The factor $1{,}000$ converts watts to kilowatts. Substituting these physical constants gives
+
+$$
+\frac{1{,}025\times9.81^2}{64\pi\times1{,}000}\approx0.4906.
+$$
+
+Thus, 0.49 comes from wave physics and unit conversion, rather than a fitted model assumption. The model converts each historical observation into usable power.
 
 ## How travel and maintenance become scheduled output
 
@@ -44,12 +51,15 @@ Scheduled output is the energy a node supplies to computing under its planned op
 
 $$
 E_{j,\mathrm{direct}}=
-\int_0^{T_j}\min\!\left(P_{\mathrm{wave},j}(t),P_{\mathrm{cap}}\right)\,dt,
+\int_0^{T_j}\min\!\left(P_{\mathrm{wave},j}(t),P_{\mathrm{cap}}\right)\,dt.
+$$
+$$
+E_{j,\mathrm{adjusted}}=E_{j,\mathrm{direct}}+E_{j,\mathrm{battery}},
 \qquad
 E_{\mathrm{scheduled}}=\sum_j E_{j,\mathrm{adjusted}}.
 $$
 
-$j$ labels a stage in the planned calendar; $T_j$ is its duration in hours; $t$ is elapsed time within that stage; and $dt$ denotes the small time intervals accumulated by the integral. $P_{\mathrm{wave},j}(t)$ is wave-derived electrical power before equipment limits, and $P_{\mathrm{cap}}$ is the smaller of rated compute power and PTO rating, both in kW. $E_{j,\mathrm{direct}}$ is the resulting wave-supplied compute energy; $E_{j,\mathrm{adjusted}}$ adds battery discharge; and $E_{\mathrm{scheduled}}$ sums adjusted energy across all stages within the analysis period. All energy terms are in kWh. For constant power, the integral reduces to power multiplied by time.
+$j$ labels a stage in the planned calendar; $T_j$ is its duration in hours; $t$ is elapsed time within that stage; and $dt$ denotes the small time intervals accumulated by the integral. $P_{\mathrm{wave},j}(t)$ is wave-derived electrical power before equipment limits, and $P_{\mathrm{cap}}$ is the smaller of rated compute power and PTO rating, both in kW. For stage $j$, $E_{j,\mathrm{direct}}$ is electricity supplied to computing directly from waves, $E_{j,\mathrm{battery}}$ is electricity supplied by battery discharge, and $E_{j,\mathrm{adjusted}}$ is their combined contribution. $E_{\mathrm{scheduled}}$ sums that combined energy across all stages within the analysis period. All energy terms are in kWh. The following section, “How batteries bridge gaps in wave power,” explains how the battery contribution is estimated. For constant power, the integral reduces to power multiplied by time.
 
 ![Illustrative operating cycle before battery support. The shaded area is electricity supplied directly to computing. The sea-park plateau is a diagrammatic simplification; the model uses historical wave variability. Stage durations are not to scale.](/images/appendix-operating-cycle.svg)
 
@@ -64,7 +74,7 @@ $j$ labels a stage in the planned calendar; $T_j$ is its duration in hours; $t$ 
 
 Travel time is distance divided by speed. The reference route uses a 50 km near-port tug leg, a tug speed of 300 km/day, and self-propulsion at 48 km/day. These are simplified operating assumptions. The linear travel profile is illustrative; sea-park energy uses the historical distribution rather than the plateau shown in the diagram.
 
-**A conservative tugging assumption.** A more conservative model could assume zero electricity generation during tug out and tug in. Batteries would then bridge the shortfall as they do during a lull in waves. Each modeled tug leg lasts four hours, matching the default battery’s four hours of usable storage at rated compute power. A fully charged default battery could therefore cover an entire tug leg even with zero generation. The model starts the outbound leg with a full battery; coverage during tug in would depend on the charge remaining. Zero generation during towing does not automatically mean hours of computing lost. The current calculations and figure retain the simplified wave-power ramps during tugging.
+**Important tugging assumption.** A more conservative model could assume that the node doesn’t generate any power during tug out and tug in. Assuming the node leaves with a fully charged battery, the battery would then bridge the shortfall as they do during a lull in waves. Since each modeled tug leg lasts four hours, and the default battery also has four hours of usable storage at rated compute power, the battery could therefore cover an entire tug leg even with this conservative assumption.
 
 **Maintenance calendar.** Full maintenance nominally finishes at years 5, 10, 15, and so on, with seven days at dock. The node leaves the sea park early enough to complete the return and service by that date. Healthy chips are retained; failed chips are replaced during the visit. Chip-triggered returns may bring full maintenance forward by up to six months, as explained under chip failures. Service completed exactly at the analysis endpoint is excluded because it cannot improve output within the period.
 
@@ -90,10 +100,10 @@ $$
 $$
 E_{\mathrm{discharge}}=\min(E_{\mathrm{gap}},B_{\mathrm{current}}),
 \qquad
-E_{j,\mathrm{adjusted}}=E_{j,\mathrm{direct}}+E_{\mathrm{discharge}}.
+E_{j,\mathrm{adjusted}}=E_{j,\mathrm{direct}}+E_{j,\mathrm{battery}}.
 $$
 
-All energy terms here are in kWh: $E_{\mathrm{surplus}}$ is the modeled surplus available for charging during the relevant route interval; $E_{\mathrm{gap}}$ is the energy shortfall relative to the compute cap; $B_{\mathrm{current}}$ is stored energy immediately before the charging or discharge operation; and $E_{\mathrm{charge}}$ and $E_{\mathrm{discharge}}$ are the amounts stored and supplied. For stage $j$, $E_{j,\mathrm{direct}}$ is wave-supplied compute energy and $E_{j,\mathrm{adjusted}}$ is total compute energy after battery support.
+All energy terms here are in kWh: $E_{\mathrm{surplus}}$ is the modeled surplus available for charging during the relevant route interval; $E_{\mathrm{gap}}$ is the energy shortfall relative to the compute cap; $B_{\mathrm{current}}$ is stored energy immediately before the charging or discharge operation; and $E_{\mathrm{charge}}$ and $E_{\mathrm{discharge}}$ are the amounts stored and supplied. For stage $j$, $E_{j,\mathrm{direct}}$ is wave-supplied compute energy and $E_{j,\mathrm{adjusted}}$ is total compute energy after battery support. The stage’s battery contribution, $E_{j,\mathrm{battery}}$ defined above, is the sum of $E_{\mathrm{discharge}}$ over its route intervals.
 
 These operations follow the order of surplus and shortfall along the route. Stored energy increases when charging and decreases when discharging; it is not reset between travel stages. Dockside work remains offline regardless of battery charge.
 
@@ -185,7 +195,7 @@ $$
 
 $D_{k,\mathrm{idle}}$ is the energy missing to keep servers switched on, in kWh; $q_{k,\mathrm{idle}}$ is the fraction covered by storage; and $T_{k,\mathrm{idle}}=\sum_{i\in k}\Delta t_i$ is that lull’s duration in hours. $A_{\mathrm{keepalive}}$ is the estimated share of historical time the idle requirement can be met. If there are no below-idle lulls, the sum is zero and this metric is 100%.
 
-**From the sea park to a working life.** The dashboard's three percentages use the *same operating calendar* as scheduled output: outbound tugging and self-propulsion, sea-park operation, return travel when it falls within the analysis period, and dockside work. For any one of the three metrics, the combination is
+**From the sea park to a working life.** The dashboard's three percentages use the *same operating calendar* as scheduled output: outbound tugging and self-propulsion, sea-park operation, return travel when it falls within the analysis period, and dockside work. The equation below is applied separately to resource capacity factor, rated power availability, and keepalive availability. $M$ stands for whichever metric is being calculated; it is not an additional metric. The combination is
 
 $$
 M_{\mathrm{journey}}=
@@ -193,7 +203,7 @@ M_{\mathrm{journey}}=
 {T_{\mathrm{sea}}+T_{\mathrm{travel}}+T_{\mathrm{dock}}}.
 $$
 
-$M_{\mathrm{journey}}$ is the displayed percentage expressed as a fraction; $M_{\mathrm{sea}}$ is the corresponding sea-park fraction calculated above; and $M_{\mathrm{travel}}$ is its value during travel. $T_{\mathrm{sea}}$, $T_{\mathrm{travel}}$, and $T_{\mathrm{dock}}$ are the hours spent in each setting during the selected analysis period. Dockside work contributes zero because computing stops there. The model excludes a visit that would finish exactly at the analysis endpoint, so the default five-year calculation includes the initial outward trip but no return or dockside service. Chip-triggered service trips do count if they occur within the period. These resource percentages hold computing hardware healthy and exclude unexpected whole-node failures, even though chip wear determines whether a surprise service trip occurs. They are descriptive and are **not** multiplied into scheduled energy or fleet sizing.
+$M_{\mathrm{sea}}$ is the selected metric during sea-park operation; $M_{\mathrm{travel}}$ is its average value during transit; and $M_{\mathrm{journey}}$ is the combined value shown on the dashboard. The equation uses fractions, with the result displayed as a percentage. Each setting is weighted by the hours spent there. $T_{\mathrm{sea}}$, $T_{\mathrm{travel}}$, and $T_{\mathrm{dock}}$ are the hours spent in each setting during the selected analysis period. Dockside work contributes zero because computing stops there, but its hours remain in the denominator. The model excludes a visit that would finish exactly at the analysis endpoint, so the default five-year calculation includes the initial outward trip but no return or dockside service. Chip-triggered service trips do count if they occur within the period. These resource percentages hold computing hardware healthy and exclude unexpected whole-node failures, even though chip wear determines whether a surprise service trip occurs. They are descriptive and are **not** multiplied into scheduled energy or fleet sizing.
 
 For travel, the existing linear wave-flux ramps determine when wave power reaches the full payload requirement or the lower idle requirement. The model integrates partial power above the idle requirement for capacity factor; it credits equivalent hours at full payload power for rated availability and equivalent hours above idle for keepalive availability. The battery starts full when the node leaves port, discharges to cover shortfalls, and can recharge from surplus wave power during travel. As with the sea-park calculations, rated and keepalive are separate ways of assessing battery support, not simultaneous claims on the same stored energy. For a partially covered segment, the model spreads the fraction of its energy deficit the battery can cover across that segment's hours. It does not simulate the exact instant during the ramp when a battery would run out. The sea-park stage retains its separate historical-lull battery approximation; its charge state is not reconstructed continuously across decades of observations.
 
@@ -237,7 +247,7 @@ $\Delta$ is time in years starting from a fully restored payload; $E_{\mathrm{he
 
 Chip-related loss is the difference between scheduled energy and energy under this degradation-and-service calendar. Replacement cost at each service is failed kW at dock multiplied by the selected compute price per kW. Healthy chips remain installed.
 
-**Evidence.** The 1% default hazard is a modeling proxy. [Cloud hardware reliability research](https://doi.org/10.1145/1807128.1807161) supports accounting for gradual failure; [Microsoft Project Natick](https://natick.research.microsoft.com/) reported one-eighth the server failure rate of its land control group. Neither establishes a transferable 1% rate for these nodes. The service policy and consolidation window come from reference-design correspondence. Chip failures and compute-only service affect the data-center calculation but are excluded from power-system LCOE.
+**Evidence.** [Cloud hardware reliability research](https://doi.org/10.1145/1807128.1807161) supports accounting for gradual failure. [Microsoft’s Project Natick](https://news.microsoft.com/source/features/sustainability/project-natick-underwater-datacenter/) measured a server failure rate one-eighth that of its land-based control group. The model assumes a smaller reliability improvement: its default annual compute-hardware failure rates are 1% offshore and 4% on land. These remain modeling assumptions, since Natick’s results do not directly establish failure rates for Panthalassa’s hardware or operating conditions. The service policy and consolidation window come from reference-design correspondence. Chip failures and compute-only service affect the data-center calculation but are excluded from power-system LCOE.
 
 ## How whole-node failures are weighted
 
@@ -357,6 +367,8 @@ $$
 The unit prices are $c_{\mathrm{hull}}$ in dollars per tonne, $c_{\mathrm{PTO}}$ in dollars per kW of PTO rating, $c_{\mathrm{pack}}$ in dollars per usable kWh, and $c_{\mathrm{integration}}$ and $c_{\mathrm{compute}}$ in dollars per kW of rated compute power. The table below supplies the default values and their basis.
 
 Adding hull, PTO, battery, and onboard systems gives physical-platform cost $C_{\mathrm{physical}}$. A new complete node costs $C_{\mathrm{node}}=C_{\mathrm{physical}}+C_{\mathrm{compute}}$.
+
+Nodes are treated as manufactured vessels, rather than newly built pieces of infrastructure like conventional land-based data centers. The finished-hull price is assumed to already include things like factory siting, facilities, labor, and hull assembly, with these costs spread across the production of node hulls.
 
 | Capital item | Default | Evidence and interpretation |
 |---|---|---|

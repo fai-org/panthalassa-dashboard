@@ -211,7 +211,7 @@ export const SLIDER_GROUPS: SliderGroupConfig[] = [
         step: 500,
         default: 2000,
         decimals: 0,
-        helpText: "Fabrication cost per tonne of finished structural steel",
+        helpText: "Cost per tonne of fabricated hull, including materials, labor, hull assembly, and allocated factory and shipyard costs. Other node equipment is priced separately.",
       },
       {
         key: "pto_cost_usd_per_kw",

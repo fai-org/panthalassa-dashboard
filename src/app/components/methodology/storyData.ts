@@ -10,7 +10,7 @@ export const STEPS: StoryStep[] = [
     'How much energy a node captures depends on its size and how effectively it absorbs wave motion. Its “capture width ratio” compares the power it absorbs with the wave power arriving across a span as wide as its hull. In this model, a larger hull captures more power but requires more steel.'
   ] },
   { id: 'sea-park', chapter: '01 / The physical system', title: 'Go where the best waves are', visual: 'geography', paragraphs: [
-    'Some of the most energetic waves lie in the Southern Ocean, where strong winds blow across vast, uninterrupted stretches of water. Imagine a football field-length line across the ocean. At this model’s representative location, waves passing that line carry, on average, energy equivalent to the electricity usage of **~8,000 American homes**.',
+    'Some of the most energetic waves lie in the Southern Ocean, where strong winds blow across vast, uninterrupted stretches of water. Imagine a football field-length line across the ocean. At this model’s representative location, waves passing that line carry, on average, energy equivalent to the electricity usage of **~2,000 American homes**.',
     'Considering this is only 100 meters of the vast ocean, this resource is enormous even if only a fraction of it can be captured. The challenge historically is its remoteness. Panthalassa’s approach is to put computing where the strongest waves are and send their results home, rather than bring the electricity back to shore.'
   ] },
   { id: 'outbound-journey', chapter: '02 / Follow one node', title: 'The journey out to sea', visual: 'outbound', paragraphs: [
