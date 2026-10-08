@@ -113,9 +113,9 @@ function draw(t){const mode=Math.floor(t/6.5)%5,s=t%6.5;if(mode!==current){curre
    active=s<.2;
   }
   if(mode===2){
-   active=s<.2;const back=ease((s-2.15)/3.2);
+   active=s<.2;const tilt=-Math.PI/2*ease((s-.2)/1.3),back=ease((s-2.15)/3.2);
    const centerX=mix(-51,37,back);
-   node.position.set(centerX,wave(centerX,3,t)*.65,3);
+   node.rotation.set(0,.15,tilt);node.position.set(centerX-18.5*Math.sin(tilt),wave(centerX,3,t)*.65,3);
    tug.visible=true;const target=node.position.x+11;
    tug.position.set(s<2.05?mix(67,target,ease((s-.15)/1.85)):target,wave(target,3,t)*.65,3);
    tug.rotation.y=s<2.05?Math.PI:0;tow.visible=s>2.05;
