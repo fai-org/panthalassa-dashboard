@@ -98,36 +98,37 @@ function communication(from, t, active, sparse) {
     ring.material.opacity = Math.sin(u * Math.PI) * (sparse ? .14 : .3);
   });
 }
+// Front-load each action; retain the 6.5-second scene duration for caption reading.
 function draw(t){const mode=Math.floor(t/6.5)%5,s=t%6.5;if(mode!==current){current=mode;onModeChange(mode);}
 
  const pos=oceanGeo.attributes.position;for(let i=0;i<pos.count;i++)pos.setY(i,wave(pos.getX(i),pos.getZ(i),t));pos.needsUpdate=true;oceanGeo.computeVertexNormals();const gp=gridGeo.attributes.position;for(let i=0;i<gp.count;i++)gp.setY(i,wave(gp.getX(i),gp.getZ(i),t)+.05);gp.needsUpdate=true;
  node.visible=true;node.position.set(-51,wave(-51,3,t)*.65,3);node.rotation.set(.008*Math.sin(t*.6),.15,0);opacity(node,1);tug.visible=false;tow.visible=false;let sender=node,active=true,sparse=false;
- if(mode===0){sparse=s>1.3;node.userData.lights.forEach((l,i)=>{l.material.opacity=sparse&&i>2?.06:.95;});}
+ if(mode===0){sparse=s>.3;node.userData.lights.forEach((l,i)=>{l.material.opacity=sparse&&i>2?.06:.95;});}
  else{
-  node.userData.lights.forEach(l=>l.material.opacity=s>1?.04:.9);
+  node.userData.lights.forEach(l=>l.material.opacity=s>.2?.04:.9);
   if(mode===1){
-   const tilt=-Math.PI/2*ease((s-1.05)/1.55),travel=ease((s-2.15)/4.0);
+   const tilt=-Math.PI/2*ease((s-.15)/1.2),travel=ease((s-1.2)/3.7);
    const centerX=mix(-51,44,travel);
    node.rotation.set(0,.15,tilt);
    node.position.set(centerX-18.5*Math.sin(tilt),wave(centerX,3,t)*.65,3);
-   active=s<1.05;
+   active=s<.2;
   }
   if(mode===2){
-   active=s<1;const tilt=-Math.PI/2*ease((s-1.15)/1.7),back=ease((s-3.7)/2.6);
+   active=s<.2;const tilt=-Math.PI/2*ease((s-.2)/1.3),back=ease((s-2.15)/3.2);
    const centerX=mix(-51,37,back);
    node.rotation.set(0,.15,tilt);node.position.set(centerX-18.5*Math.sin(tilt),wave(centerX,3,t)*.65,3);
-   tug.visible=s>.9;const target=node.position.x+11;
-   tug.position.set(s<3.5?mix(67,target,ease((s-1)/2.3)):target,wave(target,3,t)*.65,3);
-   tug.rotation.y=s<3.5?Math.PI:0;tow.visible=s>3.25;
+   tug.visible=true;const target=node.position.x+11;
+   tug.position.set(s<2.05?mix(67,target,ease((s-.15)/1.85)):target,wave(target,3,t)*.65,3);
+   tug.rotation.y=s<2.05?Math.PI:0;tow.visible=s>2.05;
    const a=tow.geometry.attributes.position;
    a.setXYZ(0,node.position.x+5,node.position.y+1,3);a.setXYZ(1,tug.position.x-6,tug.position.y+1,3);a.needsUpdate=true;tow.geometry.computeBoundingSphere();
   }
   if(mode>=3){
-   const sinking=ease((s-1.05)/4.9);
+   const sinking=ease((s-.15)/3.8);
    node.position.y=wave(-51,3,t)*.65-92*sinking;
    node.rotation.z=.1*sinking;
    opacity(node,1-.35*sinking);
-   active=s<1.05;
+   active=s<.2;
   }
  }
  communication(sender,t,active,sparse);renderer.render(scene,camera);
